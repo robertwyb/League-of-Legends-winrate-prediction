@@ -1,0 +1,147 @@
+,Champ_Name,Champ_Key,Champ_Tags
+0,Aatrox,266,"['Fighter', 'Tank']"
+1,Ahri,103,"['Mage', 'Assassin']"
+2,Akali,84,['Assassin']
+3,Alistar,12,"['Tank', 'Support']"
+4,Amumu,32,"['Tank', 'Mage']"
+5,Anivia,34,"['Mage', 'Support']"
+6,Annie,1,['Mage']
+7,Ashe,22,"['Marksman', 'Support']"
+8,AurelionSol,136,['Mage']
+9,Azir,268,"['Mage', 'Marksman']"
+10,Bard,432,"['Support', 'Mage']"
+11,Blitzcrank,53,"['Tank', 'Fighter']"
+12,Brand,63,['Mage']
+13,Braum,201,"['Support', 'Tank']"
+14,Caitlyn,51,['Marksman']
+15,Camille,164,"['Fighter', 'Tank']"
+16,Cassiopeia,69,['Mage']
+17,Chogath,31,"['Tank', 'Mage']"
+18,Corki,42,['Marksman']
+19,Darius,122,"['Fighter', 'Tank']"
+20,Diana,131,"['Fighter', 'Mage']"
+21,Draven,119,['Marksman']
+22,DrMundo,36,"['Fighter', 'Tank']"
+23,Ekko,245,"['Assassin', 'Fighter']"
+24,Elise,60,"['Mage', 'Fighter']"
+25,Evelynn,28,"['Assassin', 'Mage']"
+26,Ezreal,81,"['Marksman', 'Mage']"
+27,Fiddlesticks,9,"['Mage', 'Support']"
+28,Fiora,114,"['Fighter', 'Assassin']"
+29,Fizz,105,"['Assassin', 'Fighter']"
+30,Galio,3,"['Tank', 'Mage']"
+31,Gangplank,41,['Fighter']
+32,Garen,86,"['Fighter', 'Tank']"
+33,Gnar,150,"['Fighter', 'Tank']"
+34,Gragas,79,"['Fighter', 'Mage']"
+35,Graves,104,['Marksman']
+36,Hecarim,120,"['Fighter', 'Tank']"
+37,Heimerdinger,74,"['Mage', 'Support']"
+38,Illaoi,420,"['Fighter', 'Tank']"
+39,Irelia,39,"['Fighter', 'Assassin']"
+40,Ivern,427,"['Support', 'Mage']"
+41,Janna,40,"['Support', 'Mage']"
+42,JarvanIV,59,"['Tank', 'Fighter']"
+43,Jax,24,"['Fighter', 'Assassin']"
+44,Jayce,126,"['Fighter', 'Marksman']"
+45,Jhin,202,"['Marksman', 'Mage']"
+46,Jinx,222,['Marksman']
+47,Kaisa,145,['Marksman']
+48,Kalista,429,['Marksman']
+49,Karma,43,"['Mage', 'Support']"
+50,Karthus,30,['Mage']
+51,Kassadin,38,"['Assassin', 'Mage']"
+52,Katarina,55,"['Assassin', 'Mage']"
+53,Kayle,10,"['Fighter', 'Support']"
+54,Kayn,141,"['Fighter', 'Assassin']"
+55,Kennen,85,"['Mage', 'Marksman']"
+56,Khazix,121,['Assassin']
+57,Kindred,203,['Marksman']
+58,Kled,240,"['Fighter', 'Tank']"
+59,KogMaw,96,"['Marksman', 'Mage']"
+60,Leblanc,7,"['Assassin', 'Mage']"
+61,LeeSin,64,"['Fighter', 'Assassin']"
+62,Leona,89,"['Tank', 'Support']"
+63,Lissandra,127,['Mage']
+64,Lucian,236,['Marksman']
+65,Lulu,117,"['Support', 'Mage']"
+66,Lux,99,"['Mage', 'Support']"
+67,Malphite,54,"['Tank', 'Fighter']"
+68,Malzahar,90,"['Mage', 'Assassin']"
+69,Maokai,57,"['Tank', 'Mage']"
+70,MasterYi,11,"['Assassin', 'Fighter']"
+71,MissFortune,21,['Marksman']
+72,MonkeyKing,62,"['Fighter', 'Tank']"
+73,Mordekaiser,82,['Fighter']
+74,Morgana,25,"['Mage', 'Support']"
+75,Nami,267,"['Support', 'Mage']"
+76,Nasus,75,"['Fighter', 'Tank']"
+77,Nautilus,111,"['Tank', 'Fighter']"
+78,Neeko,518,"['Mage', 'Support']"
+79,Nidalee,76,"['Assassin', 'Mage']"
+80,Nocturne,56,"['Assassin', 'Fighter']"
+81,Nunu,20,"['Tank', 'Fighter']"
+82,Olaf,2,"['Fighter', 'Tank']"
+83,Orianna,61,"['Mage', 'Support']"
+84,Ornn,516,"['Tank', 'Fighter']"
+85,Pantheon,80,"['Fighter', 'Assassin']"
+86,Poppy,78,"['Tank', 'Fighter']"
+87,Pyke,555,"['Support', 'Assassin']"
+88,Qiyana,246,"['Assassin', 'Fighter']"
+89,Quinn,133,"['Marksman', 'Assassin']"
+90,Rakan,497,['Support']
+91,Rammus,33,"['Tank', 'Fighter']"
+92,RekSai,421,['Fighter']
+93,Renekton,58,"['Fighter', 'Tank']"
+94,Rengar,107,"['Assassin', 'Fighter']"
+95,Riven,92,"['Fighter', 'Assassin']"
+96,Rumble,68,"['Fighter', 'Mage']"
+97,Ryze,13,"['Mage', 'Fighter']"
+98,Sejuani,113,"['Tank', 'Fighter']"
+99,Senna,235,"['Marksman', 'Mage']"
+100,Shaco,35,['Assassin']
+101,Shen,98,['Tank']
+102,Shyvana,102,"['Fighter', 'Tank']"
+103,Singed,27,"['Tank', 'Fighter']"
+104,Sion,14,"['Tank', 'Fighter']"
+105,Sivir,15,['Marksman']
+106,Skarner,72,"['Fighter', 'Tank']"
+107,Sona,37,"['Support', 'Mage']"
+108,Soraka,16,"['Support', 'Mage']"
+109,Swain,50,"['Mage', 'Fighter']"
+110,Sylas,517,"['Mage', 'Assassin']"
+111,Syndra,134,"['Mage', 'Support']"
+112,TahmKench,223,"['Support', 'Tank']"
+113,Taliyah,163,"['Mage', 'Support']"
+114,Talon,91,['Assassin']
+115,Taric,44,"['Support', 'Fighter']"
+116,Teemo,17,"['Marksman', 'Assassin']"
+117,Thresh,412,"['Support', 'Fighter']"
+118,Tristana,18,"['Marksman', 'Assassin']"
+119,Trundle,48,"['Fighter', 'Tank']"
+120,Tryndamere,23,"['Fighter', 'Assassin']"
+121,TwistedFate,4,['Mage']
+122,Twitch,29,"['Marksman', 'Assassin']"
+123,Udyr,77,"['Fighter', 'Tank']"
+124,Urgot,6,"['Fighter', 'Tank']"
+125,Varus,110,"['Marksman', 'Mage']"
+126,Vayne,67,"['Marksman', 'Assassin']"
+127,Veigar,45,['Mage']
+128,Velkoz,161,['Mage']
+129,Vi,254,"['Fighter', 'Assassin']"
+130,Viktor,112,['Mage']
+131,Vladimir,8,['Mage']
+132,Volibear,106,"['Fighter', 'Tank']"
+133,Warwick,19,"['Fighter', 'Tank']"
+134,Xayah,498,['Marksman']
+135,Xerath,101,['Mage']
+136,XinZhao,5,"['Fighter', 'Assassin']"
+137,Yasuo,157,"['Fighter', 'Assassin']"
+138,Yorick,83,"['Fighter', 'Tank']"
+139,Yuumi,350,"['Support', 'Mage']"
+140,Zac,154,"['Tank', 'Fighter']"
+141,Zed,238,['Assassin']
+142,Ziggs,115,['Mage']
+143,Zilean,26,"['Support', 'Mage']"
+144,Zoe,142,"['Mage', 'Support']"
+145,Zyra,143,"['Mage', 'Support']"
