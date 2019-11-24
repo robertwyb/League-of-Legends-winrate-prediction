@@ -118,6 +118,11 @@ def multi_match_id(df, num, api_key):
 
 
 def get_team_detail(data):
+    """
+    return dictionary contain team info extract from api returned
+    :param data: api return
+    :return: dictionary
+    """
     result = {}
     for i in range(len(data['teams'])):
         team = data['teams'][i]
@@ -133,6 +138,7 @@ def get_team_detail(data):
         result[f'team{i+1}_inhibitorKills'] = team['inhibitorKills']
         result[f'team{i+1}_towerKills'] = team['towerKills']
         result[f'team{i+1}_dragonKills'] = team['dragonKills']
+    return result
 
 
 def get_match_detail(matchId, api_key):
@@ -144,7 +150,9 @@ def get_match_detail(matchId, api_key):
     try:
         match_detail['gameId'] = data['gameId']
         # stats for team
-
+        team_info = get_team_detail(data)
+        for col in team_info.items():
+            match_detail[col[0]] = col[1]
 
         # player info for team 1
         players = data['participants']
@@ -232,91 +240,7 @@ def load_obj(name):
 
 
 if __name__ == '__main__':
-    api_key0 = 'RGAPI-7b61855c-d932-4544-89c1-f131631908f7'
-    api_key1 = 'RGAPI-ed57fba6-e823-4bd4-bc40-0904d7d4c9e5'
-    api_key2 = 'RGAPI-d8e6b52d-a441-4d6d-aee3-1ec56c320e0a'
-    api_key3 = 'RGAPI-03c17d5a-73b1-496b-bc19-be79d3ed7772'
-    api_key4 = 'RGAPI-e3636151-d64e-4354-9310-76d68a903314'
-    api_key5 = 'RGAPI-651fea6d-86a6-49e5-8666-88df3a2bcecc'
-    api_key6 = 'RGAPI-6bd47992-85fb-4224-9979-e70af2fba376'
-    api_key7 = 'RGAPI-721fccd9-1772-48a5-a0ad-b290da5c2514'
-    api_key8 = 'RGAPI-593563a2-9aaf-432a-adcb-b1103e2ccde1'
-    api_key9 = 'RGAPI-b7047fa3-4565-4dcb-b7c5-0c0b9e03beb9'
-    api_key10 = 'RGAPI-3710e912-bfc7-4a44-844e-2da7f6b4c89f'
-    api_key11 = 'RGAPI-60008437-00cc-440f-8c36-6150a97b2b72'
-    api_key12 = 'RGAPI-f6b96a83-211e-44f0-9b10-d6258b1ac288'
-    api_key13 = 'RGAPI-d65ecd4b-43f3-484e-bd2d-4c72e09414f6'
-    api_key14 = 'RGAPI-a0137b97-6cc0-46dd-85e1-efae408aa1e9'
-
-    df1 = get_all_sum_info('loserobert', api_key0)
-    df2 = get_all_sum_info('PrinzFrank', api_key0)
-    df3 = get_all_sum_info('winnerichard', api_key0)
-    df4 = get_all_sum_info('Mr sinan', api_key0)
-    df5 = get_all_sum_info('Ronnyzrz', api_key0)
-    df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
-
-    # get summoners info in that division
-    # plat = (['I', 'II', 'III', 'IV'], [163, 166, 251, 750])
-    # diam = (['I', 'II', 'III', 'IV'], [15, 20, 50, 100])
-    # league_sum_df = get_sum_from_league('DIAMOND', 'IV', 100, api_key8)
-    # league_sum_df.to_csv('diam4sum.csv')
-
-    # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/sum/', 'full_sumid.csv')
-
-
-    # --------------------- get detail summoner info
-    league_sum_df = pd.read_csv('full_sumid.csv')
-    sum0 = league_sum_df.loc[:26000]
-    sum1 = league_sum_df.loc[26000:52000]
-    sum2 = league_sum_df.loc[52000:78000]
-    sum3 = league_sum_df.loc[78000:104000]
-    sum4 = league_sum_df.loc[104000:130000]
-    sum5 = league_sum_df.loc[130000:156000]
-    sum6 = league_sum_df.loc[156000:182000]
-    sum7 = league_sum_df.loc[182000:208000]
-    sum8 = league_sum_df.loc[208000:234000]
-    sum9 = league_sum_df.loc[234000:250000]
-    sum10 = league_sum_df.loc[250000:270000]
-    sum11 = league_sum_df.loc[270000:280000]
-    sum12 = league_sum_df.loc[280000:295000]
-    sum13 = league_sum_df.loc[295000:]
-
-    # multi_sum_info(sum0, 0, api_key0)
-    # multi_sum_info(sum1, 1, api_key1)
-    # multi_sum_info(sum2, 2, api_key2)
-    # multi_sum_info(sum3, 3, api_key3)
-    # multi_sum_info(sum4, 4, api_key4)
-    # multi_sum_info(sum5, 5, api_key5)
-    # multi_sum_info(sum6, 6, api_key6)
-    # multi_sum_info(sum7, 7, api_key7)
-    # multi_sum_info(sum8, 8, api_key8)
-    # multi_sum_info(sum9, 9, api_key9)
-    # multi_sum_info(sum10, 10, api_key10)
-    # multi_sum_info(sum11, 11, api_key11)
-    # multi_sum_info(sum12, 12, api_key12)
-    # multi_sum_info(sum13, 13, api_key13)
-
-    # -----------------------------------
-    # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/fullsum/', 'full_suminfo.csv')
-
-
-
-    # multi_match_id(sum0, 0, api_key0)
-    # multi_match_id(sum1, 1, api_key1)
-    # multi_match_id(sum2, 2, api_key2)
-    # multi_match_id(sum3, 3, api_key3)
-    # multi_match_id(sum4, 4, api_key4)
-    # multi_match_id(sum5, 5, api_key5)
-    # multi_match_id(sum6, 6, api_key6)
-    # multi_match_id(sum7, 7, api_key7)
-
-    #------------------------------------
-    # match01 = pd.read_csv('full_match.csv').loc[:14700]
-    #
-    # multi_match_detail(match01, 0, api_key0)
-    # test = load_obj('match_detail0')
-
-
+    print()
 
 
 
