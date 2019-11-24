@@ -361,11 +361,7 @@ def multi_match_detail(df, num, api_key):
         dft = get_match_detail(i, api_key)
         time.sleep(1)
         result = pd.concat([result, dft], ignore_index=True)
-    result.to_csv(f'./match/match_{num}.csv')
 
-
-
-# helper function
 def concat_file(path, name):
     output_df = pd.DataFrame()
     for filename in glob.glob(f'{path}*.csv'):
@@ -393,6 +389,10 @@ def load_obj(name):
 
 if __name__ == '__main__':
     print()
+
+
+
+
 
 
 
