@@ -6,16 +6,6 @@ import pickle
 import glob
 
 
-def get_leagueId(df, tier):
-    """
-    return leagueId based on given tier
-    :param df: dataframe with tier and leagueId
-    :param tier: str, tier in rank game (Iron, Bronze, Silver, ...)
-    :return: dataframe with leagueId
-    """
-    return df[df['tier'] == tier]
-
-
 def get_sum_from_league(division, tier, pagenum, api_key):
     """
     return pandas datafram contain summoner info
@@ -89,7 +79,7 @@ def get_match_list(accountId, api_key):
     data = response.json()
     print(data)
     try:
-        for m in data['matches'][:20]:
+        for m in data['matches'][:5]:
             match_list['matchid'].append(m['gameId'])
         return pd.DataFrame(match_list)
     except:
@@ -108,6 +98,7 @@ def multi_match_id(df, num, api_key):
     idx = 0
     for aid in df['accountId']:
         matchId = get_match_list(aid, api_key)
+        time.sleep(1)
         match_df = pd.concat([match_df, matchId], ignore_index=True)
         time.sleep(1)
         idx += 1
@@ -127,17 +118,50 @@ def get_team_detail(data):
     for i in range(len(data['teams'])):
         team = data['teams'][i]
         result[f'team{i+1}_win'] = convert_str_int(team['win'])
-        result[f'team{i+1}_firstDragon'] = convert_str_int(team['firstDragon'])
-        result[f'team{i+1}_firstInhibitor'] = convert_str_int(team['firstInhibitor'])
-        result[f'team{i+1}_firstRiftHerald'] = convert_str_int(team['firstRiftHerald'])
-        result[f'team{i+1}_firstBaron'] = convert_str_int(team['firstBaron'])
-        result[f'team{i+1}_firstBlood'] = convert_str_int(team['firstBlood'])
-        result[f'team{i+1}_firstTower'] = convert_str_int(team['firstTower'])
-        result[f'team{i+1}_baronKills'] = team['baronKills']
-        result[f'team{i+1}_riftKills'] = team['riftHeraldKills']
-        result[f'team{i+1}_inhibitorKills'] = team['inhibitorKills']
-        result[f'team{i+1}_towerKills'] = team['towerKills']
-        result[f'team{i+1}_dragonKills'] = team['dragonKills']
+        try:
+            result[f'team{i+1}_firstDragon'] = convert_str_int(team['firstDragon'])
+        except:
+            result[f'team{i+1}_firstDragon'] = np.nan
+        try:
+            result[f'team{i+1}_firstInhibitor'] = convert_str_int(team['firstInhibitor'])
+        except:
+            result[f'team{i+1}_firstInhibitor'] = np.nan
+        try:
+            result[f'team{i+1}_firstRiftHerald'] = convert_str_int(team['firstRiftHerald'])
+        except:
+            result[f'team{i+1}_firstRiftHerald'] = np.nan
+        try:
+            result[f'team{i+1}_firstBaron'] = convert_str_int(team['firstBaron'])
+        except:
+            result[f'team{i+1}_firstBaron'] = np.nan
+        try:
+            result[f'team{i+1}_firstBlood'] = convert_str_int(team['firstBlood'])
+        except:
+            result[f'team{i+1}_firstBlood'] = np.nan
+        try:
+            result[f'team{i+1}_firstTower'] = convert_str_int(team['firstTower'])
+        except:
+            result[f'team{i+1}_firstTower'] = np.nan
+        try:
+            result[f'team{i+1}_baronKills'] = team['baronKills']
+        except:
+            result[f'team{i+1}_baronKills'] = np.nan
+        try:
+            result[f'team{i+1}_riftKills'] = team['riftHeraldKills']
+        except:
+            result[f'team{i+1}_riftKills'] = np.nan
+        try:
+            result[f'team{i+1}_inhibitorKills'] = team['inhibitorKills']
+        except:
+            result[f'team{i+1}_inhibitorKills'] = np.nan
+        try:
+            result[f'team{i+1}_towerKills'] = team['towerKills']
+        except:
+            result[f'team{i+1}_towerKills'] = np.nan
+        try:
+            result[f'team{i+1}_dragonKills'] = team['dragonKills']
+        except:
+            result[f'team{i+1}_dragonKills'] = np.nan
     return result
 
 
@@ -307,7 +331,12 @@ def get_player_detail(players):
         result[f'team{team}_p{p}_killingSpree'] = player['stats']['largestKillingSpree']
         result[f'team{team}_p{p}_quadraKills'] = player['stats']['quadraKills']
         result[f'team{team}_p{p}_apdmg'] = player['stats']['magicDamageDealt']
-        result[f'team{team}_p{p}_fbAssist'] = convert_str_int(player['stats']['firstBloodAssist'])
+        try:
+            result[f'team{team}_p{p}_firstBloodKill'] = convert_str_int(player['stats']['firstBloodKill'])
+            result[f'team{team}_p{p}_fbAssist'] = convert_str_int(player['stats']['firstBloodAssist'])
+        except:
+            result[f'team{team}_p{p}_firstBloodKill'] = np.nan
+            result[f'team{team}_p{p}_fbAssist'] = np.nan
         result[f'team{team}_p{p}_dmgSelfMitigated'] = player['stats']['damageSelfMitigated']
         result[f'team{team}_p{p}_apdmg_taken'] = player['stats']['magicalDamageTaken']
         result[f'team{team}_p{p}_assists'] = player['stats']['assists']
@@ -319,12 +348,15 @@ def get_player_detail(players):
         result[f'team{team}_p{p}_deaths'] = player['stats']['deaths']
         result[f'team{team}_p{p}_wardsPlaced'] = player['stats']['wardsPlaced']
         result[f'team{team}_p{p}_turretKills'] = player['stats']['turretKills']
-        result[f'team{team}_p{p}_firstBloodKill'] = convert_str_int(player['stats']['firstBloodKill'])
         result[f'team{team}_p{p}_totalDamageDealt'] = player['stats']['totalDamageDealt']
         result[f'team{team}_p{p}_trueDamage_champion'] = player['stats']['trueDamageDealtToChampions']
         result[f'team{team}_p{p}_goldEarned'] = player['stats']['goldEarned']
-        result[f'team{team}_p{p}_firstTowerAssists'] = convert_str_int(player['stats']['firstTowerAssist'])
-        result[f'team{team}_p{p}_firstTowerKill'] = convert_str_int(player['stats']['firstTowerKill'])
+        try:
+            result[f'team{team}_p{p}_firstTowerAssists'] = convert_str_int(player['stats']['firstTowerAssist'])
+            result[f'team{team}_p{p}_firstTowerKill'] = convert_str_int(player['stats']['firstTowerKill'])
+        except:
+            result[f'team{team}_p{p}_firstTowerAssists'] = np.nan
+            result[f'team{team}_p{p}_firstTowerKill'] = np.nan
         result[f'team{team}_p{p}_champLevel'] = player['stats']['champLevel']
         result[f'team{team}_p{p}_pink'] = player['stats']['visionWardsBoughtInGame']
         result[f'team{team}_p{p}_pentakills'] = player['stats']['pentaKills']
@@ -335,12 +367,18 @@ def get_player_detail(players):
 
 
 def get_match_detail(matchId, api_key):
+    """
+    return dataframe includes all match detail we want
+    :param matchId: str
+    :param api_key: str
+    :return: dataframe
+    """
     match_detail = {}
     url = f'https://na1.api.riotgames.com/lol/match/v4/matches/{matchId}?api_key={api_key}'
     response = requests.get(url)
     data = response.json()
     print(data)
-    if 'gameId' in data:
+    if 'gameId' in data and data['gameDuration'] > 240 and data['seasonId'] == 13 and data['queueId'] == 420:
         match_detail['gameId'] = data['gameId']
         # stats for team
         team_info = get_team_detail(data)
@@ -356,11 +394,26 @@ def get_match_detail(matchId, api_key):
 
 
 def multi_match_detail(df, num, api_key):
+    """
+    use get_match_detail function to save match data to csv file
+    :param df: dataframe contain matchid
+    :param num: int, index of file
+    :param api_key: str
+    :return: None
+    """
     result = pd.DataFrame()
+    cnt = 0
     for i in df['matchid']:
+        cnt += 1
         dft = get_match_detail(i, api_key)
         time.sleep(1)
         result = pd.concat([result, dft], ignore_index=True)
+        if cnt % 10 == 0:
+            print(cnt)
+    result.to_csv(f'match_detail{num}.csv')
+
+# ------------- helper function
+
 
 def concat_file(path, name):
     output_df = pd.DataFrame()
@@ -377,18 +430,70 @@ def convert_str_int(s):
     return 0
 
 
-def save_obj(obj, name):
-    with open('data/'+ name + '.pkl', 'wb+') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
-
-
-def load_obj(name):
-    with open('data/' + name + '.pkl', 'rb') as f:
-        return pickle.load(f)
-
-
 if __name__ == '__main__':
-    print()
+    api_key0 = 'RGAPI-8e1c777d-e874-4e16-b7cf-363f7e013c29'
+
+
+
+
+    # ------------------------------------
+    # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
+    # matchid_df = pd.read_csv('full_matchid.csv', index_col=0)
+    # matchid_df = matchid_df.drop_duplicates()
+    # idx = 0
+    # lst = [0]
+    # for l in range(22):
+    #     idx += 46323
+    #     lst.append(idx)
+    #
+    # matchid0 = matchid_df.loc[lst[0]:lst[0 + 1]]
+    # matchid1 = matchid_df.loc[lst[1]:lst[1 + 1]]
+    # matchid2 = matchid_df.loc[lst[2]:lst[2 + 1]]
+    # matchid3 = matchid_df.loc[lst[3]:lst[3 + 1]]
+    # matchid4 = matchid_df.loc[lst[4]:lst[4 + 1]]
+    # matchid5 = matchid_df.loc[lst[5]:lst[5 + 1]]
+    # matchid6 = matchid_df.loc[lst[6]:lst[6 + 1]]
+    # matchid7 = matchid_df.loc[lst[7]:lst[7 + 1]]
+    # matchid8 = matchid_df.loc[lst[8]:lst[8 + 1]]
+    # matchid9 = matchid_df.loc[lst[9]:lst[9 + 1]]
+    # matchid10 = matchid_df.loc[lst[10]:lst[10 + 1]]
+    # matchid11 = matchid_df.loc[lst[11]:lst[11 + 1]]
+    # matchid12 = matchid_df.loc[lst[12]:lst[12 + 1]]
+    # matchid13 = matchid_df.loc[lst[13]:lst[13 + 1]]
+    # matchid14 = matchid_df.loc[lst[14]:lst[14 + 1]]
+    # matchid15 = matchid_df.loc[lst[15]:lst[15 + 1]]
+    # matchid16 = matchid_df.loc[lst[16]:lst[16 + 1]]
+    # matchid17 = matchid_df.loc[lst[17]:lst[17 + 1]]
+    # matchid18 = matchid_df.loc[lst[18]:lst[18 + 1]]
+    # matchid19 = matchid_df.loc[lst[19]:lst[19 + 1]]
+    # matchid20 = matchid_df.loc[lst[20]:lst[20 + 1]]
+    # matchid21 = matchid_df.loc[lst[21]:]
+
+    # multi_match_detail(matchid0, 0, api_key0)
+    # multi_match_detail(matchid1, 1, api_key1)
+    # multi_match_detail(matchid2, 2, api_key2)
+    # multi_match_detail(matchid3, 3, api_key3)
+    # multi_match_detail(matchid4, 4, api_key4)
+    # multi_match_detail(matchid5, 5, api_key5)
+    # multi_match_detail(matchid6, 6, api_key6)
+    # multi_match_detail(matchid7, 7, api_key7)
+    # multi_match_detail(matchid8, 8, api_key8)
+    # multi_match_detail(matchid9, 9, api_key9)
+    # multi_match_detail(matchid10, 10, api_key10)
+    # multi_match_detail(matchid11, 11, api_key11)
+    # multi_match_detail(matchid12, 12, api_key12)
+    # multi_match_detail(matchid13, 13, api_key13)
+    # multi_match_detail(matchid14, 14, api_key14)
+    # multi_match_detail(matchid15, 15, api_key15)
+    # multi_match_detail(matchid16, 16, api_key16)
+    # multi_match_detail(matchid17, 17, api_key17)
+    # multi_match_detail(matchid18, 18, api_key18)
+    # multi_match_detail(matchid19, 19, api_key19)
+    # multi_match_detail(matchid20, 20, api_key20)
+    # multi_match_detail(matchid21, 21, api_key21)
+
+    concat_file('C:/Users/rober/OneDrive/csc/lol-ml/match_detail/', 'full_matchdata.csv')
+
 
 
 

@@ -6,3 +6,5 @@
 .idea/lol-ml.iml
 .idea/misc.xml
 .idea/
+full_matchdata.csv
+*.csv
