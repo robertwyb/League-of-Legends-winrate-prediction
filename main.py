@@ -421,6 +421,60 @@ def multi_match_detail(df, num, api_key):
     result.to_csv(f'match_detail{num}.csv')
 
 
+def get_match_timeline(matchId, api_key):
+    match_timeline = {}
+    url = f'https://na1.api.riotgames.com/lol/match/v4/timelines/by-match/{matchId}?api_key={api_key}'
+    response = requests.get(url)
+    try:
+        data = response.json()['frames']
+        match_timeline['gameId'] = [matchId]
+        match_timeline['game_time'] = [data[-1]['timestamp'] / 1000]
+        for i in [5, 10, 15, 20, 25, 30]:
+            try:
+                for k, pframe in data[i]['participantFrames'].items():
+                    pid = pframe['participantId']
+                    if pid <= 5:
+                        match_timeline[f'team1_p{pid}_gold_{i}min'] = [pframe['totalGold']]
+                        match_timeline[f'team1_p{pid}_level_{i}min'] = [pframe['level']]
+                        match_timeline[f'team1_p{pid}_cs_{i}min'] = [pframe['minionsKilled']]
+                        match_timeline[f'team1_p{pid}_xp_{i}min'] = [pframe['xp']]
+                        match_timeline[f'team1_p{pid}_jg_{i}min'] = [pframe['jungleMinionsKilled']]
+                    else:
+                        match_timeline[f'team2_p{pid-5}_gold_{i}min'] = [pframe['totalGold']]
+                        match_timeline[f'team2_p{pid-5}_level_{i}min'] = [pframe['level']]
+                        match_timeline[f'team2_p{pid-5}_cs_{i}min'] = [pframe['minionsKilled']]
+                        match_timeline[f'team2_p{pid-5}_xp_{i}min'] = [pframe['xp']]
+                        match_timeline[f'team2_p{pid-5}_jg_{i}min'] = [pframe['jungleMinionsKilled']]
+
+            except:
+                match_timeline[f'team1_p1_gold_{i}min'] = np.nan
+                match_timeline[f'team1_p2_level_{i}min'] = np.nan
+                match_timeline[f'team1_p3_cs_{i}min'] = np.nan
+                match_timeline[f'team1_p4_xp_{i}min'] = np.nan
+                match_timeline[f'team1_p5_jg_{i}min'] = np.nan
+                match_timeline[f'team2_p1_gold_{i}min'] = np.nan
+                match_timeline[f'team2_p2_level_{i}min'] = np.nan
+                match_timeline[f'team2_p3_cs_{i}min'] = np.nan
+                match_timeline[f'team2_p4_xp_{i}min'] = np.nan
+                match_timeline[f'team2_p5_jg_{i}min'] = np.nan
+    except:
+        return pd.DataFrame(match_timeline)
+    return pd.DataFrame(match_timeline)
+
+
+def multi_get_timeline(df, num, apikey):
+    result = pd.DataFrame()
+    cnt = 0
+    for i in df['gameId']:
+        cnt += 1
+        dft = get_match_timeline(i, apikey)
+        time.sleep(1)
+        result = pd.concat([result, dft], ignore_index=True)
+        if cnt % 10 == 0:
+            print(cnt)
+    result.to_csv(f'match_timeline{num}.csv')
+
+
 # real-time recognize part
 def screen_record():
     # read all icon to be recognized in game
@@ -782,9 +836,9 @@ def screen_record():
                             'team2_rifts': [team2_rifts],
                             'team2_barons': [team2_barons]
                             }
-                # if change > 0:
-                # print(pd.DataFrame(teamdata))
-                # print(pd.DataFrame(playerdata))
+                if change > 0:
+                    print(pd.DataFrame(teamdata))
+                    print(pd.DataFrame(playerdata))
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     break
@@ -1056,7 +1110,28 @@ def convert_str_int(s):
 
 
 if __name__ == '__main__':
-    api_key0 = 'RGAPI-8e1c777d-e874-4e16-b7cf-363f7e013c29'
+    api_key0 = 'RGAPI-f426b853-5e9f-4a92-beed-3b805fc8a947'
+    api_key1 = 'RGAPI-079cc6dd-1801-4eeb-bda0-087014fb718b'
+    api_key2 = 'RGAPI-0f6b3f09-09fd-416c-b75f-eca851695aff'
+    api_key3 = 'RGAPI-163dccca-b86e-4f11-bdae-0827213d3ce1'
+    api_key4 = 'RGAPI-f42e1eab-e0dc-4267-b99c-2809ae9528f3'
+    api_key5 = 'RGAPI-e280b32d-b035-4fbc-8082-10a84e5327f1'
+    api_key6 = 'RGAPI-5149ca03-196b-4fb4-a2fc-e405146aa8f4'
+    api_key7 = 'RGAPI-5e25a296-c672-4616-98cc-302366480351'
+    api_key8 = 'RGAPI-09f1bd9b-453c-4200-bf7c-ddd45cf1cf75'
+    api_key9 = 'RGAPI-1292e67a-14dc-484c-a8f8-678112aa8d4c'
+    api_key10 = 'RGAPI-ca034cd4-3cfe-4bfb-93f7-33222b59ba89'
+    api_key11 = 'RGAPI-0ef49e20-2c41-4f56-bd37-666eadac9cff'
+    api_key12 = 'RGAPI-f41dcd81-1c82-4a6c-9a9e-fe85432be952'
+    api_key13 = 'RGAPI-e67d0512-0ad7-4919-9a40-34ee7850ed2a'
+    api_key14 = 'RGAPI-4bdf154d-902a-4012-9a5c-c323a3428b85'
+    api_key15 = 'RGAPI-c9d44320-4942-48cf-8e84-7e6dc7fb43f0'
+    api_key16 = 'RGAPI-3f66addd-b7ab-4b0f-9757-6e850b1bbc02'
+    api_key17 = 'RGAPI-35fc1143-fc7b-4526-aaa0-286e29aa08a6'
+    api_key18 = 'RGAPI-f92da414-3f71-4465-9fb5-b4243271bd79'
+    api_key19 = 'RGAPI-24dc6d56-b2d9-433f-96ea-3392d607c7b8'
+    api_key20 = 'RGAPI-71a58559-48e6-40ef-8135-f840de4d7ce2'
+    api_key21 = 'RGAPI-6a5d1989-de6b-4039-ad48-d01f7ae8be23'
 
     # ------------------------------------
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
@@ -1068,59 +1143,74 @@ if __name__ == '__main__':
     #     idx += 46323
     #     lst.append(idx)
     #
-    # matchid0 = matchid_df.loc[lst[0]:lst[0 + 1]]
-    # matchid1 = matchid_df.loc[lst[1]:lst[1 + 1]]
-    # matchid2 = matchid_df.loc[lst[2]:lst[2 + 1]]
-    # matchid3 = matchid_df.loc[lst[3]:lst[3 + 1]]
-    # matchid4 = matchid_df.loc[lst[4]:lst[4 + 1]]
-    # matchid5 = matchid_df.loc[lst[5]:lst[5 + 1]]
-    # matchid6 = matchid_df.loc[lst[6]:lst[6 + 1]]
-    # matchid7 = matchid_df.loc[lst[7]:lst[7 + 1]]
-    # matchid8 = matchid_df.loc[lst[8]:lst[8 + 1]]
-    # matchid9 = matchid_df.loc[lst[9]:lst[9 + 1]]
-    # matchid10 = matchid_df.loc[lst[10]:lst[10 + 1]]
-    # matchid11 = matchid_df.loc[lst[11]:lst[11 + 1]]
-    # matchid12 = matchid_df.loc[lst[12]:lst[12 + 1]]
-    # matchid13 = matchid_df.loc[lst[13]:lst[13 + 1]]
-    # matchid14 = matchid_df.loc[lst[14]:lst[14 + 1]]
-    # matchid15 = matchid_df.loc[lst[15]:lst[15 + 1]]
-    # matchid16 = matchid_df.loc[lst[16]:lst[16 + 1]]
-    # matchid17 = matchid_df.loc[lst[17]:lst[17 + 1]]
-    # matchid18 = matchid_df.loc[lst[18]:lst[18 + 1]]
-    # matchid19 = matchid_df.loc[lst[19]:lst[19 + 1]]
-    # matchid20 = matchid_df.loc[lst[20]:lst[20 + 1]]
-    # matchid21 = matchid_df.loc[lst[21]:]
 
-    # multi_match_detail(matchid0, 0, api_key0)
-    # multi_match_detail(matchid1, 1, api_key1)
-    # multi_match_detail(matchid2, 2, api_key2)
-    # multi_match_detail(matchid3, 3, api_key3)
-    # multi_match_detail(matchid4, 4, api_key4)
-    # multi_match_detail(matchid5, 5, api_key5)
-    # multi_match_detail(matchid6, 6, api_key6)
-    # multi_match_detail(matchid7, 7, api_key7)
-    # multi_match_detail(matchid8, 8, api_key8)
-    # multi_match_detail(matchid9, 9, api_key9)
-    # multi_match_detail(matchid10, 10, api_key10)
-    # multi_match_detail(matchid11, 11, api_key11)
-    # multi_match_detail(matchid12, 12, api_key12)
-    # multi_match_detail(matchid13, 13, api_key13)
-    # multi_match_detail(matchid14, 14, api_key14)
-    # multi_match_detail(matchid15, 15, api_key15)
-    # multi_match_detail(matchid16, 16, api_key16)
-    # multi_match_detail(matchid17, 17, api_key17)
-    # multi_match_detail(matchid18, 18, api_key18)
-    # multi_match_detail(matchid19, 19, api_key19)
-    # multi_match_detail(matchid20, 20, api_key20)
-    # multi_match_detail(matchid21, 21, api_key21)
 
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/match_detail/', 'full_matchdata.csv')
+    matchid_df = pd.read_csv('matchid.csv', index_col=0)
+    idx = 0
+    lst = [0]
+    for l in range(22):
+        idx += 15236
+        lst.append(idx)
+
+    matchid0 = matchid_df.iloc[lst[0]:lst[0 + 1]]
+    matchid1 = matchid_df.iloc[lst[1]:lst[1 + 1]]
+    matchid2 = matchid_df.iloc[lst[2]:lst[2 + 1]]
+    matchid3 = matchid_df.iloc[lst[3]:lst[3 + 1]]
+    matchid4 = matchid_df.iloc[lst[4]:lst[4 + 1]]
+    matchid5 = matchid_df.iloc[lst[5]:lst[5 + 1]]
+    matchid6 = matchid_df.iloc[lst[6]:lst[6 + 1]]
+    matchid7 = matchid_df.iloc[lst[7]:lst[7 + 1]]
+    matchid8 = matchid_df.iloc[lst[8]:lst[8 + 1]]
+    matchid9 = matchid_df.iloc[lst[9]:lst[9 + 1]]
+    matchid10 = matchid_df.iloc[lst[10]:lst[10 + 1]]
+    matchid11 = matchid_df.iloc[lst[11]:lst[11 + 1]]
+    matchid12 = matchid_df.iloc[lst[12]:lst[12 + 1]]
+    matchid13 = matchid_df.iloc[lst[13]:lst[13 + 1]]
+    matchid14 = matchid_df.iloc[lst[14]:lst[14 + 1]]
+    matchid15 = matchid_df.iloc[lst[15]:lst[15 + 1]]
+    matchid16 = matchid_df.iloc[lst[16]:lst[16 + 1]]
+    matchid17 = matchid_df.iloc[lst[17]:lst[17 + 1]]
+    matchid18 = matchid_df.iloc[lst[18]:lst[18 + 1]]
+    matchid19 = matchid_df.iloc[lst[19]:lst[19 + 1]]
+    matchid20 = matchid_df.iloc[lst[20]:lst[20 + 1]]
+    matchid21 = matchid_df.iloc[lst[21]:]
+    #
+
+    # multi_get_timeline(matchid0, 0, api_key0)
+    # multi_get_timeline(matchid1, 1, api_key1)
+    # multi_get_timeline(matchid2, 2, api_key2)
+    # multi_get_timeline(matchid3, 3, api_key3)
+    # multi_get_timeline(matchid4, 4, api_key4)
+    # multi_get_timeline(matchid5, 5, api_key5)
+    # multi_get_timeline(matchid6, 6, api_key6)
+    # multi_get_timeline(matchid7, 7, api_key7)
+    # multi_get_timeline(matchid8, 8, api_key8)
+    # multi_get_timeline(matchid9, 9, api_key9)
+    # multi_get_timeline(matchid10, 10, api_key10)
+    # multi_get_timeline(matchid11, 11, api_key11)
+    # multi_get_timeline(matchid12, 12, api_key12)
+    # multi_get_timeline(matchid13, 13, api_key13)
+    # multi_get_timeline(matchid14, 14, api_key14)
+    # multi_get_timeline(matchid15, 15, api_key15)
+    # multi_get_timeline(matchid16, 16, api_key16)
+    # multi_get_timeline(matchid17, 17, api_key17)
+    # multi_get_timeline(matchid18, 18, api_key18)
+    # multi_get_timeline(matchid19, 19, api_key19)
+    # multi_get_timeline(matchid20, 20, api_key20)
+    # multi_get_timeline(matchid21, 21, api_key21)
+
+
+
+
 
     # train_digits('./New Folder/Layer 1.png')
     # pd.set_option('display.max_columns', 10)
-    screen_record()
+    # screen_record()
     #
     # testimg = cv2.imread('./cs33.png')
     # print(get_cs(testimg))
     # testkda = cv2.imread('test1digit.png')
     # print(get_kda(testkda))
+
+
