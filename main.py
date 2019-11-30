@@ -4,6 +4,10 @@ import pandas as pd
 import time
 import pickle
 import glob
+import cv2
+import sys
+import keyboard
+from PIL import ImageGrab
 
 
 def get_sum_from_league(division, tier, pagenum, api_key):
@@ -88,11 +92,11 @@ def get_match_list(accountId, api_key):
 
 def multi_match_id(df, num, api_key):
     """
-        function that use get_match_list to store matchId to csv file
-        :param df: dataframe includes accountId
-        :param num: int, index of file
-        :param api_key: str
-        :return: None
+    function that use get_match_list to store matchId to csv file
+    :param df: dataframe includes accountId
+    :param num: int, index of file
+    :param api_key: str
+    :return: None
     """
     match_df = pd.DataFrame()
     idx = 0
@@ -117,51 +121,51 @@ def get_team_detail(data):
     result = {}
     for i in range(len(data['teams'])):
         team = data['teams'][i]
-        result[f'team{i+1}_win'] = convert_str_int(team['win'])
+        result[f'team{i + 1}_win'] = convert_str_int(team['win'])
         try:
-            result[f'team{i+1}_firstDragon'] = convert_str_int(team['firstDragon'])
+            result[f'team{i + 1}_firstDragon'] = convert_str_int(team['firstDragon'])
         except:
-            result[f'team{i+1}_firstDragon'] = np.nan
+            result[f'team{i + 1}_firstDragon'] = np.nan
         try:
-            result[f'team{i+1}_firstInhibitor'] = convert_str_int(team['firstInhibitor'])
+            result[f'team{i + 1}_firstInhibitor'] = convert_str_int(team['firstInhibitor'])
         except:
-            result[f'team{i+1}_firstInhibitor'] = np.nan
+            result[f'team{i + 1}_firstInhibitor'] = np.nan
         try:
-            result[f'team{i+1}_firstRiftHerald'] = convert_str_int(team['firstRiftHerald'])
+            result[f'team{i + 1}_firstRiftHerald'] = convert_str_int(team['firstRiftHerald'])
         except:
-            result[f'team{i+1}_firstRiftHerald'] = np.nan
+            result[f'team{i + 1}_firstRiftHerald'] = np.nan
         try:
-            result[f'team{i+1}_firstBaron'] = convert_str_int(team['firstBaron'])
+            result[f'team{i + 1}_firstBaron'] = convert_str_int(team['firstBaron'])
         except:
-            result[f'team{i+1}_firstBaron'] = np.nan
+            result[f'team{i + 1}_firstBaron'] = np.nan
         try:
-            result[f'team{i+1}_firstBlood'] = convert_str_int(team['firstBlood'])
+            result[f'team{i + 1}_firstBlood'] = convert_str_int(team['firstBlood'])
         except:
-            result[f'team{i+1}_firstBlood'] = np.nan
+            result[f'team{i + 1}_firstBlood'] = np.nan
         try:
-            result[f'team{i+1}_firstTower'] = convert_str_int(team['firstTower'])
+            result[f'team{i + 1}_firstTower'] = convert_str_int(team['firstTower'])
         except:
-            result[f'team{i+1}_firstTower'] = np.nan
+            result[f'team{i + 1}_firstTower'] = np.nan
         try:
-            result[f'team{i+1}_baronKills'] = team['baronKills']
+            result[f'team{i + 1}_baronKills'] = team['baronKills']
         except:
-            result[f'team{i+1}_baronKills'] = np.nan
+            result[f'team{i + 1}_baronKills'] = np.nan
         try:
-            result[f'team{i+1}_riftKills'] = team['riftHeraldKills']
+            result[f'team{i + 1}_riftKills'] = team['riftHeraldKills']
         except:
-            result[f'team{i+1}_riftKills'] = np.nan
+            result[f'team{i + 1}_riftKills'] = np.nan
         try:
-            result[f'team{i+1}_inhibitorKills'] = team['inhibitorKills']
+            result[f'team{i + 1}_inhibitorKills'] = team['inhibitorKills']
         except:
-            result[f'team{i+1}_inhibitorKills'] = np.nan
+            result[f'team{i + 1}_inhibitorKills'] = np.nan
         try:
-            result[f'team{i+1}_towerKills'] = team['towerKills']
+            result[f'team{i + 1}_towerKills'] = team['towerKills']
         except:
-            result[f'team{i+1}_towerKills'] = np.nan
+            result[f'team{i + 1}_towerKills'] = np.nan
         try:
-            result[f'team{i+1}_dragonKills'] = team['dragonKills']
+            result[f'team{i + 1}_dragonKills'] = team['dragonKills']
         except:
-            result[f'team{i+1}_dragonKills'] = np.nan
+            result[f'team{i + 1}_dragonKills'] = np.nan
     return result
 
 
@@ -235,19 +239,23 @@ def get_player_detail(players):
         except:
             result[f'team{team}_p{p}_xp_diff_permin3'] = np.nan
         try:
-            result[f'team{team}_p{p}_dmg_taken_diff_permin0'] = player['timeline']['damageTakenDiffPerMinDeltas']['0-10']
+            result[f'team{team}_p{p}_dmg_taken_diff_permin0'] = player['timeline']['damageTakenDiffPerMinDeltas'][
+                '0-10']
         except:
             result[f'team{team}_p{p}_dmg_taken_diff_permin0'] = np.nan
         try:
-            result[f'team{team}_p{p}_dmg_taken_diff_permin1'] = player['timeline']['damageTakenDiffPerMinDeltas']['10-20']
+            result[f'team{team}_p{p}_dmg_taken_diff_permin1'] = player['timeline']['damageTakenDiffPerMinDeltas'][
+                '10-20']
         except:
             result[f'team{team}_p{p}_dmg_taken_diff_permin1'] = np.nan
         try:
-            result[f'team{team}_p{p}_dmg_taken_diff_permin2'] = player['timeline']['damageTakenDiffPerMinDeltas']['20-30']
+            result[f'team{team}_p{p}_dmg_taken_diff_permin2'] = player['timeline']['damageTakenDiffPerMinDeltas'][
+                '20-30']
         except:
             result[f'team{team}_p{p}_dmg_taken_diff_permin2'] = np.nan
         try:
-            result[f'team{team}_p{p}_dmg_taken_diff_permin3'] = player['timeline']['damageTakenDiffPerMinDeltas']['30-end']
+            result[f'team{team}_p{p}_dmg_taken_diff_permin3'] = player['timeline']['damageTakenDiffPerMinDeltas'][
+                '30-end']
         except:
             result[f'team{team}_p{p}_dmg_taken_diff_permin3'] = np.nan
         try:
@@ -412,7 +420,624 @@ def multi_match_detail(df, num, api_key):
             print(cnt)
     result.to_csv(f'match_detail{num}.csv')
 
-# ------------- helper function
+
+# real-time recognize part
+def screen_record():
+    # read all icon to be recognized in game
+    blue_baron = cv2.resize(cv2.imread('./icon/blue baron.png'), None, fx=0.625, fy=0.625)
+    blue_rift = cv2.resize(cv2.imread('./icon/blue rift.png'), None, fx=0.625, fy=0.625)
+    blue_elder_dragon = cv2.resize(cv2.imread('./icon/blue elder dragon.png'), None, fx=0.625, fy=0.625)
+    blue_infernal_dragon = cv2.resize(cv2.imread('./icon/blue infernal dragon.png'), None, fx=0.625, fy=0.625)
+    blue_mountain_dragon = cv2.resize(cv2.imread('./icon/blue mountain dragon.png'), None, fx=0.625, fy=0.625)
+    blue_ocean_dragon = cv2.resize(cv2.imread('./icon/blue ocean dragon.png'), None, fx=0.625, fy=0.625)
+    blue_cloud_dragon = cv2.resize(cv2.imread('./icon/blue wind dragon.png'), None, fx=0.625, fy=0.625)
+    blue_kill_inhib = cv2.resize(cv2.imread('./icon/blue kill inhib.png'), None, fx=0.625, fy=0.625)
+    blue_kill_tower = cv2.resize(cv2.imread('./icon/blue kill tower.png'), None, fx=0.625, fy=0.625)
+    red_baron = cv2.resize(cv2.imread('./icon/red baron.png'), None, fx=0.625, fy=0.625)
+    red_rift = cv2.resize(cv2.imread('./icon/red rift.png'), None, fx=0.625, fy=0.625)
+    red_elder_dragon = cv2.resize(cv2.imread('./icon/red elder dragon.png'), None, fx=0.625, fy=0.625)
+    red_infernal_dragon = cv2.resize(cv2.imread('./icon/red infernal dragon.png'), None, fx=0.625, fy=0.625)
+    red_mountain_dragon = cv2.resize(cv2.imread('./icon/red mountain dragon.png'), None, fx=0.625, fy=0.625)
+    red_ocean_dragon = cv2.resize(cv2.imread('./icon/red ocean dragon.png'), None, fx=0.625, fy=0.625)
+    red_cloud_dragon = cv2.resize(cv2.imread('./icon/red wind dragon.png'), None, fx=0.625, fy=0.625)
+    red_kill_inhib = cv2.resize(cv2.imread('./icon/red kill inhib.png'), None, fx=0.625, fy=0.625)
+    red_kill_tower = cv2.resize(cv2.imread('./icon/red kill tower.png'), None, fx=0.625, fy=0.625)
+
+    # initial data
+    team1_dragons, team1_towers, team1_inhibs, team1_barons, team1_rifts = 0, 0, 0, 0, 0
+    team2_dragons, team2_towers, team2_inhibs, team2_barons, team2_rifts = 0, 0, 0, 0, 0
+
+    team1_p1_cs, team1_p2_cs, team1_p3_cs, team1_p4_cs, team1_p5_cs = 0, 0, 0, 0, 0
+    team2_p1_cs, team2_p2_cs, team2_p3_cs, team2_p4_cs, team2_p5_cs = 0, 0, 0, 0, 0
+
+    team1_p1_kills, team1_p2_kills, team1_p3_kills, team1_p4_kills, team1_p5_kills = 0, 0, 0, 0, 0
+    team2_p1_kills, team2_p2_kills, team2_p3_kills, team2_p4_kills, team2_p5_kills = 0, 0, 0, 0, 0
+
+    team1_p1_deaths, team1_p2_deaths, team1_p3_deaths, team1_p4_deaths, team1_p5_deaths = 0, 0, 0, 0, 0
+    team2_p1_deaths, team2_p2_deaths, team2_p3_deaths, team2_p4_deaths, team2_p5_deaths = 0, 0, 0, 0, 0
+
+    team1_p1_assists, team1_p2_assists, team1_p3_assists, team1_p4_assists, team1_p5_assists = 0, 0, 0, 0, 0
+    team2_p1_assists, team2_p2_assists, team2_p3_assists, team2_p4_assists, team2_p5_assists = 0, 0, 0, 0, 0
+
+    team1_first_dragon, team2_first_dragon, team1_first_baron, team2_first_baron = 0, 0, 0, 0
+    team1_first_tower, team2_first_tower, team1_first_inhib, team2_first_inhib = 0, 0, 0, 0
+
+    sw = 0
+    sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    sw11, sw12, sw13, sw14, sw15, sw16, sw17, sw18, sw19, sw20 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    while True:
+        if keyboard.is_pressed('F1'):
+            start_time = time.time()
+
+            while True:
+                change = 0
+                # 1600x900 windowed mode
+                time.sleep(0.5)
+                printscreen = np.array(ImageGrab.grab(bbox=(0, 31, 1600, 931)))
+
+                scene = cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB)
+                # cv2.imshow('window', scene)
+                event_area = scene[:, 1450:, :]
+
+                team1_p1_cs_area = scene[277 + 2:297 + 2, 465:500, :]
+                team1_p2_cs_area = scene[341 + 2:361 + 2, 465:500, :]
+                team1_p3_cs_area = scene[405 + 2:425 + 2, 465:500, :]
+                team1_p4_cs_area = scene[469 + 2:489 + 2, 465:500, :]
+                team1_p5_cs_area = scene[533 + 2:553 + 2, 465:500, :]
+                team1_p1_kda_area = scene[277 + 2:297 + 2, 515:575, :]
+                team1_p2_kda_area = scene[341 + 2:361 + 2, 515:575, :]
+                team1_p3_kda_area = scene[405 + 2:425 + 2, 515:575, :]
+                team1_p4_kda_area = scene[469 + 2:489 + 2, 515:575, :]
+                team1_p5_kda_area = scene[533 + 2:553 + 2, 515:575, :]
+
+                team2_p1_cs_area = scene[277 + 2:297 + 2, 945:980, :]
+                team2_p2_cs_area = scene[341 + 2:361 + 2, 945:980, :]
+                team2_p3_cs_area = scene[405 + 2:425 + 2, 945:980, :]
+                team2_p4_cs_area = scene[469 + 2:489 + 2, 945:980, :]
+                team2_p5_cs_area = scene[533 + 2:553 + 2, 945:980, :]
+                team2_p1_kda_area = scene[277 + 2:297 + 2, 990:1060, :]
+                team2_p2_kda_area = scene[341 + 2:361 + 2, 990:1060, :]
+                team2_p3_kda_area = scene[405 + 2:425 + 2, 990:1060, :]
+                team2_p4_kda_area = scene[469 + 2:489 + 2, 990:1060, :]
+                team2_p5_kda_area = scene[533 + 2:553 + 2, 990:1060, :]
+
+                cv2.imshow('window', team2_p4_cs_area)
+                # cv2.imshow('window', cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB))
+                # cv2.imshow('window', event_area)
+
+                # TODO: use the model to predict winrate if there is a change in match data below
+
+                # ------------------------------------------------------- dragons kills data ----------------------------------
+                prev_team1_dragons = team1_dragons
+                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.9, sw1)
+                team1_dragons += team1_dragons_change
+                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.9, sw2)
+                team1_dragons += team1_dragons_change
+                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.9, sw3)
+                team1_dragons += team1_dragons_change
+                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.9, sw4)
+                team1_dragons += team1_dragons_change
+                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.9, sw5)
+                team1_dragons += team1_dragons_change
+                # print(team1_dragons)
+                if team1_dragons != 0 and team1_dragons != prev_team1_dragons:
+                    # print('team1_dragons: ' + str(int(team1_dragons)))
+                    change += 1
+
+                prev_team2_dragons = team2_dragons
+                team2_dragons_change, sw6, _ = event_template_match(event_area, red_infernal_dragon, 0.8, sw6)
+                team2_dragons += team2_dragons_change
+                team2_dragons_change, sw7, _ = event_template_match(event_area, red_ocean_dragon, 0.95, sw7)
+                team2_dragons += team2_dragons_change
+                team2_dragons_change, sw8, _ = event_template_match(event_area, red_mountain_dragon, 0.9, sw8)
+                team2_dragons += team2_dragons_change
+                team2_dragons_change, sw9, _ = event_template_match(event_area, red_cloud_dragon, 0.9, sw9)
+                team2_dragons += team2_dragons_change
+                team2_dragons_change, sw10, _ = event_template_match(event_area, red_elder_dragon, 0.8, sw10)
+                team2_dragons += team2_dragons_change
+                # print(team2_dragons)
+                if team2_dragons != 0 and team2_dragons != prev_team2_dragons:
+                    # print(str(time.time() - start_time) + '  team2_dragons: ' + str(int(team2_dragons)))
+                    change += 1
+
+                # ------------------------------------------------------ baron kills data ------------------------------
+                prev_team1_barons = team1_barons
+                team1_barons_change, sw11, _ = event_template_match(event_area, blue_baron, 0.9, sw11)
+                team1_barons += team1_barons_change
+                if team1_barons != 0 and team1_barons != prev_team1_barons:
+                    # print(str(time.time() - start_time) + '  team1_barons: ' + str(int(team1_barons)))
+                    change += 1
+
+                prev_team2_barons = team2_barons
+                team2_barons_change, sw12, _ = event_template_match(event_area, red_baron, 0.85, sw12)
+                team2_barons += team2_barons_change
+                if team2_barons != 0 and team2_barons == int(team2_barons) and team2_barons != prev_team2_barons:
+                    # print(str(time.time() - start_time) + '  team2_barons: ' + str(int(team2_barons)))
+                    change += 1
+
+                # ------------------------------------------------------ rift kills data -------------------------------
+                prev_team1_rifts = team1_rifts
+                team1_rifts_change, sw13, _ = event_template_match(event_area, blue_rift, 0.57, sw13)
+                team1_rifts += team1_rifts_change
+                if team1_rifts != 0 and team1_rifts != prev_team1_rifts:
+                    # print(str(time.time() - start_time) + '  team1_rifts: ' + str(int(team1_rifts)))
+                    change += 1
+                prev_team2_rifts = team2_rifts
+                team2_rifts_change, sw14, _ = event_template_match(event_area, red_rift, 0.9, sw14)
+                team2_rifts += team2_rifts_change
+                if team2_rifts != 0 and team2_rifts == int(team2_rifts) and team2_rifts != prev_team2_rifts:
+                    # print(str(time.time() - start_time) + '  team2_rifts: ' + str(int(team2_rifts)))
+                    change += 1
+
+                # ------------------------------------------------------ tower and inhib kills data --------------------
+                prev_team1_towers = team1_towers
+                team1_towers_change, sw15, prob_tower1 = event_template_match(event_area, blue_kill_tower, 0.9, sw15)
+                prev_team1_inhibs = team1_inhibs
+                team1_inhibs_change, sw16, prob_inhib1 = event_template_match(event_area, blue_kill_inhib, 0.8, sw16)
+                team1_towers += team1_towers_change
+                team1_inhibs += team1_inhibs_change
+
+                if team1_towers != prev_team1_towers:
+                    # print(str(time.time() - start_time) + '  team1_towers: ' + str(int(team1_towers)))
+                    change += 1
+                if team1_inhibs != prev_team1_inhibs:
+                    # print(str(time.time() - start_time) + '  team1_inhibs: ' + str(int(team1_inhibs)))
+                    change += 1
+
+                prev_team2_towers = team2_towers
+                team2_towers_change, sw17, prob_tower2 = event_template_match(event_area, red_kill_tower, 0.8, sw17)
+                team2_towers += team2_towers_change
+
+                prev_team2_inhibs = team2_inhibs
+                team2_inhibs_change, sw18, prob_inhib2 = event_template_match(event_area, red_kill_inhib, 0.8, sw18)
+                team2_inhibs += team2_inhibs_change
+
+                if team2_towers != prev_team2_towers:
+                    # print(str(time.time() - start_time) + '  team2_towers: ' + str(int(team2_towers)))
+                    change += 1
+                if team2_inhibs != prev_team2_inhibs:
+                    # print(str(time.time() - start_time) + '  team2_inhibs: ' + str(int(team2_inhibs)))
+                    change += 1
+
+                if keyboard.is_pressed('tab'):
+                    # get player cs and kda
+                    prev_team1_p1_cs, prev_team1_p1_kills, prev_team1_p1_deaths, prev_team1_p1_assists = team1_p1_cs, team1_p1_kills, team1_p1_deaths, team1_p1_assists
+                    prev_team1_p2_cs, prev_team1_p2_kills, prev_team1_p2_deaths, prev_team1_p2_assists = team1_p2_cs, team1_p2_kills, team1_p2_deaths, team1_p2_assists
+                    prev_team1_p3_cs, prev_team1_p3_kills, prev_team1_p3_deaths, prev_team1_p3_assists = team1_p3_cs, team1_p3_kills, team1_p3_deaths, team1_p3_assists
+                    prev_team1_p4_cs, prev_team1_p4_kills, prev_team1_p4_deaths, prev_team1_p4_assists = team1_p4_cs, team1_p4_kills, team1_p4_deaths, team1_p4_assists
+                    prev_team1_p5_cs, prev_team1_p5_kills, prev_team1_p5_deaths, prev_team1_p5_assists = team1_p5_cs, team1_p5_kills, team1_p5_deaths, team1_p5_assists
+
+                    prev_team2_p1_cs, prev_team2_p1_kills, prev_team2_p1_deaths, prev_team2_p1_assists = team2_p1_cs, team2_p1_kills, team2_p1_deaths, team2_p1_assists
+                    prev_team2_p2_cs, prev_team2_p2_kills, prev_team2_p2_deaths, prev_team2_p2_assists = team2_p2_cs, team2_p2_kills, team2_p2_deaths, team2_p2_assists
+                    prev_team2_p3_cs, prev_team2_p3_kills, prev_team2_p3_deaths, prev_team2_p3_assists = team2_p3_cs, team2_p3_kills, team2_p3_deaths, team2_p3_assists
+                    prev_team2_p4_cs, prev_team2_p4_kills, prev_team2_p4_deaths, prev_team2_p4_assists = team2_p4_cs, team2_p4_kills, team2_p4_deaths, team2_p4_assists
+                    prev_team2_p5_cs, prev_team2_p5_kills, prev_team2_p5_deaths, prev_team2_p5_assists = team2_p5_cs, team2_p5_kills, team2_p5_deaths, team2_p5_assists
+
+                    team1_p1_cs = get_cs(team1_p1_cs_area)
+                    team1_p1_kills, team1_p1_deaths, team1_p1_assists = get_kda(team1_p1_kda_area)
+                    team1_p2_cs = get_cs(team1_p2_cs_area)
+                    team1_p2_kills, team1_p2_deaths, team1_p1_assists = get_kda(team1_p2_kda_area)
+                    team1_p3_cs = get_cs(team1_p3_cs_area)
+                    team1_p3_kills, team1_p3_deaths, team1_p1_assists = get_kda(team1_p3_kda_area)
+                    team1_p4_cs = get_cs(team1_p4_cs_area)
+                    team1_p4_kills, team1_p4_deaths, team1_p1_assists = get_kda(team1_p4_kda_area)
+                    team1_p5_cs = get_cs(team1_p5_cs_area)
+                    team1_p5_kills, team1_p5_deaths, team1_p1_assists = get_kda(team1_p5_kda_area)
+
+                    if prev_team1_p1_cs != team1_p1_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p1_cs{team1_p1_cs}')
+                    if prev_team1_p2_cs != team1_p2_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p2_cs{team1_p2_cs}')
+                    if prev_team1_p3_cs != team1_p3_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p3_cs{team1_p3_cs}')
+                    if prev_team1_p4_cs != team1_p4_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p4_cs{team1_p4_cs}')
+                    if prev_team1_p5_cs != team1_p5_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p5_cs{team1_p5_cs}')
+                    if prev_team1_p1_kills != team1_p1_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p1_kills{team1_p1_kills}')
+                    if prev_team1_p2_kills != team1_p2_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p2_kills{team1_p2_kills}')
+                    if prev_team1_p3_kills != team1_p3_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p3_kills{team1_p3_kills}')
+                    if prev_team1_p4_kills != team1_p4_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p4_kills{team1_p4_kills}')
+                    if prev_team1_p5_kills != team1_p5_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p5_kills{team1_p5_kills}')
+                    if prev_team1_p1_deaths != team1_p1_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p1_deaths{team1_p1_deaths}')
+                    if prev_team1_p2_deaths != team1_p2_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p2_deaths{team1_p2_deaths}')
+                    if prev_team1_p3_deaths != team1_p3_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p3_deaths{team1_p3_deaths}')
+                    if prev_team1_p4_deaths != team1_p4_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p4_deaths{team1_p4_deaths}')
+                    if prev_team1_p5_deaths != team1_p5_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p5_deaths{team1_p5_deaths}')
+                    if prev_team1_p1_assists != team1_p1_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p1_assists{team1_p1_assists}')
+                    if prev_team1_p2_assists != team1_p2_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p2_assists{team1_p2_assists}')
+                    if prev_team1_p3_assists != team1_p3_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p3_assists{team1_p3_assists}')
+                    if prev_team1_p4_assists != team1_p4_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p4_assists{team1_p4_assists}')
+                    if prev_team1_p5_assists != team1_p5_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team1_p5_assists{team1_p5_assists}')
+
+                    team2_p1_cs = get_cs(team2_p1_cs_area)
+                    team2_p1_kills, team2_p1_deaths, team2_p1_assists = get_kda(team2_p1_kda_area)
+                    team2_p2_cs = get_cs(team2_p2_cs_area)
+                    team2_p2_kills, team2_p2_deaths, team2_p1_assists = get_kda(team2_p2_kda_area)
+                    team2_p3_cs = get_cs(team2_p3_cs_area)
+                    team2_p3_kills, team2_p3_deaths, team2_p1_assists = get_kda(team2_p3_kda_area)
+                    team2_p4_cs = get_cs(team2_p4_cs_area)
+                    team2_p4_kills, team2_p4_deaths, team2_p1_assists = get_kda(team2_p4_kda_area)
+                    team2_p5_cs = get_cs(team2_p5_cs_area)
+                    team2_p5_kills, team2_p5_deaths, team2_p1_assists = get_kda(team2_p5_kda_area)
+
+                    if prev_team2_p1_cs != team2_p1_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p1_cs{team2_p1_cs}')
+                    if prev_team2_p2_cs != team2_p2_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p2_cs{team2_p2_cs}')
+                    if prev_team2_p3_cs != team2_p3_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p3_cs{team2_p3_cs}')
+                    if prev_team2_p4_cs != team2_p4_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p4_cs{team2_p4_cs}')
+                    if prev_team2_p5_cs != team2_p5_cs:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p5_cs{team2_p5_cs}')
+                    if prev_team2_p1_kills != team2_p1_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p1_kills{team2_p1_kills}')
+                    if prev_team2_p2_kills != team2_p2_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p2_kills{team2_p2_kills}')
+                    if prev_team2_p3_kills != team2_p3_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p3_kills{team2_p3_kills}')
+                    if prev_team2_p4_kills != team2_p4_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p4_kills{team2_p4_kills}')
+                    if prev_team2_p5_kills != team2_p5_kills:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p5_kills{team2_p5_kills}')
+                    if prev_team2_p1_deaths != team2_p1_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p1_deaths{team2_p1_deaths}')
+                    if prev_team2_p2_deaths != team2_p2_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p2_deaths{team2_p2_deaths}')
+                    if prev_team2_p3_deaths != team2_p3_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p3_deaths{team2_p3_deaths}')
+                    if prev_team2_p4_deaths != team2_p4_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p4_deaths{team2_p4_deaths}')
+                    if prev_team2_p5_deaths != team2_p5_deaths:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p5_deaths{team2_p5_deaths}')
+                    if prev_team2_p1_assists != team2_p1_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p1_assists{team2_p1_assists}')
+                    if prev_team2_p2_assists != team2_p2_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p2_assists{team2_p2_assists}')
+                    if prev_team2_p3_assists != team2_p3_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p3_assists{team2_p3_assists}')
+                    if prev_team2_p4_assists != team2_p4_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p4_assists{team2_p4_assists}')
+                    if prev_team2_p5_assists != team2_p5_assists:
+                        change += 1
+                        # print(f'{time.time() - start_time}  team2_p5_assists{team2_p5_assists}')
+                playerdata = {'team1_cs': [team1_p1_cs, team1_p2_cs, team1_p3_cs, team1_p4_cs, team1_p5_cs],
+                              'team1_k': [team1_p1_kills, team1_p2_kills, team1_p3_kills, team1_p4_kills,
+                                          team1_p5_kills],
+                              'team1_d': [team1_p1_deaths, team1_p2_deaths, team1_p3_deaths, team1_p4_deaths,
+                                          team1_p5_deaths],
+                              'team1_a': [team1_p1_assists, team1_p2_assists, team1_p3_assists, team1_p4_assists,
+                                          team1_p5_assists],
+                              'team2_cs': [team2_p1_cs, team2_p2_cs, team2_p3_cs, team2_p4_cs, team2_p5_cs],
+                              'team2_k': [team2_p1_kills, team2_p2_kills, team2_p3_kills, team2_p4_kills,
+                                          team2_p5_kills],
+                              'team2_d': [team2_p1_deaths, team2_p2_deaths, team2_p3_deaths, team2_p4_deaths,
+                                          team2_p5_deaths],
+                              'team2_a': [team2_p1_assists, team2_p2_assists, team2_p3_assists, team2_p4_assists,
+                                          team2_p5_assists]
+                              }
+                teamdata = {'team1_towers': [team1_towers],
+                            'team1_inhibs': [team1_inhibs],
+                            'team1_dragons': [team1_dragons],
+                            'team1_rifts': [team1_rifts],
+                            'team1_barons': [team1_barons],
+                            'team2_towers': [team2_towers],
+                            'team2_inhibs': [team2_inhibs],
+                            'team2_dragons': [team2_dragons],
+                            'team2_rifts': [team2_rifts],
+                            'team2_barons': [team2_barons]
+                            }
+                # if change > 0:
+                # print(pd.DataFrame(teamdata))
+                # print(pd.DataFrame(playerdata))
+                if cv2.waitKey(25) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
+                    break
+
+
+# ------------- helper function ---------------------------------------------------------------------------------------
+def event_template_match(scene, template, th, sw, debug=False):
+    res = cv2.matchTemplate(scene, template, cv2.TM_CCOEFF_NORMED)
+    minmax = cv2.minMaxLoc(res)
+    _, max_val, _, max_loc = minmax
+    corner1 = max_loc
+    corner2 = (max_loc[0] + template[1], max_loc[1] + template[0])
+    # cv2.rectangle(scene, corner1, corner2, (255, 0, 0), 3)
+    # cv2.imshow("output", scene)
+    prev_sw = sw
+    if debug:
+        print(f'prob: {max_val}, sw: {sw}, prev_sw: {prev_sw}')
+    if max_val > th:
+        sw = 1
+    else:
+        sw = 0
+
+    if sw == 0 and prev_sw == 1:
+        print('event happened')
+        return 1, 0, max_val
+    return 0, sw, max_val
+
+
+def train_digits(img):
+    """
+    create training data by manually input number label, save training data to file
+    :return: None
+    """
+    im = cv2.imread(img)
+    gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.adaptiveThreshold(gray, 255, cv2.THRESH_BINARY_INV, 1, 3, 3)
+
+    #################      Now finding Contours         ###################
+
+    _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+    samples = np.empty((0, 100))
+    responses = []
+    keys = [i for i in range(47, 58)]
+
+    for cnt in contours:
+        if 5 < cv2.contourArea(cnt) < 100:
+            [x, y, w, h] = cv2.boundingRect(cnt)
+            print(w, h)
+            if 10 < h and 6 < w:
+                temp = im.copy()
+                cv2.rectangle(temp, (x, y), (x + w, y + h), (0, 0, 255), 1)
+                roi = thresh[y:y + h, x:x + w]
+                roismall = cv2.resize(roi, (10, 10))
+                cv2.imshow('norm', temp)
+                key = cv2.waitKey(0)
+
+                if key == 27:  # (escape to quit)
+                    sys.exit()
+                elif key in keys:
+                    if key == 47:
+                        responses.append(11)
+                    else:
+                        responses.append(int(chr(key)))
+                    sample = roismall.reshape((1, 100))
+                    samples = np.append(samples, sample, 0)
+
+    responses = np.array(responses, np.float32)
+    responses = responses.reshape((responses.size, 1))
+
+    np.savetxt('generalsamples1.data', samples)
+    np.savetxt('generalresponses1.data', responses)
+
+
+def get_cs(scene):
+    """
+    return recognized minions killed
+    :param scene:
+    :return: int
+    """
+    # fit model using training data
+    samples = np.loadtxt('generalsamples.data', np.float32)
+    responses = np.loadtxt('generalresponses.data', np.float32)
+    responses = responses.reshape((responses.size, 1))
+    model = cv2.ml.KNearest_create()
+    model.train(samples, cv2.ml.ROW_SAMPLE, responses)
+    # predict digit
+    gray = cv2.cvtColor(scene, cv2.COLOR_RGB2GRAY)
+    thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 3, 3)
+
+    _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    digits = []
+    position = []
+    appeared = {}
+    # print(f'number of contours: {len(contours)}')
+    for cnt in contours:
+        if 5 < cv2.contourArea(cnt) < 150:
+            [x, y, w, h] = cv2.boundingRect(cnt)
+            print(w, h)
+            if (5 < w < 13 and h > 10) or (14 < w < 18 and h > 10):
+                if 5 < w < 13:
+                    roi = thresh[y:y + h, x:x + w]
+                    # cv2.imshow('window', roi)
+                    # cv2.waitKey(0)
+                    roismall = cv2.resize(roi, (10, 10))
+                    roismall = roismall.reshape((1, 100))
+                    roismall = np.float32(roismall)
+                    retval, results, neigh_resp, dists = model.findNearest(roismall, k=1)
+                    print(results[0][0], dists[0][0])
+                    if x not in appeared:
+                        appeared[x] = dists[0][0]
+                        if dists[0][0] < 1000000 or (results[0][0] == 1 and dists[0][0] < 1500000):
+                            digit = int((results[0][0]))
+                            # print('distances')
+                            # print(dists[0])
+                            digits.append(digit)
+                            position.append(x)
+                    else:
+                        if dists[0][0] < appeared[x]:
+                            igit = int((results[0][0]))
+                            # print('distances')
+                            # print(dists[0])
+                            digits.append(digit)
+                            position.append(x)
+                if 14 < w < 18:
+                    roi1 = thresh[y:y + h, x:x + w - 8]
+                    roismall1 = cv2.resize(roi1, (10, 10))
+                    roismall1 = roismall1.reshape((1, 100))
+                    roismall1 = np.float32(roismall1)
+                    retval, results, neigh_resp, dists = model.findNearest(roismall1, k=1)
+                    print(results[0][0], dists[0][0])
+                    if x not in appeared:
+                        appeared[x] = dists[0][0]
+                        if dists[0][0] < 1000000 or (results[0][0] == 1 and dists[0][0] < 1500000):
+                            digit = int((results[0][0]))
+                            # print('distances')
+                            # print(dists[0])
+                            digits.append(digit)
+                            position.append(x)
+                    else:
+                        if dists[0][0] < appeared[x]:
+                            digit = int((results[0][0]))
+                            # print('distances')
+                            # print(dists[0])
+                            digits.append(digit)
+                            position.append(x)
+                    roi2 = thresh[y:y + h, x + 8:x + w]
+                    x += 8
+                    roismall2 = cv2.resize(roi2, (10, 10))
+                    roismall2 = roismall2.reshape((1, 100))
+                    roismall2 = np.float32(roismall2)
+                    retval, results, neigh_resp, dists = model.findNearest(roismall2, k=1)
+                    print(results[0][0], dists[0][0])
+                    if x not in appeared:
+                        appeared[x] = dists[0][0]
+                        if dists[0][0] < 1000000 or (results[0][0] == 1 and dists[0][0] < 1500000):
+                            digit = int((results[0][0]))
+                            # print('distances')
+                            # print(dists[0])
+                            digits.append(digit)
+                            position.append(x)
+                    else:
+                        if dists[0][0] < appeared[x]:
+                            digit = int((results[0][0]))
+                            # print('distances')
+                            # print(dists[0])
+                            digits.append(digit)
+                            position.append(x)
+    if len(digits) != 0:
+        position, digits = zip(*sorted(zip(position, digits)))
+        print(digits)
+        print(position)
+        return concat_number_from_lst(digits)
+    return 0
+
+
+def get_kda(scene):
+    """
+    return recognized minions killed
+    :param scene:
+    :return: int
+    """
+    # fit model using training data
+    samples = np.loadtxt('generalsamples.data', np.float32)
+    responses = np.loadtxt('generalresponses.data', np.float32)
+    responses = responses.reshape((responses.size, 1))
+    model = cv2.ml.KNearest_create()
+    model.train(samples, cv2.ml.ROW_SAMPLE, responses)
+    # predict digit
+    gray = cv2.cvtColor(scene, cv2.COLOR_RGB2GRAY)
+    thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 3, 4)
+
+    _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    digits = []
+    position = []
+    appeared = {}
+    for cnt in contours:
+        if 5 < cv2.contourArea(cnt) < 150:
+            [x, y, w, h] = cv2.boundingRect(cnt)
+            if h > 8:
+                # print(f'position: {x}, {w}, {h}')
+                roi = thresh[y:y + h, x:x + w]
+                cv2.imshow('window', roi)
+                cv2.waitKey(0)
+                roismall = cv2.resize(roi, (10, 10))
+                roismall = roismall.reshape((1, 100))
+                roismall = np.float32(roismall)
+                retval, results, neigh_resp, dists = model.findNearest(roismall, k=1)
+                if x-1 not in appeared and x+1 not in appeared and x not in appeared:
+                    appeared[x] = dists[0][0]
+                    # print(results[0][0], dists[0][0])
+                    if dists[0][0] < 900000 or ((results[0][0] == 1 or results [0][0] == 11) and dists[0][0] < 1500000):
+                        digit = int((results[0][0]))
+                        digits.append(digit)
+                        position.append(x)
+                elif x-1 in appeared:
+                    if dists[0][0] < appeared[x-1]:
+                        digit = int(results[0][0])
+                        digits.append(digit)
+                        position.append(x)
+                elif x+1 in appeared:
+                    if dists[0][0] < appeared[x+1]:
+                        digit = int(results[0][0])
+                        digits.append(digit)
+                        position.append(x)
+                elif x in appeared:
+                    if dists[0][0] < appeared[x]:
+                        digit = int(results[0][0])
+                        digits.append(digit)
+                        position.append(x)
+    # print(digits)
+    if len(digits) != 0:
+        position, digits = zip(*sorted(zip(position, digits)))
+        slash_index = [i for i, d in enumerate(digits) if d == 11]
+        if len(slash_index) != 0 and len(slash_index) == 2 and slash_index[1] + 1 <= len(digits):
+            # print(slash_index)
+            # print(digits)
+            kills_lst = digits[:slash_index[0]]
+            deaths_lst = digits[slash_index[0] + 1: slash_index[1]]
+            assists_lst = digits[slash_index[1] + 1:]
+            kills = concat_number_from_lst(kills_lst)
+            deaths = concat_number_from_lst(deaths_lst)
+            assists = concat_number_from_lst(assists_lst)
+            return kills, deaths, assists
+    return 0, 0, 0
+
+
+def concat_number_from_lst(lst):
+    num = 0
+    num_digits = len(lst)
+    for i, d in enumerate(lst):
+        num += d * (10 ** (num_digits - 1 - i))
+    return num
 
 
 def concat_file(path, name):
@@ -432,9 +1057,6 @@ def convert_str_int(s):
 
 if __name__ == '__main__':
     api_key0 = 'RGAPI-8e1c777d-e874-4e16-b7cf-363f7e013c29'
-
-
-
 
     # ------------------------------------
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
@@ -492,13 +1114,13 @@ if __name__ == '__main__':
     # multi_match_detail(matchid20, 20, api_key20)
     # multi_match_detail(matchid21, 21, api_key21)
 
-    concat_file('C:/Users/rober/OneDrive/csc/lol-ml/match_detail/', 'full_matchdata.csv')
+    # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/match_detail/', 'full_matchdata.csv')
 
-
-
-
-
-
-
-
-
+    # train_digits('./New Folder/Layer 1.png')
+    # pd.set_option('display.max_columns', 10)
+    screen_record()
+    #
+    # testimg = cv2.imread('./cs33.png')
+    # print(get_cs(testimg))
+    # testkda = cv2.imread('test1digit.png')
+    # print(get_kda(testkda))
