@@ -494,8 +494,8 @@ def screen_record():
     red_mountain_dragon = cv2.resize(cv2.imread('./icon/red mountain dragon.png'), None, fx=0.625, fy=0.625)
     red_ocean_dragon = cv2.resize(cv2.imread('./icon/red ocean dragon.png'), None, fx=0.625, fy=0.625)
     red_cloud_dragon = cv2.resize(cv2.imread('./icon/red wind dragon.png'), None, fx=0.625, fy=0.625)
-    red_kill_inhib = cv2.resize(cv2.imread('./icon/red kill inhib.png'), None, fx=0.625, fy=0.625)
-    red_kill_tower = cv2.resize(cv2.imread('./icon/red kill tower.png'), None, fx=0.625, fy=0.625)
+    red_kill_inhib = cv2.resize(cv2.imread('./icon/red kill inhib.png'), None, fx=1, fy=1)
+    red_kill_tower = cv2.resize(cv2.imread('./icon/red kill tower.png'), None, fx=1, fy=1)
 
     # initial data
     team1_dragons, team1_towers, team1_inhibs, team1_barons, team1_rifts = 0, 0, 0, 0, 0
@@ -555,23 +555,24 @@ def screen_record():
                 team2_p4_kda_area = scene[469 + 2:489 + 2, 990:1060, :]
                 team2_p5_kda_area = scene[533 + 2:553 + 2, 990:1060, :]
 
-                cv2.imshow('window', team2_p4_cs_area)
+                cv2.imshow('window', team1_p1_cs_area)
                 # cv2.imshow('window', cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB))
                 # cv2.imshow('window', event_area)
 
                 # TODO: use the model to predict winrate if there is a change in match data below
 
                 # ------------------------------------------------------- dragons kills data ----------------------------------
+                print('-------------------------------------------------------------------')
                 prev_team1_dragons = team1_dragons
-                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.9, sw1)
+                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.85, sw1)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.9, sw2)
+                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.85, sw2)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.9, sw3)
+                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.85, sw3)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.9, sw4)
+                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.85, sw4)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.9, sw5)
+                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.85, sw5)
                 team1_dragons += team1_dragons_change
                 # print(team1_dragons)
                 if team1_dragons != 0 and team1_dragons != prev_team1_dragons:
@@ -579,15 +580,15 @@ def screen_record():
                     change += 1
 
                 prev_team2_dragons = team2_dragons
-                team2_dragons_change, sw6, _ = event_template_match(event_area, red_infernal_dragon, 0.8, sw6)
+                team2_dragons_change, sw6, _ = event_template_match(event_area, red_infernal_dragon, 0.85, sw6)
                 team2_dragons += team2_dragons_change
-                team2_dragons_change, sw7, _ = event_template_match(event_area, red_ocean_dragon, 0.95, sw7)
+                team2_dragons_change, sw7, _ = event_template_match(event_area, red_ocean_dragon, 0.85, sw7)
                 team2_dragons += team2_dragons_change
-                team2_dragons_change, sw8, _ = event_template_match(event_area, red_mountain_dragon, 0.9, sw8)
+                team2_dragons_change, sw8, _ = event_template_match(event_area, red_mountain_dragon, 0.85, sw8)
                 team2_dragons += team2_dragons_change
-                team2_dragons_change, sw9, _ = event_template_match(event_area, red_cloud_dragon, 0.9, sw9)
+                team2_dragons_change, sw9, _ = event_template_match(event_area, red_cloud_dragon, 0.85, sw9)
                 team2_dragons += team2_dragons_change
-                team2_dragons_change, sw10, _ = event_template_match(event_area, red_elder_dragon, 0.8, sw10)
+                team2_dragons_change, sw10, _ = event_template_match(event_area, red_elder_dragon, 0.85, sw10)
                 team2_dragons += team2_dragons_change
                 # print(team2_dragons)
                 if team2_dragons != 0 and team2_dragons != prev_team2_dragons:
@@ -596,7 +597,8 @@ def screen_record():
 
                 # ------------------------------------------------------ baron kills data ------------------------------
                 prev_team1_barons = team1_barons
-                team1_barons_change, sw11, _ = event_template_match(event_area, blue_baron, 0.9, sw11)
+                team1_barons_change, sw11, _ = event_template_match(event_area, blue_baron, 0.7, sw11)
+
                 team1_barons += team1_barons_change
                 if team1_barons != 0 and team1_barons != prev_team1_barons:
                     # print(str(time.time() - start_time) + '  team1_barons: ' + str(int(team1_barons)))
@@ -611,7 +613,8 @@ def screen_record():
 
                 # ------------------------------------------------------ rift kills data -------------------------------
                 prev_team1_rifts = team1_rifts
-                team1_rifts_change, sw13, _ = event_template_match(event_area, blue_rift, 0.57, sw13)
+                team1_rifts_change, sw13, _ = event_template_match(event_area, blue_rift, 0.75, sw13)
+
                 team1_rifts += team1_rifts_change
                 if team1_rifts != 0 and team1_rifts != prev_team1_rifts:
                     # print(str(time.time() - start_time) + '  team1_rifts: ' + str(int(team1_rifts)))
@@ -625,17 +628,17 @@ def screen_record():
 
                 # ------------------------------------------------------ tower and inhib kills data --------------------
                 prev_team1_towers = team1_towers
-                team1_towers_change, sw15, prob_tower1 = event_template_match(event_area, blue_kill_tower, 0.9, sw15)
+                team1_towers_change, sw15, prob_tower1 = event_template_match(event_area, blue_kill_tower, 0.8, sw15)
                 prev_team1_inhibs = team1_inhibs
                 team1_inhibs_change, sw16, prob_inhib1 = event_template_match(event_area, blue_kill_inhib, 0.8, sw16)
                 team1_towers += team1_towers_change
                 team1_inhibs += team1_inhibs_change
 
                 if team1_towers != prev_team1_towers:
-                    # print(str(time.time() - start_time) + '  team1_towers: ' + str(int(team1_towers)))
+                    print(str(time.time() - start_time) + '  team1_towers: ' + str(int(team1_towers)))
                     change += 1
                 if team1_inhibs != prev_team1_inhibs:
-                    # print(str(time.time() - start_time) + '  team1_inhibs: ' + str(int(team1_inhibs)))
+                    print(str(time.time() - start_time) + '  team1_inhibs: ' + str(int(team1_inhibs)))
                     change += 1
 
                 prev_team2_towers = team2_towers
@@ -825,20 +828,20 @@ def screen_record():
                               'team2_a': [team2_p1_assists, team2_p2_assists, team2_p3_assists, team2_p4_assists,
                                           team2_p5_assists]
                               }
-                teamdata = {'team1_towers': [team1_towers],
-                            'team1_inhibs': [team1_inhibs],
-                            'team1_dragons': [team1_dragons],
-                            'team1_rifts': [team1_rifts],
-                            'team1_barons': [team1_barons],
-                            'team2_towers': [team2_towers],
-                            'team2_inhibs': [team2_inhibs],
-                            'team2_dragons': [team2_dragons],
-                            'team2_rifts': [team2_rifts],
-                            'team2_barons': [team2_barons]
+                teamdata = {'t1_towers': [team1_towers],
+                            't1_inhibs': [team1_inhibs],
+                            't1_dragons': [team1_dragons],
+                            't1_rifts': [team1_rifts],
+                            't1_barons': [team1_barons],
+                            't2_towers': [team2_towers],
+                            't2_inhibs': [team2_inhibs],
+                            't2_dragons': [team2_dragons],
+                            't2_rifts': [team2_rifts],
+                            't2_barons': [team2_barons]
                             }
-                if change > 0:
-                    print(pd.DataFrame(teamdata))
-                    print(pd.DataFrame(playerdata))
+                # if change > 0:
+                    # print(pd.DataFrame(teamdata))
+                    # print(pd.DataFrame(playerdata))
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     break
@@ -937,7 +940,6 @@ def get_cs(scene):
     for cnt in contours:
         if 5 < cv2.contourArea(cnt) < 150:
             [x, y, w, h] = cv2.boundingRect(cnt)
-            print(w, h)
             if (5 < w < 13 and h > 10) or (14 < w < 18 and h > 10):
                 if 5 < w < 13:
                     roi = thresh[y:y + h, x:x + w]
@@ -947,70 +949,94 @@ def get_cs(scene):
                     roismall = roismall.reshape((1, 100))
                     roismall = np.float32(roismall)
                     retval, results, neigh_resp, dists = model.findNearest(roismall, k=1)
-                    print(results[0][0], dists[0][0])
-                    if x not in appeared:
-                        appeared[x] = dists[0][0]
+                    if x-1 not in appeared and x+1 not in appeared and x not in appeared:
+                        appeared[x] = [results[0][0], dists[0][0]]
                         if dists[0][0] < 1000000 or (results[0][0] == 1 and dists[0][0] < 1500000):
                             digit = int((results[0][0]))
-                            # print('distances')
-                            # print(dists[0])
                             digits.append(digit)
                             position.append(x)
-                    else:
-                        if dists[0][0] < appeared[x]:
-                            igit = int((results[0][0]))
-                            # print('distances')
-                            # print(dists[0])
+                    elif x-1 in appeared:
+                        if dists[0][0] < appeared[x-1][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x-1][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
                             digits.append(digit)
-                            position.append(x)
+                    elif x+1 in appeared:
+                        if dists[0][0] < appeared[x+1][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x+1][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
+                            digits.append(digit)
+                    elif x in appeared:
+                        if dists[0][0] < appeared[x][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
+                            digits.append(digit)
                 if 14 < w < 18:
-                    roi1 = thresh[y:y + h, x:x + w - 8]
+                    roi1 = thresh[y:y + h, x:x + w - int(w/2)]
                     roismall1 = cv2.resize(roi1, (10, 10))
                     roismall1 = roismall1.reshape((1, 100))
                     roismall1 = np.float32(roismall1)
                     retval, results, neigh_resp, dists = model.findNearest(roismall1, k=1)
-                    print(results[0][0], dists[0][0])
-                    if x not in appeared:
-                        appeared[x] = dists[0][0]
+                    if x-1 not in appeared and x+1 not in appeared and x not in appeared:
+                        appeared[x] = [results[0][0], dists[0][0]]
                         if dists[0][0] < 1000000 or (results[0][0] == 1 and dists[0][0] < 1500000):
                             digit = int((results[0][0]))
-                            # print('distances')
-                            # print(dists[0])
                             digits.append(digit)
                             position.append(x)
-                    else:
-                        if dists[0][0] < appeared[x]:
+                    elif x-1 in appeared:
+                        if dists[0][0] < appeared[x-1][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x-1][0]][-1]
+                            digits.pop(rm_idx)
                             digit = int((results[0][0]))
-                            # print('distances')
-                            # print(dists[0])
                             digits.append(digit)
-                            position.append(x)
-                    roi2 = thresh[y:y + h, x + 8:x + w]
-                    x += 8
+                    elif x+1 in appeared:
+                        if dists[0][0] < appeared[x+1][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x+1][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
+                            digits.append(digit)
+                    elif x in appeared:
+                        if dists[0][0] < appeared[x][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
+                            digits.append(digit)
+                    roi2 = thresh[y:y + h, x + int(w/2):x + w]
+                    x += int(w/2)
                     roismall2 = cv2.resize(roi2, (10, 10))
                     roismall2 = roismall2.reshape((1, 100))
                     roismall2 = np.float32(roismall2)
                     retval, results, neigh_resp, dists = model.findNearest(roismall2, k=1)
-                    print(results[0][0], dists[0][0])
-                    if x not in appeared:
-                        appeared[x] = dists[0][0]
+                    if x-1 not in appeared and x+1 not in appeared and x not in appeared:
+                        appeared[x] = [results[0][0], dists[0][0]]
                         if dists[0][0] < 1000000 or (results[0][0] == 1 and dists[0][0] < 1500000):
                             digit = int((results[0][0]))
-                            # print('distances')
-                            # print(dists[0])
                             digits.append(digit)
                             position.append(x)
-                    else:
-                        if dists[0][0] < appeared[x]:
+                    elif x-1 in appeared:
+                        if dists[0][0] < appeared[x-1][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x-1][0]][-1]
+                            digits.pop(rm_idx)
                             digit = int((results[0][0]))
-                            # print('distances')
-                            # print(dists[0])
                             digits.append(digit)
-                            position.append(x)
+                    elif x+1 in appeared:
+                        if dists[0][0] < appeared[x+1][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x+1][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
+                            digits.append(digit)
+                    elif x in appeared:
+                        if dists[0][0] < appeared[x][1]:
+                            rm_idx = [i for i in range(len(digits)) if digits[i] == appeared[x][0]][-1]
+                            digits.pop(rm_idx)
+                            digit = int((results[0][0]))
+                            digits.append(digit)
     if len(digits) != 0:
         position, digits = zip(*sorted(zip(position, digits)))
-        print(digits)
-        print(position)
+        # print(digits)
+        # print(position)
         return concat_number_from_lst(digits)
     return 0
 
@@ -1041,8 +1067,8 @@ def get_kda(scene):
             if h > 8:
                 # print(f'position: {x}, {w}, {h}')
                 roi = thresh[y:y + h, x:x + w]
-                cv2.imshow('window', roi)
-                cv2.waitKey(0)
+                # cv2.imshow('window', roi)
+                # cv2.waitKey(0)
                 roismall = cv2.resize(roi, (10, 10))
                 roismall = roismall.reshape((1, 100))
                 roismall = np.float32(roismall)
@@ -1110,28 +1136,6 @@ def convert_str_int(s):
 
 
 if __name__ == '__main__':
-    api_key0 = 'RGAPI-f426b853-5e9f-4a92-beed-3b805fc8a947'
-    api_key1 = 'RGAPI-079cc6dd-1801-4eeb-bda0-087014fb718b'
-    api_key2 = 'RGAPI-0f6b3f09-09fd-416c-b75f-eca851695aff'
-    api_key3 = 'RGAPI-163dccca-b86e-4f11-bdae-0827213d3ce1'
-    api_key4 = 'RGAPI-f42e1eab-e0dc-4267-b99c-2809ae9528f3'
-    api_key5 = 'RGAPI-e280b32d-b035-4fbc-8082-10a84e5327f1'
-    api_key6 = 'RGAPI-5149ca03-196b-4fb4-a2fc-e405146aa8f4'
-    api_key7 = 'RGAPI-5e25a296-c672-4616-98cc-302366480351'
-    api_key8 = 'RGAPI-09f1bd9b-453c-4200-bf7c-ddd45cf1cf75'
-    api_key9 = 'RGAPI-1292e67a-14dc-484c-a8f8-678112aa8d4c'
-    api_key10 = 'RGAPI-ca034cd4-3cfe-4bfb-93f7-33222b59ba89'
-    api_key11 = 'RGAPI-0ef49e20-2c41-4f56-bd37-666eadac9cff'
-    api_key12 = 'RGAPI-f41dcd81-1c82-4a6c-9a9e-fe85432be952'
-    api_key13 = 'RGAPI-e67d0512-0ad7-4919-9a40-34ee7850ed2a'
-    api_key14 = 'RGAPI-4bdf154d-902a-4012-9a5c-c323a3428b85'
-    api_key15 = 'RGAPI-c9d44320-4942-48cf-8e84-7e6dc7fb43f0'
-    api_key16 = 'RGAPI-3f66addd-b7ab-4b0f-9757-6e850b1bbc02'
-    api_key17 = 'RGAPI-35fc1143-fc7b-4526-aaa0-286e29aa08a6'
-    api_key18 = 'RGAPI-f92da414-3f71-4465-9fb5-b4243271bd79'
-    api_key19 = 'RGAPI-24dc6d56-b2d9-433f-96ea-3392d607c7b8'
-    api_key20 = 'RGAPI-71a58559-48e6-40ef-8135-f840de4d7ce2'
-    api_key21 = 'RGAPI-6a5d1989-de6b-4039-ad48-d01f7ae8be23'
 
     # ------------------------------------
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
@@ -1146,36 +1150,36 @@ if __name__ == '__main__':
 
 
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/match_detail/', 'full_matchdata.csv')
-    matchid_df = pd.read_csv('matchid.csv', index_col=0)
-    idx = 0
-    lst = [0]
-    for l in range(22):
-        idx += 15236
-        lst.append(idx)
-
-    matchid0 = matchid_df.iloc[lst[0]:lst[0 + 1]]
-    matchid1 = matchid_df.iloc[lst[1]:lst[1 + 1]]
-    matchid2 = matchid_df.iloc[lst[2]:lst[2 + 1]]
-    matchid3 = matchid_df.iloc[lst[3]:lst[3 + 1]]
-    matchid4 = matchid_df.iloc[lst[4]:lst[4 + 1]]
-    matchid5 = matchid_df.iloc[lst[5]:lst[5 + 1]]
-    matchid6 = matchid_df.iloc[lst[6]:lst[6 + 1]]
-    matchid7 = matchid_df.iloc[lst[7]:lst[7 + 1]]
-    matchid8 = matchid_df.iloc[lst[8]:lst[8 + 1]]
-    matchid9 = matchid_df.iloc[lst[9]:lst[9 + 1]]
-    matchid10 = matchid_df.iloc[lst[10]:lst[10 + 1]]
-    matchid11 = matchid_df.iloc[lst[11]:lst[11 + 1]]
-    matchid12 = matchid_df.iloc[lst[12]:lst[12 + 1]]
-    matchid13 = matchid_df.iloc[lst[13]:lst[13 + 1]]
-    matchid14 = matchid_df.iloc[lst[14]:lst[14 + 1]]
-    matchid15 = matchid_df.iloc[lst[15]:lst[15 + 1]]
-    matchid16 = matchid_df.iloc[lst[16]:lst[16 + 1]]
-    matchid17 = matchid_df.iloc[lst[17]:lst[17 + 1]]
-    matchid18 = matchid_df.iloc[lst[18]:lst[18 + 1]]
-    matchid19 = matchid_df.iloc[lst[19]:lst[19 + 1]]
-    matchid20 = matchid_df.iloc[lst[20]:lst[20 + 1]]
-    matchid21 = matchid_df.iloc[lst[21]:]
+    # matchid_df = pd.read_csv('matchid.csv', index_col=0)
+    # idx = 0
+    # lst = [0]
+    # for l in range(22):
+    #     idx += 15236
+    #     lst.append(idx)
     #
+    # matchid0 = matchid_df.iloc[lst[0]:lst[0 + 1]]
+    # matchid1 = matchid_df.iloc[lst[1]:lst[1 + 1]]
+    # matchid2 = matchid_df.iloc[lst[2]:lst[2 + 1]]
+    # matchid3 = matchid_df.iloc[lst[3]:lst[3 + 1]]
+    # matchid4 = matchid_df.iloc[lst[4]:lst[4 + 1]]
+    # matchid5 = matchid_df.iloc[lst[5]:lst[5 + 1]]
+    # matchid6 = matchid_df.iloc[lst[6]:lst[6 + 1]]
+    # matchid7 = matchid_df.iloc[lst[7]:lst[7 + 1]]
+    # matchid8 = matchid_df.iloc[lst[8]:lst[8 + 1]]
+    # matchid9 = matchid_df.iloc[lst[9]:lst[9 + 1]]
+    # matchid10 = matchid_df.iloc[lst[10]:lst[10 + 1]]
+    # matchid11 = matchid_df.iloc[lst[11]:lst[11 + 1]]
+    # matchid12 = matchid_df.iloc[lst[12]:lst[12 + 1]]
+    # matchid13 = matchid_df.iloc[lst[13]:lst[13 + 1]]
+    # matchid14 = matchid_df.iloc[lst[14]:lst[14 + 1]]
+    # matchid15 = matchid_df.iloc[lst[15]:lst[15 + 1]]
+    # matchid16 = matchid_df.iloc[lst[16]:lst[16 + 1]]
+    # matchid17 = matchid_df.iloc[lst[17]:lst[17 + 1]]
+    # matchid18 = matchid_df.iloc[lst[18]:lst[18 + 1]]
+    # matchid19 = matchid_df.iloc[lst[19]:lst[19 + 1]]
+    # matchid20 = matchid_df.iloc[lst[20]:lst[20 + 1]]
+    # matchid21 = matchid_df.iloc[lst[21]:]
+    # #
 
     # multi_get_timeline(matchid0, 0, api_key0)
     # multi_get_timeline(matchid1, 1, api_key1)
@@ -1206,9 +1210,9 @@ if __name__ == '__main__':
 
     # train_digits('./New Folder/Layer 1.png')
     # pd.set_option('display.max_columns', 10)
-    # screen_record()
+    screen_record()
     #
-    # testimg = cv2.imread('./cs33.png')
+    # testimg = cv2.imread('./digit/Layer .png')
     # print(get_cs(testimg))
     # testkda = cv2.imread('test1digit.png')
     # print(get_kda(testkda))
