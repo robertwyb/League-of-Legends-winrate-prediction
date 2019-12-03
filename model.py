@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import scikitplot as skplt
 from mlxtend.plotting import plot_decision_regions
 from mlxtend.plotting import category_scatter
-
+import pickle
 
 import graphviz
 from sklearn.tree import export_graphviz
@@ -25,7 +25,6 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 df_cs = pd.read_csv('champ_select.csv', index_col=0)
-
 
 df_champ_select = df_cs.drop(columns=['gameId', 'game_time', 'team1_win']).multiply(df_cs['game_time'], axis='index')
 df_t1_win = df_cs['team1_win']
@@ -49,6 +48,9 @@ y_pred_rf = lr.predict(X_test)
 pred_prob = lr.predict_proba(X_test)
 print(pred_prob)
 print(classification_report(y_test, y_pred_rf))
+
+filename = 'finalized_model_1_lr.sav'
+pickle.dump(lr, open(filename, 'wb'))
 
 
 rf = RandomForestClassifier()

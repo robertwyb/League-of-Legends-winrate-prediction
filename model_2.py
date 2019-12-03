@@ -7,6 +7,8 @@ import scikitplot as skplt
 from mlxtend.plotting import plot_decision_regions
 from mlxtend.plotting import category_scatter
 
+import pickle
+
 import xgboost as xgb
 from sklearn.metrics import mean_squared_error
 import graphviz
@@ -64,6 +66,11 @@ def get_feature_importance_greater_than(n):
 
 
 get_feature_importance_greater_than(0.01)
+
+
+filename = 'finalized_model.sav'
+pickle.dump(xgb_cls, open(filename, 'wb'))
+
 
 # dt = DecisionTreeClassifier()
 # dt.fit(X_train, y_train)
