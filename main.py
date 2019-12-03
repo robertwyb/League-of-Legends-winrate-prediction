@@ -1590,7 +1590,7 @@ def begin_prediction(t1_champ, t2_champ):
                 print(X['team2_p1_total_cs_5min'])
                 winrate_model = pickle.load(open('finalized_model_2.sav', 'rb'))
                 print(f'Win/Loss: {winrate_model.predict(X)}')
-
+                print(f'winrate: {winrate_model.predict_proba(X)}')
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 cv2.destroyAllWindows()
                 break
