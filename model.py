@@ -24,14 +24,11 @@ from sklearn.metrics import precision_score, recall_score, accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 
 
-df = pd.read_csv('full_matchdata.csv')
-df_champ_select = pd.read_csv('champ_select.csv', index_col=0)
-df_col = list(df.columns)
+df_cs = pd.read_csv('champ_select.csv', index_col=0)
 
-df_champ = df[['team1_p1_championId', 'team1_p2_championId', 'team1_p3_championId', 'team1_p4_championId',
-               'team1_p5_championId', 'team2_p1_championId', 'team2_p2_championId', 'team2_p3_championId',
-               'team2_p4_championId', 'team2_p5_championId']]
-df_t1_win = df['team1_win']
+
+df_champ_select = df_cs.drop(columns=['gameId', 'game_time', 'team1_win']).multiply(df_cs['game_time'], axis='index')
+df_t1_win = df_cs['team1_win']
 
 
 df_champ_keys = pd.read_csv('champ_keys.csv')
@@ -39,11 +36,20 @@ df_champ_keys_new = df_champ_keys[['Champ_Name', 'Champ_Key']]
 
 
 X_train, X_test, y_train, y_test = train_test_split\
-    (df_champ_select, df_t1_win, test_size=0.3, random_state=2019)
+        (df_champ_select, df_t1_win, test_size=0.3, random_state=201)
 dt = DecisionTreeClassifier()
 dt.fit(X_train, y_train)
 y_pred_dt = dt.predict(X_test)
 print(classification_report(y_test, y_pred_dt))
+
+
+lr = LogisticRegression()
+lr.fit(X_train, y_train)
+y_pred_rf = lr.predict(X_test)
+pred_prob = lr.predict_proba(X_test)
+print(pred_prob)
+print(classification_report(y_test, y_pred_rf))
+
 
 rf = RandomForestClassifier()
 rf.fit(X_train, y_train)

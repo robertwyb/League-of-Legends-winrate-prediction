@@ -422,6 +422,12 @@ def multi_match_detail(df, num, api_key):
 
 
 def get_match_timeline(matchId, api_key):
+    """
+    return dataframe contain ingame timeline data
+    :param matchId: str
+    :param api_key: str
+    :return: dataframe
+    """
     match_timeline = {}
     url = f'https://na1.api.riotgames.com/lol/match/v4/timelines/by-match/{matchId}?api_key={api_key}'
     response = requests.get(url)
@@ -463,6 +469,13 @@ def get_match_timeline(matchId, api_key):
 
 
 def multi_get_timeline(df, num, apikey):
+    """
+    us get_match_timeline and save data to csv
+    :param df:
+    :param num:
+    :param apikey:
+    :return:
+    """
     result = pd.DataFrame()
     cnt = 0
     for i in df['gameId']:
@@ -477,6 +490,10 @@ def multi_get_timeline(df, num, apikey):
 
 # real-time recognize part
 def screen_record():
+    """
+    Capture screen to extract ingame real time data and use data to predict winrate
+    :return:
+    """
     # read all icon to be recognized in game
     blue_baron = cv2.resize(cv2.imread('./icon/blue baron.png'), None, fx=0.625, fy=0.625)
     blue_rift = cv2.resize(cv2.imread('./icon/blue rift.png'), None, fx=0.625, fy=0.625)
@@ -516,7 +533,6 @@ def screen_record():
     team1_first_dragon, team2_first_dragon, team1_first_baron, team2_first_baron = 0, 0, 0, 0
     team1_first_tower, team2_first_tower, team1_first_inhib, team2_first_inhib = 0, 0, 0, 0
 
-    sw = 0
     sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     sw11, sw12, sw13, sw14, sw15, sw16, sw17, sw18, sw19, sw20 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     while True:
@@ -527,7 +543,7 @@ def screen_record():
                 change = 0
                 # 1600x900 windowed mode
                 time.sleep(0.5)
-                printscreen = np.array(ImageGrab.grab(bbox=(0, 31, 1600, 931)))
+                printscreen = np.array(ImageGrab.grab(bbox=(0, 31, 1610, 931)))
 
                 scene = cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB)
                 # cv2.imshow('window', scene)
@@ -562,17 +578,17 @@ def screen_record():
                 # TODO: use the model to predict winrate if there is a change in match data below
 
                 # ------------------------------------------------------- dragons kills data ----------------------------------
-                print('-------------------------------------------------------------------')
+                # print('-------------------------------------------------------------------')
                 prev_team1_dragons = team1_dragons
-                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.85, sw1)
+                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.85, sw1, True)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.85, sw2)
+                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.85, sw2, True)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.85, sw3)
+                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.85, sw3, True)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.85, sw4)
+                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.85, sw4, True)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.85, sw5)
+                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.85, sw5, True)
                 team1_dragons += team1_dragons_change
                 # print(team1_dragons)
                 if team1_dragons != 0 and team1_dragons != prev_team1_dragons:
@@ -828,20 +844,20 @@ def screen_record():
                               'team2_a': [team2_p1_assists, team2_p2_assists, team2_p3_assists, team2_p4_assists,
                                           team2_p5_assists]
                               }
-                teamdata = {'t1_towers': [team1_towers],
-                            't1_inhibs': [team1_inhibs],
-                            't1_dragons': [team1_dragons],
-                            't1_rifts': [team1_rifts],
-                            't1_barons': [team1_barons],
-                            't2_towers': [team2_towers],
-                            't2_inhibs': [team2_inhibs],
-                            't2_dragons': [team2_dragons],
-                            't2_rifts': [team2_rifts],
-                            't2_barons': [team2_barons]
+                teamdata = {'t1_tow': [team1_towers],
+                            't1_in': [team1_inhibs],
+                            't1_drg': [team1_dragons],
+                            't1_rf': [team1_rifts],
+                            't1_br': [team1_barons],
+                            't2_tow': [team2_towers],
+                            't2_in': [team2_inhibs],
+                            't2_drg': [team2_dragons],
+                            't2_rf': [team2_rifts],
+                            't2_br': [team2_barons]
                             }
-                # if change > 0:
-                    # print(pd.DataFrame(teamdata))
-                    # print(pd.DataFrame(playerdata))
+                if change > 0:
+                    print(pd.DataFrame(teamdata))
+                    print(pd.DataFrame(playerdata))
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     break
@@ -1056,7 +1072,6 @@ def get_kda(scene):
     # predict digit
     gray = cv2.cvtColor(scene, cv2.COLOR_RGB2GRAY)
     thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 3, 4)
-
     _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     digits = []
     position = []
@@ -1136,7 +1151,7 @@ def convert_str_int(s):
 
 
 if __name__ == '__main__':
-
+    concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # ------------------------------------
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
     # matchid_df = pd.read_csv('full_matchid.csv', index_col=0)
@@ -1204,17 +1219,13 @@ if __name__ == '__main__':
     # multi_get_timeline(matchid20, 20, api_key20)
     # multi_get_timeline(matchid21, 21, api_key21)
 
-
-
-
-
+    # concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # train_digits('./New Folder/Layer 1.png')
-    # pd.set_option('display.max_columns', 10)
+    pd.set_option('display.max_columns', 10)
     screen_record()
-    #
-    # testimg = cv2.imread('./digit/Layer .png')
-    # print(get_cs(testimg))
-    # testkda = cv2.imread('test1digit.png')
-    # print(get_kda(testkda))
+
+
+
+
 
 

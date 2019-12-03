@@ -8,6 +8,13 @@
 .idea/
 full_matchdata.csv
 test.py
-2.py
+data_process_1.py
 .idea/lol-ml.iml
 .idea/misc.xml
+.idea/misc.xml
+.idea/lol-ml.iml
+full_matchtimeline.csv
+champ_select.csv
+.idea/lol-ml.iml
+.idea/misc.xml
+*.csv
