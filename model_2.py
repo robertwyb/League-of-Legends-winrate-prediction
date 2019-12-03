@@ -29,7 +29,11 @@ df_win = pd.read_csv('game_win.csv', index_col=0)
 df_objectives = pd.read_csv('game_objectives.csv', index_col=0)
 df_win_timeline = pd.merge(df_objectives, df, on='gameId')
 
-X = df_win_timeline.drop(columns=['team1_win', 'gameId', 'team2_win'])
+X = df_win_timeline.drop(columns=['team1_win', 'gameId', 'team2_win'
+
+
+
+                                  ])
 y = df_win_timeline['team1_win']
 
 # def get_data_before_x_min(data, x):
