@@ -7,6 +7,7 @@ import glob
 import cv2
 import sys
 import keyboard
+import matplotlib.pyplot as plt
 from PIL import ImageGrab
 
 
@@ -489,7 +490,7 @@ def multi_get_timeline(df, num, apikey):
 
 
 # real-time recognize part
-def screen_record():
+def begin_prediction(t1_champ, t2_champ):
     """
     Capture screen to extract ingame real time data and use data to predict winrate
     :return:
@@ -530,13 +531,198 @@ def screen_record():
     team1_p1_assists, team1_p2_assists, team1_p3_assists, team1_p4_assists, team1_p5_assists = 0, 0, 0, 0, 0
     team2_p1_assists, team2_p2_assists, team2_p3_assists, team2_p4_assists, team2_p5_assists = 0, 0, 0, 0, 0
 
-    team1_first_dragon, team2_first_dragon, team1_first_baron, team2_first_baron = 0, 0, 0, 0
-    team1_first_tower, team2_first_tower, team1_first_inhib, team2_first_inhib = 0, 0, 0, 0
+    team1_baronKills = 0
+    team1_riftKills = 0
+    team1_inhibitorKills = 0
+    team1_towerKills = 0
+    team1_dragonKills = 0
+    team2_baronKills = 0
+    team2_riftKills = 0
+    team2_inhibitorKills = 0
+    team2_towerKills = 0
+    team2_dragonKills = 0
+    team1_firstDragon = 0
+    team1_firstInhibitor = 0
+    team1_firstRiftHerald = 0
+    team1_firstBaron = 0
+    team1_firstBlood = 0
+    team1_firstTower = 0
+    team2_firstDragon = 0
+    team2_firstInhibitor = 0
+    team2_firstRiftHerald = 0
+    team2_firstBaron = 0
+    team2_firstBlood = 0
+    team2_firstTower = 0
+
+    team1_p1_cs_10min = np.nan
+    team1_p1_cs_15min = np.nan
+    team1_p1_cs_20min = np.nan
+    team1_p1_cs_25min = np.nan
+    team1_p1_cs_30min = np.nan
+    team1_p1_cs_5min = np.nan
+    team1_p1_gold_10min = np.nan
+    team1_p1_gold_15min = np.nan
+    team1_p1_gold_20min = np.nan
+    team1_p1_gold_25min = np.nan
+    team1_p1_gold_30min = np.nan
+    team1_p1_gold_5min = np.nan
+    team1_p2_cs_10min = np.nan
+    team1_p2_cs_15min = np.nan
+    team1_p2_cs_20min = np.nan
+    team1_p2_cs_25min = np.nan
+    team1_p2_cs_30min = np.nan
+    team1_p2_cs_5min = np.nan
+    team1_p2_gold_10min = np.nan
+    team1_p2_gold_15min = np.nan
+    team1_p2_gold_20min = np.nan
+    team1_p2_gold_25min = np.nan
+    team1_p2_gold_30min = np.nan
+    team1_p2_gold_5min = np.nan
+    team1_p3_cs_10min = np.nan
+    team1_p3_cs_15min = np.nan
+    team1_p3_cs_20min = np.nan
+    team1_p3_cs_25min = np.nan
+    team1_p3_cs_30min = np.nan
+    team1_p3_cs_5min = np.nan
+    team1_p3_gold_10min = np.nan
+    team1_p3_gold_15min = np.nan
+    team1_p3_gold_20min = np.nan
+    team1_p3_gold_25min = np.nan
+    team1_p3_gold_30min = np.nan
+    team1_p3_gold_5min = np.nan
+    team1_p4_cs_10min = np.nan
+    team1_p4_cs_15min = np.nan
+    team1_p4_cs_20min = np.nan
+    team1_p4_cs_25min = np.nan
+    team1_p4_cs_30min = np.nan
+    team1_p4_cs_5min = np.nan
+    team1_p4_gold_10min = np.nan
+    team1_p4_gold_15min = np.nan
+    team1_p4_gold_20min = np.nan
+    team1_p4_gold_25min = np.nan
+    team1_p4_gold_30min = np.nan
+    team1_p4_gold_5min = np.nan
+    team1_p5_cs_10min = np.nan
+    team1_p5_cs_15min = np.nan
+    team1_p5_cs_20min = np.nan
+    team1_p5_cs_25min = np.nan
+    team1_p5_cs_30min = np.nan
+    team1_p5_cs_5min = np.nan
+    team1_p5_gold_10min = np.nan
+    team1_p5_gold_15min = np.nan
+    team1_p5_gold_20min = np.nan
+    team1_p5_gold_25min = np.nan
+    team1_p5_gold_30min = np.nan
+    team1_p5_gold_5min = np.nan
+    team2_p1_cs_10min = np.nan
+    team2_p1_cs_15min = np.nan
+    team2_p1_cs_20min = np.nan
+    team2_p1_cs_25min = np.nan
+    team2_p1_cs_30min = np.nan
+    team2_p1_cs_5min = np.nan
+    team2_p1_gold_10min = np.nan
+    team2_p1_gold_15min = np.nan
+    team2_p1_gold_20min = np.nan
+    team2_p1_gold_25min = np.nan
+    team2_p1_gold_30min = np.nan
+    team2_p1_gold_5min = np.nan
+    team2_p2_cs_10min = np.nan
+    team2_p2_cs_15min = np.nan
+    team2_p2_cs_20min = np.nan
+    team2_p2_cs_25min = np.nan
+    team2_p2_cs_30min = np.nan
+    team2_p2_cs_5min = np.nan
+    team2_p2_gold_10min = np.nan
+    team2_p2_gold_15min = np.nan
+    team2_p2_gold_20min = np.nan
+    team2_p2_gold_25min = np.nan
+    team2_p2_gold_30min = np.nan
+    team2_p2_gold_5min = np.nan
+    team2_p3_cs_10min = np.nan
+    team2_p3_cs_15min = np.nan
+    team2_p3_cs_20min = np.nan
+    team2_p3_cs_25min = np.nan
+    team2_p3_cs_30min = np.nan
+    team2_p3_cs_5min = np.nan
+    team2_p3_gold_10min = np.nan
+    team2_p3_gold_15min = np.nan
+    team2_p3_gold_20min = np.nan
+    team2_p3_gold_25min = np.nan
+    team2_p3_gold_30min = np.nan
+    team2_p3_gold_5min = np.nan
+    team2_p4_cs_10min = np.nan
+    team2_p4_cs_15min = np.nan
+    team2_p4_cs_20min = np.nan
+    team2_p4_cs_25min = np.nan
+    team2_p4_cs_30min = np.nan
+    team2_p4_cs_5min = np.nan
+    team2_p4_gold_10min = np.nan
+    team2_p4_gold_15min = np.nan
+    team2_p4_gold_20min = np.nan
+    team2_p4_gold_25min = np.nan
+    team2_p4_gold_30min = np.nan
+    team2_p4_gold_5min = np.nan
+    team2_p5_cs_10min = np.nan
+    team2_p5_cs_15min = np.nan
+    team2_p5_cs_20min = np.nan
+    team2_p5_cs_25min = np.nan
+    team2_p5_cs_30min = np.nan
+    team2_p5_cs_5min = np.nan
+    team2_p5_gold_10min = np.nan
+    team2_p5_gold_15min = np.nan
+    team2_p5_gold_20min = np.nan
+    team2_p5_gold_25min = np.nan
+    team2_p5_gold_30min = np.nan
+    team2_p5_gold_5min = 0.000001
+
+
 
     sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     sw11, sw12, sw13, sw14, sw15, sw16, sw17, sw18, sw19, sw20 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+    team_comp_lst = [0] * 146
+    for c in t1_champ:
+        index1 = champ_df[champ_df['Champ_Name'] == c]['Champ_Key'].index[0]
+        team_comp_lst[index1] += 1
+    for c in t2_champ:
+        index1 = champ_df[champ_df['Champ_Name'] == c]['Champ_Key'].index[0]
+        team_comp_lst[index1] -= 1
+    # TODO USE LR TEAM MODEL
+
+    comp_model = pickle.load(open('finalized_model_1_lr.sav', 'rb'))
+    t1 = team_comp_lst[:]
+    t1 = [i * 600000 for i in t1]
+    t2 = team_comp_lst[:]
+    t2 = [i * 1200000 for i in t2]
+    t3 = team_comp_lst[:]
+    t3 = [i * 1800000 for i in t3]
+    t4 = team_comp_lst[:]
+    t4 = [i * 2400000 for i in t4]
+    t5 = team_comp_lst[:]
+    t5 = [i * 3000000 for i in t5]
+    team_comp_10 = np.array([t1])
+    team_comp_20 = np.array([t2])
+    team_comp_30 = np.array([t3])
+    team_comp_40 = np.array([t4])
+    team_comp_50 = np.array([t5])
+    team_comp_10.reshape(1, -1)
+    team_comp_20.reshape(1, -1)
+    team_comp_30.reshape(1, -1)
+    team_comp_40.reshape(1, -1)
+    team_comp_50.reshape(1, -1)
+    # print(team_comp_10)
+    winrate_10 = comp_model.predict_proba(team_comp_10)[0][0]
+    winrate_20 = comp_model.predict_proba(team_comp_20)[0][0]
+    winrate_30 = comp_model.predict_proba(team_comp_30)[0][0]
+    winrate_40 = comp_model.predict_proba(team_comp_40)[0][0]
+    winrate_50 = comp_model.predict_proba(team_comp_50)[0][0]
+    #
+    plt.plot([10, 20, 30, 40, 50], [winrate_10, winrate_20, winrate_30, winrate_40, winrate_50])
+    plt.show()
+
     while True:
         if keyboard.is_pressed('F1'):
+            print('Game Start')
             start_time = time.time()
 
             while True:
@@ -571,24 +757,38 @@ def screen_record():
                 team2_p4_kda_area = scene[469 + 2:489 + 2, 990:1060, :]
                 team2_p5_kda_area = scene[533 + 2:553 + 2, 990:1060, :]
 
-                cv2.imshow('window', team1_p1_cs_area)
+                team1_p1_level_area = scene[332-31:344-31, 432:448,:]
+                team1_p2_level_area = scene[396-31:408-31, 432:448,:]
+                team1_p3_level_area = scene[460-31:472-31, 432:448,:]
+                team1_p4_level_area = scene[524-31:536-31, 432:448,:]
+                team1_p5_level_area = scene[588-31:600-31, 432:448,:]
+
+                team2_p1_level_area = scene[332-31:344-31, 910:925, :]
+                team2_p2_level_area = scene[396-31:408-31, 910:925, :]
+                team2_p3_level_area = scene[460-31:472-31, 910:925, :]
+                team2_p4_level_area = scene[524-31:536-31, 910:925, :]
+                team2_p5_level_area = scene[588-31:600-31, 910:925, :]
+
+
+
+                # cv2.imshow('window', team1_p1_cs_area)
                 # cv2.imshow('window', cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB))
                 # cv2.imshow('window', event_area)
 
-                # TODO: use the model to predict winrate if there is a change in match data below
+
 
                 # ------------------------------------------------------- dragons kills data ----------------------------------
                 # print('-------------------------------------------------------------------')
                 prev_team1_dragons = team1_dragons
-                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.85, sw1, True)
+                team1_dragons_change, sw1, _ = event_template_match(event_area, blue_infernal_dragon, 0.85, sw1)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.85, sw2, True)
+                team1_dragons_change, sw2, _ = event_template_match(event_area, blue_ocean_dragon, 0.85, sw2)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.85, sw3, True)
+                team1_dragons_change, sw3, _ = event_template_match(event_area, blue_mountain_dragon, 0.85, sw3)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.85, sw4, True)
+                team1_dragons_change, sw4, _ = event_template_match(event_area, blue_cloud_dragon, 0.85, sw4)
                 team1_dragons += team1_dragons_change
-                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.85, sw5, True)
+                team1_dragons_change, sw5, _ = event_template_match(event_area, blue_elder_dragon, 0.85, sw5)
                 team1_dragons += team1_dragons_change
                 # print(team1_dragons)
                 if team1_dragons != 0 and team1_dragons != prev_team1_dragons:
@@ -671,6 +871,28 @@ def screen_record():
                 if team2_inhibs != prev_team2_inhibs:
                     # print(str(time.time() - start_time) + '  team2_inhibs: ' + str(int(team2_inhibs)))
                     change += 1
+
+                if team1_towers == 1 and team2_towers == 0:
+                    team1_firstTower = 1
+                if team1_towers == 0 and team2_towers == 1:
+                    team2_firstTower = 1
+                if team1_inhibs == 1 and team2_inhibs == 0:
+                    team1_firstInhibitor = 1
+                if team1_inhibs == 0 and team2_inhibs == 1:
+                    team2_firstInhibitor = 1
+                if team1_dragons == 1 and team2_dragons == 0:
+                    team1_firstDragon = 1
+                if team1_dragons == 0 and team2_dragons == 1:
+                    team2_firstDragon = 1
+                if team1_barons == 1 and team2_barons == 0:
+                    team1_firstBaron = 1
+                if team1_barons == 0 and team2_barons == 1:
+                    team2_firstBaron = 1
+                if team1_rifts == 1 and team2_rifts == 0:
+                    team1_firstRiftHerald = 1
+                if team1_rifts == 0 and team2_rifts == 1:
+                    team2_firstRiftHerald = 1
+
 
                 if keyboard.is_pressed('tab'):
                     # get player cs and kda
@@ -829,6 +1051,13 @@ def screen_record():
                     if prev_team2_p5_assists != team2_p5_assists:
                         change += 1
                         # print(f'{time.time() - start_time}  team2_p5_assists{team2_p5_assists}')
+
+                    team1_kills = team1_p1_kills + team1_p2_kills + team1_p3_kills + team1_p4_kills + team1_p5_kills
+                    team2_kills = team2_p1_kills + team2_p2_kills + team2_p3_kills + team2_p4_kills + team2_p5_kills
+                    if team1_kills == 1 and team2_kills == 0:
+                        team1_first_blood = 1
+                    if team1_kills == 0 and team2_kills == 1:
+                        team2_first_blood = 1
                 playerdata = {'team1_cs': [team1_p1_cs, team1_p2_cs, team1_p3_cs, team1_p4_cs, team1_p5_cs],
                               'team1_k': [team1_p1_kills, team1_p2_kills, team1_p3_kills, team1_p4_kills,
                                           team1_p5_kills],
@@ -855,9 +1084,510 @@ def screen_record():
                             't2_rf': [team2_rifts],
                             't2_br': [team2_barons]
                             }
+                # team1_p1_level = get_cs(team1_p1_level_area)
+                # cv2.imshow('window', team1_p1_level_area)
+                # print(team1_p1_level)
                 if change > 0:
+                    # TODO: use the model to predict winrate if there is a change in match data below
                     print(pd.DataFrame(teamdata))
                     print(pd.DataFrame(playerdata))
+
+                    game_time = time.time() - start_time
+                    team1_p1_level = get_cs(team1_p1_level_area)
+                    team1_p2_level = get_cs(team1_p2_level_area)
+                    team1_p3_level = get_cs(team1_p3_level_area)
+                    team1_p4_level = get_cs(team1_p4_level_area)
+                    team1_p5_level = get_cs(team1_p5_level_area)
+                    team2_p1_level = get_cs(team2_p1_level_area)
+                    team2_p2_level = get_cs(team2_p2_level_area)
+                    team2_p3_level = get_cs(team2_p3_level_area)
+                    team2_p4_level = get_cs(team2_p4_level_area)
+                    team2_p5_level = get_cs(team2_p5_level_area)
+
+                    if game_time <= 300:
+                        team1_p1_cs_5min = team1_p1_cs
+                        team1_p1_gold_5min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
+                        team1_p1_level_5min = team1_p1_level
+                        team1_p2_cs_5min = team1_p2_cs
+                        team1_p2_gold_5min = team1_p2_kills * 300 + team1_p2_assists * 150 + team1_p2_cs * 30
+                        team1_p2_level_5min = team1_p2_level
+                        team1_p3_cs_5min = team1_p3_cs
+                        team1_p3_gold_5min = team1_p3_kills * 300 + team1_p3_assists * 150 + team1_p3_cs * 30
+                        team1_p3_level_5min = team1_p3_level
+                        team1_p4_cs_5min = team1_p4_cs
+                        team1_p4_gold_5min = team1_p4_kills * 300 + team1_p4_assists * 150 + team1_p4_cs * 30
+                        team1_p4_level_5min = team1_p4_level
+                        team1_p5_cs_5min = team1_p5_cs
+                        team1_p5_gold_5min = team1_p5_kills * 300 + team1_p5_assists * 150 + team1_p5_cs * 30
+                        team1_p5_level_5min = team1_p5_level
+                        team2_p1_cs_5min = team2_p1_cs
+                        team2_p1_gold_5min = team2_p1_kills * 300 + team2_p1_assists * 150 + team2_p1_cs * 30
+                        team2_p1_level_5min = team2_p1_level
+                        team2_p2_cs_5min = team2_p2_cs
+                        team2_p2_gold_5min = team2_p2_kills * 300 + team2_p2_assists * 150 + team2_p2_cs * 30
+                        team2_p2_level_5min = team2_p2_level
+                        team2_p3_cs_5min = team2_p3_cs
+                        team2_p3_gold_5min = team2_p3_kills * 300 + team2_p3_assists * 150 + team2_p3_cs * 30
+                        team2_p3_level_5min = team2_p3_level
+                        team2_p4_cs_5min = team2_p4_cs
+                        team2_p4_gold_5min = team2_p4_kills * 300 + team2_p4_assists * 150 + team2_p4_cs * 30
+                        team2_p4_level_5min = team2_p4_level
+                        team2_p5_cs_5min = team2_p5_cs
+                        team2_p5_gold_5min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
+                        team2_p5_level_5min = team2_p5_level
+                    if game_time <= 600:
+                        team1_p1_cs_10min = team1_p1_cs
+                        team1_p1_gold_10min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
+                        team1_p1_level_10min = team1_p1_level
+                        team1_p2_cs_10min = team1_p2_cs
+                        team1_p2_gold_10min = team1_p2_kills * 300 + team1_p2_assists * 150 + team1_p2_cs * 30
+                        team1_p2_level_10min = team1_p2_level
+                        team1_p3_cs_10min = team1_p3_cs
+                        team1_p3_gold_10min = team1_p3_kills * 300 + team1_p3_assists * 150 + team1_p3_cs * 30
+                        team1_p3_level_10min = team1_p3_level
+                        team1_p4_cs_10min = team1_p4_cs
+                        team1_p4_gold_10min = team1_p4_kills * 300 + team1_p4_assists * 150 + team1_p4_cs * 30
+                        team1_p4_level_10min = team1_p4_level
+                        team1_p5_cs_10min = team1_p5_cs
+                        team1_p5_gold_10min = team1_p5_kills * 300 + team1_p5_assists * 150 + team1_p5_cs * 30
+                        team1_p5_level_10min = team1_p5_level
+                        team2_p1_cs_10min = team2_p1_cs
+                        team2_p1_gold_10min = team2_p1_kills * 300 + team2_p1_assists * 150 + team2_p1_cs * 30
+                        team2_p1_level_10min = team2_p1_level
+                        team2_p2_cs_10min = team2_p2_cs
+                        team2_p2_gold_10min = team2_p2_kills * 300 + team2_p2_assists * 150 + team2_p2_cs * 30
+                        team2_p2_level_10min = team2_p2_level
+                        team2_p3_cs_10min = team2_p3_cs
+                        team2_p3_gold_10min = team2_p3_kills * 300 + team2_p3_assists * 150 + team2_p3_cs * 30
+                        team2_p3_level_10min = team2_p3_level
+                        team2_p4_cs_10min = team2_p4_cs
+                        team2_p4_gold_10min = team2_p4_kills * 300 + team2_p4_assists * 150 + team2_p4_cs * 30
+                        team2_p4_level_10min = team2_p4_level
+                        team2_p5_cs_10min = team2_p5_cs
+                        team2_p5_gold_10min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
+                        team2_p5_level_10min = team2_p5_level
+                    if game_time <= 900:
+                        team1_p1_cs_15min = team1_p1_cs
+                        team1_p1_gold_15min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
+                        team1_p1_level_15min = team1_p1_level
+                        team1_p2_cs_15min = team1_p2_cs
+                        team1_p2_gold_15min = team1_p2_kills * 300 + team1_p2_assists * 150 + team1_p2_cs * 30
+                        team1_p2_level_15min = team1_p2_level
+                        team1_p3_cs_15min = team1_p3_cs
+                        team1_p3_gold_15min = team1_p3_kills * 300 + team1_p3_assists * 150 + team1_p3_cs * 30
+                        team1_p3_level_15min = team1_p3_level
+                        team1_p4_cs_15min = team1_p4_cs
+                        team1_p4_gold_15min = team1_p4_kills * 300 + team1_p4_assists * 150 + team1_p4_cs * 30
+                        team1_p4_level_15min = team1_p4_level
+                        team1_p5_cs_15min = team1_p5_cs
+                        team1_p5_gold_15min = team1_p5_kills * 300 + team1_p5_assists * 150 + team1_p5_cs * 30
+                        team1_p5_level_15min = team1_p5_level
+                        team2_p1_cs_15min = team2_p1_cs
+                        team2_p1_gold_15min = team2_p1_kills * 300 + team2_p1_assists * 150 + team2_p1_cs * 30
+                        team2_p1_level_15min = team2_p1_level
+                        team2_p2_cs_15min = team2_p2_cs
+                        team2_p2_gold_15min = team2_p2_kills * 300 + team2_p2_assists * 150 + team2_p2_cs * 30
+                        team2_p2_level_15min = team2_p2_level
+                        team2_p3_cs_15min = team2_p3_cs
+                        team2_p3_gold_15min = team2_p3_kills * 300 + team2_p3_assists * 150 + team2_p3_cs * 30
+                        team2_p3_level_15min = team2_p3_level
+                        team2_p4_cs_15min = team2_p4_cs
+                        team2_p4_gold_15min = team2_p4_kills * 300 + team2_p4_assists * 150 + team2_p4_cs * 30
+                        team2_p4_level_15min = team2_p4_level
+                        team2_p5_cs_15min = team2_p5_cs
+                        team2_p5_gold_15min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
+                        team2_p5_level_15min = team2_p5_level
+                    if game_time <= 1200:
+                        team1_p1_cs_20min = team1_p1_cs
+                        team1_p1_gold_20min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
+                        team1_p1_level_20min = team1_p1_level
+                        team1_p2_cs_20min = team1_p2_cs
+                        team1_p2_gold_20min = team1_p2_kills * 300 + team1_p2_assists * 150 + team1_p2_cs * 30
+                        team1_p2_level_20min = team1_p2_level
+                        team1_p3_cs_20min = team1_p3_cs
+                        team1_p3_gold_20min = team1_p3_kills * 300 + team1_p3_assists * 150 + team1_p3_cs * 30
+                        team1_p3_level_20min = team1_p3_level
+                        team1_p4_cs_20min = team1_p4_cs
+                        team1_p4_gold_20min = team1_p4_kills * 300 + team1_p4_assists * 150 + team1_p4_cs * 30
+                        team1_p4_level_20min = team1_p4_level
+                        team1_p5_cs_20min = team1_p5_cs
+                        team1_p5_gold_20min = team1_p5_kills * 300 + team1_p5_assists * 150 + team1_p5_cs * 30
+                        team1_p5_level_20min = team1_p5_level
+                        team2_p1_cs_20min = team2_p1_cs
+                        team2_p1_gold_20min = team2_p1_kills * 300 + team2_p1_assists * 150 + team2_p1_cs * 30
+                        team2_p1_level_20min = team2_p1_level
+                        team2_p2_cs_20min = team2_p2_cs
+                        team2_p2_gold_20min = team2_p2_kills * 300 + team2_p2_assists * 150 + team2_p2_cs * 30
+                        team2_p2_level_20min = team2_p2_level
+                        team2_p3_cs_20min = team2_p3_cs
+                        team2_p3_gold_20min = team2_p3_kills * 300 + team2_p3_assists * 150 + team2_p3_cs * 30
+                        team2_p3_level_20min = team2_p3_level
+                        team2_p4_cs_20min = team2_p4_cs
+                        team2_p4_gold_20min = team2_p4_kills * 300 + team2_p4_assists * 150 + team2_p4_cs * 30
+                        team2_p4_level_20min = team2_p4_level
+                        team2_p5_cs_20min = team2_p5_cs
+                        team2_p5_gold_20min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
+                        team2_p5_level_20min = team2_p5_level
+                    if game_time <= 1500:
+                        team1_p1_cs_25min = team1_p1_cs
+                        team1_p1_gold_25min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
+                        team1_p1_level_25min = team1_p1_level
+                        team1_p2_cs_25min = team1_p2_cs
+                        team1_p2_gold_25min = team1_p2_kills * 300 + team1_p2_assists * 150 + team1_p2_cs * 30
+                        team1_p2_level_25min = team1_p2_level
+                        team1_p3_cs_25min = team1_p3_cs
+                        team1_p3_gold_25min = team1_p3_kills * 300 + team1_p3_assists * 150 + team1_p3_cs * 30
+                        team1_p3_level_25min = team1_p3_level
+                        team1_p4_cs_25min = team1_p4_cs
+                        team1_p4_gold_25min = team1_p4_kills * 300 + team1_p4_assists * 150 + team1_p4_cs * 30
+                        team1_p4_level_25min = team1_p4_level
+                        team1_p5_cs_25min = team1_p5_cs
+                        team1_p5_gold_25min = team1_p5_kills * 300 + team1_p5_assists * 150 + team1_p5_cs * 30
+                        team1_p5_level_25min = team1_p5_level
+                        team2_p1_cs_25min = team2_p1_cs
+                        team2_p1_gold_25min = team2_p1_kills * 300 + team2_p1_assists * 150 + team2_p1_cs * 30
+                        team2_p1_level_25min = team2_p1_level
+                        team2_p2_cs_25min = team2_p2_cs
+                        team2_p2_gold_25min = team2_p2_kills * 300 + team2_p2_assists * 150 + team2_p2_cs * 30
+                        team2_p2_level_25min = team2_p2_level
+                        team2_p3_cs_25min = team2_p3_cs
+                        team2_p3_gold_25min = team2_p3_kills * 300 + team2_p3_assists * 150 + team2_p3_cs * 30
+                        team2_p3_level_25min = team2_p3_level
+                        team2_p4_cs_25min = team2_p4_cs
+                        team2_p4_gold_25min = team2_p4_kills * 300 + team2_p4_assists * 150 + team2_p4_cs * 30
+                        team2_p4_level_25min = team2_p4_level
+                        team2_p5_cs_25min = team2_p5_cs
+                        team2_p5_gold_25min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
+                        team2_p5_level_25min = team2_p5_level
+                    if game_time > 1500:
+                        team1_p1_cs_30min = team1_p1_cs
+                        team1_p1_gold_30min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
+                        team1_p1_level_30min = team1_p1_level
+                        team1_p2_cs_30min = team1_p2_cs
+                        team1_p2_gold_30min = team1_p2_kills * 300 + team1_p2_assists * 150 + team1_p2_cs * 30
+                        team1_p2_level_30min = team1_p2_level
+                        team1_p3_cs_30min = team1_p3_cs
+                        team1_p3_gold_30min = team1_p3_kills * 300 + team1_p3_assists * 150 + team1_p3_cs * 30
+                        team1_p3_level_30min = team1_p3_level
+                        team1_p4_cs_30min = team1_p4_cs
+                        team1_p4_gold_30min = team1_p4_kills * 300 + team1_p4_assists * 150 + team1_p4_cs * 30
+                        team1_p4_level_30min = team1_p4_level
+                        team1_p5_cs_30min = team1_p5_cs
+                        team1_p5_gold_30min = team1_p5_kills * 300 + team1_p5_assists * 150 + team1_p5_cs * 30
+                        team1_p5_level_30min = team1_p5_level
+                        team2_p1_cs_30min = team2_p1_cs
+                        team2_p1_gold_30min = team2_p1_kills * 300 + team2_p1_assists * 150 + team2_p1_cs * 30
+                        team2_p1_level_30min = team2_p1_level
+                        team2_p2_cs_30min = team2_p2_cs
+                        team2_p2_gold_30min = team2_p2_kills * 300 + team2_p2_assists * 150 + team2_p2_cs * 30
+                        team2_p2_level_30min = team2_p2_level
+                        team2_p3_cs_30min = team2_p3_cs
+                        team2_p3_gold_30min = team2_p3_kills * 300 + team2_p3_assists * 150 + team2_p3_cs * 30
+                        team2_p3_level_30min = team2_p3_level
+                        team2_p4_cs_30min = team2_p4_cs
+                        team2_p4_gold_30min = team2_p4_kills * 300 + team2_p4_assists * 150 + team2_p4_cs * 30
+                        team2_p4_level_30min = team2_p4_level
+                        team2_p5_cs_30min = team2_p5_cs
+                        team2_p5_gold_30min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
+                        team2_p5_level_30min = team2_p5_level
+
+                    data_lst = []
+                    data_lst.append(team1_baronKills)
+                    data_lst.append(team1_riftKills)
+                    data_lst.append(team1_inhibitorKills)
+                    data_lst.append(team1_towerKills)
+                    data_lst.append(team1_dragonKills)
+                    data_lst.append(team2_baronKills)
+                    data_lst.append(team2_riftKills)
+                    data_lst.append(team2_inhibitorKills)
+                    data_lst.append(team2_towerKills)
+                    data_lst.append(team2_dragonKills)
+                    data_lst.append(team1_firstDragon)
+                    data_lst.append(team1_firstInhibitor)
+                    data_lst.append(team1_firstRiftHerald)
+                    data_lst.append(team1_firstBaron)
+                    data_lst.append(team1_firstBlood)
+                    data_lst.append(team1_firstTower)
+                    data_lst.append(team2_firstDragon)
+                    data_lst.append(team2_firstInhibitor)
+                    data_lst.append(team2_firstRiftHerald)
+                    data_lst.append(team2_firstBaron)
+                    data_lst.append(team2_firstBlood)
+                    data_lst.append(team2_firstTower)
+                    data_lst.append(game_time)
+                    data_lst.append(team1_p1_gold_10min)
+                    data_lst.append(team1_p1_gold_15min)
+                    data_lst.append(team1_p1_gold_20min)
+                    data_lst.append(team1_p1_gold_25min)
+                    data_lst.append(team1_p1_gold_30min)
+                    data_lst.append(team1_p1_gold_5min)
+                    data_lst.append(team1_p2_gold_10min)
+                    data_lst.append(team1_p2_gold_15min)
+                    data_lst.append(team1_p2_gold_20min)
+                    data_lst.append(team1_p2_gold_25min)
+                    data_lst.append(team1_p2_gold_30min)
+                    data_lst.append(team1_p2_gold_5min)
+                    data_lst.append(team1_p3_gold_10min)
+                    data_lst.append(team1_p3_gold_15min)
+                    data_lst.append(team1_p3_gold_20min)
+                    data_lst.append(team1_p3_gold_25min)
+                    data_lst.append(team1_p3_gold_30min)
+                    data_lst.append(team1_p3_gold_5min)
+                    data_lst.append(team1_p4_gold_10min)
+                    data_lst.append(team1_p4_gold_15min)
+                    data_lst.append(team1_p4_gold_20min)
+                    data_lst.append(team1_p4_gold_25min)
+                    data_lst.append(team1_p4_gold_30min)
+                    data_lst.append(team1_p4_gold_5min)
+                    data_lst.append(team1_p5_gold_10min)
+                    data_lst.append(team1_p5_gold_15min)
+                    data_lst.append(team1_p5_gold_20min)
+                    data_lst.append(team1_p5_gold_25min)
+                    data_lst.append(team1_p5_gold_30min)
+                    data_lst.append(team1_p5_gold_5min)
+                    data_lst.append(team2_p1_gold_10min)
+                    data_lst.append(team2_p1_gold_15min)
+                    data_lst.append(team2_p1_gold_20min)
+                    data_lst.append(team2_p1_gold_25min)
+                    data_lst.append(team2_p1_gold_30min)
+                    data_lst.append(team2_p1_gold_5min)
+                    data_lst.append(team2_p2_gold_10min)
+                    data_lst.append(team2_p2_gold_15min)
+                    data_lst.append(team2_p2_gold_20min)
+                    data_lst.append(team2_p2_gold_25min)
+                    data_lst.append(team2_p2_gold_30min)
+                    data_lst.append(team2_p2_gold_5min)
+                    data_lst.append(team2_p3_gold_10min)
+                    data_lst.append(team2_p3_gold_15min)
+                    data_lst.append(team2_p3_gold_20min)
+                    data_lst.append(team2_p3_gold_25min)
+                    data_lst.append(team2_p3_gold_30min)
+                    data_lst.append(team2_p3_gold_5min)
+                    data_lst.append(team2_p4_gold_10min)
+                    data_lst.append(team2_p4_gold_15min)
+                    data_lst.append(team2_p4_gold_20min)
+                    data_lst.append(team2_p4_gold_25min)
+                    data_lst.append(team2_p4_gold_30min)
+                    data_lst.append(team2_p4_gold_5min)
+                    data_lst.append(team2_p5_gold_10min)
+                    data_lst.append(team2_p5_gold_15min)
+                    data_lst.append(team2_p5_gold_20min)
+                    data_lst.append(team2_p5_gold_25min)
+                    data_lst.append(team2_p5_gold_30min)
+                    data_lst.append(team2_p5_gold_5min)
+                    data_lst.append(team1_p1_cs_5min)
+                    data_lst.append(team1_p1_cs_10min)
+                    data_lst.append(team1_p1_cs_15min)
+                    data_lst.append(team1_p1_cs_20min)
+                    data_lst.append(team1_p1_cs_25min)
+                    data_lst.append(team1_p1_cs_30min)
+                    data_lst.append(team1_p2_cs_5min)
+                    data_lst.append(team1_p2_cs_10min)
+                    data_lst.append(team1_p2_cs_15min)
+                    data_lst.append(team1_p2_cs_20min)
+                    data_lst.append(team1_p2_cs_25min)
+                    data_lst.append(team1_p2_cs_30min)
+                    data_lst.append(team1_p3_cs_5min)
+                    data_lst.append(team1_p3_cs_10min)
+                    data_lst.append(team1_p3_cs_15min)
+                    data_lst.append(team1_p3_cs_20min)
+                    data_lst.append(team1_p3_cs_25min)
+                    data_lst.append(team1_p3_cs_30min)
+                    data_lst.append(team1_p4_cs_5min)
+                    data_lst.append(team1_p4_cs_10min)
+                    data_lst.append(team1_p4_cs_15min)
+                    data_lst.append(team1_p4_cs_20min)
+                    data_lst.append(team1_p4_cs_25min)
+                    data_lst.append(team1_p4_cs_30min)
+                    data_lst.append(team1_p5_cs_5min)
+                    data_lst.append(team1_p5_cs_10min)
+                    data_lst.append(team1_p5_cs_15min)
+                    data_lst.append(team1_p5_cs_20min)
+                    data_lst.append(team1_p5_cs_25min)
+                    data_lst.append(team1_p5_cs_30min)
+                    data_lst.append(team2_p1_cs_5min)
+                    data_lst.append(team2_p1_cs_10min)
+                    data_lst.append(team2_p1_cs_15min)
+                    data_lst.append(team2_p1_cs_20min)
+                    data_lst.append(team2_p1_cs_25min)
+                    data_lst.append(team2_p1_cs_30min)
+                    data_lst.append(team2_p2_cs_5min)
+                    data_lst.append(team2_p2_cs_10min)
+                    data_lst.append(team2_p2_cs_15min)
+                    data_lst.append(team2_p2_cs_20min)
+                    data_lst.append(team2_p2_cs_25min)
+                    data_lst.append(team2_p2_cs_30min)
+                    data_lst.append(team2_p3_cs_5min)
+                    data_lst.append(team2_p3_cs_10min)
+                    data_lst.append(team2_p3_cs_15min)
+                    data_lst.append(team2_p3_cs_20min)
+                    data_lst.append(team2_p3_cs_25min)
+                    data_lst.append(team2_p3_cs_30min)
+                    data_lst.append(team2_p4_cs_5min)
+                    data_lst.append(team2_p4_cs_10min)
+                    data_lst.append(team2_p4_cs_15min)
+                    data_lst.append(team2_p4_cs_20min)
+                    data_lst.append(team2_p4_cs_25min)
+                    data_lst.append(team2_p4_cs_30min)
+                    data_lst.append(team2_p5_cs_5min)
+                    data_lst.append(team2_p5_cs_10min)
+                    data_lst.append(team2_p5_cs_15min)
+                    data_lst.append(team2_p5_cs_20min)
+                    data_lst.append(team2_p5_cs_25min)
+                    data_lst.append(team2_p5_cs_30min)
+                    columns = [
+                        'team1_baronKills',
+                        'team1_riftKills',
+                        'team1_inhibitorKills',
+                        'team1_towerKills',
+                        'team1_dragonKills',
+                        'team2_baronKills',
+                        'team2_riftKills',
+                        'team2_inhibitorKills',
+                        'team2_towerKills',
+                        'team2_dragonKills',
+                        'team1_firstDragon',
+                        'team1_firstInhibitor',
+                        'team1_firstRiftHerald',
+                        'team1_firstBaron',
+                        'team1_firstBlood',
+                        'team1_firstTower',
+                        'team2_firstDragon',
+                        'team2_firstInhibitor',
+                        'team2_firstRiftHerald',
+                        'team2_firstBaron',
+                        'team2_firstBlood',
+                        'team2_firstTower',
+                        'game_time',
+                        'team1_p1_gold_10min',
+                        'team1_p1_gold_15min',
+                        'team1_p1_gold_20min',
+                        'team1_p1_gold_25min',
+                        'team1_p1_gold_30min',
+                        'team1_p1_gold_5min',
+                        'team1_p2_gold_10min',
+                        'team1_p2_gold_15min',
+                        'team1_p2_gold_20min',
+                        'team1_p2_gold_25min',
+                        'team1_p2_gold_30min',
+                        'team1_p2_gold_5min',
+                        'team1_p3_gold_10min',
+                        'team1_p3_gold_15min',
+                        'team1_p3_gold_20min',
+                        'team1_p3_gold_25min',
+                        'team1_p3_gold_30min',
+                        'team1_p3_gold_5min',
+                        'team1_p4_gold_10min',
+                        'team1_p4_gold_15min',
+                        'team1_p4_gold_20min',
+                        'team1_p4_gold_25min',
+                        'team1_p4_gold_30min',
+                        'team1_p4_gold_5min',
+                        'team1_p5_gold_10min',
+                        'team1_p5_gold_15min',
+                        'team1_p5_gold_20min',
+                        'team1_p5_gold_25min',
+                        'team1_p5_gold_30min',
+                        'team1_p5_gold_5min',
+                        'team2_p1_gold_10min',
+                        'team2_p1_gold_15min',
+                        'team2_p1_gold_20min',
+                        'team2_p1_gold_25min',
+                        'team2_p1_gold_30min',
+                        'team2_p1_gold_5min',
+                        'team2_p2_gold_10min',
+                        'team2_p2_gold_15min',
+                        'team2_p2_gold_20min',
+                        'team2_p2_gold_25min',
+                        'team2_p2_gold_30min',
+                        'team2_p2_gold_5min',
+                        'team2_p3_gold_10min',
+                        'team2_p3_gold_15min',
+                        'team2_p3_gold_20min',
+                        'team2_p3_gold_25min',
+                        'team2_p3_gold_30min',
+                        'team2_p3_gold_5min',
+                        'team2_p4_gold_10min',
+                        'team2_p4_gold_15min',
+                        'team2_p4_gold_20min',
+                        'team2_p4_gold_25min',
+                        'team2_p4_gold_30min',
+                        'team2_p4_gold_5min',
+                        'team2_p5_gold_10min',
+                        'team2_p5_gold_15min',
+                        'team2_p5_gold_20min',
+                        'team2_p5_gold_25min',
+                        'team2_p5_gold_30min',
+                        'team2_p5_gold_5min',
+                        'team1_p1_total_cs_5min',
+                        'team1_p1_total_cs_10min',
+                        'team1_p1_total_cs_15min',
+                        'team1_p1_total_cs_20min',
+                        'team1_p1_total_cs_25min',
+                        'team1_p1_total_cs_30min',
+                        'team1_p2_total_cs_5min',
+                        'team1_p2_total_cs_10min',
+                        'team1_p2_total_cs_15min',
+                        'team1_p2_total_cs_20min',
+                        'team1_p2_total_cs_25min',
+                        'team1_p2_total_cs_30min',
+                        'team1_p3_total_cs_5min',
+                        'team1_p3_total_cs_10min',
+                        'team1_p3_total_cs_15min',
+                        'team1_p3_total_cs_20min',
+                        'team1_p3_total_cs_25min',
+                        'team1_p3_total_cs_30min',
+                        'team1_p4_total_cs_5min',
+                        'team1_p4_total_cs_10min',
+                        'team1_p4_total_cs_15min',
+                        'team1_p4_total_cs_20min',
+                        'team1_p4_total_cs_25min',
+                        'team1_p4_total_cs_30min',
+                        'team1_p5_total_cs_5min',
+                        'team1_p5_total_cs_10min',
+                        'team1_p5_total_cs_15min',
+                        'team1_p5_total_cs_20min',
+                        'team1_p5_total_cs_25min',
+                        'team1_p5_total_cs_30min',
+                        'team2_p1_total_cs_5min',
+                        'team2_p1_total_cs_10min',
+                        'team2_p1_total_cs_15min',
+                        'team2_p1_total_cs_20min',
+                        'team2_p1_total_cs_25min',
+                        'team2_p1_total_cs_30min',
+                        'team2_p2_total_cs_5min',
+                        'team2_p2_total_cs_10min',
+                        'team2_p2_total_cs_15min',
+                        'team2_p2_total_cs_20min',
+                        'team2_p2_total_cs_25min',
+                        'team2_p2_total_cs_30min',
+                        'team2_p3_total_cs_5min',
+                        'team2_p3_total_cs_10min',
+                        'team2_p3_total_cs_15min',
+                        'team2_p3_total_cs_20min',
+                        'team2_p3_total_cs_25min',
+                        'team2_p3_total_cs_30min',
+                        'team2_p4_total_cs_5min',
+                        'team2_p4_total_cs_10min',
+                        'team2_p4_total_cs_15min',
+                        'team2_p4_total_cs_20min',
+                        'team2_p4_total_cs_25min',
+                        'team2_p4_total_cs_30min',
+                        'team2_p5_total_cs_5min',
+                        'team2_p5_total_cs_10min',
+                        'team2_p5_total_cs_15min',
+                        'team2_p5_total_cs_20min',
+                        'team2_p5_total_cs_25min',
+                        'team2_p5_total_cs_30min'
+                    ]
+
+                    X = np.array(data_lst)
+                    X = X.reshape((1, -1))
+                    X = pd.DataFrame(X, columns=columns)
+                    # print(X.shape)
+                    winrate_model = pickle.load(open('finalized_model_2.sav', 'rb'))
+                    print(f'Win/Loss: {winrate_model.predict(X)}')
+
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     break
@@ -1151,7 +1881,7 @@ def convert_str_int(s):
 
 
 if __name__ == '__main__':
-    concat_file('./match_timeline/', 'full_matchtimeline.csv')
+    # concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # ------------------------------------
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
     # matchid_df = pd.read_csv('full_matchid.csv', index_col=0)
@@ -1221,8 +1951,10 @@ if __name__ == '__main__':
 
     # concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # train_digits('./New Folder/Layer 1.png')
-    pd.set_option('display.max_columns', 10)
-    screen_record()
+    # pd.set_option('display.max_columns', 10)
+    champ_df = pd.read_csv('champ_keys.csv')
+    begin_prediction(['Kaisa'], ['Vayne'])
+    # get_cs(cv2.imread('testdigit .png'))
 
 
 
