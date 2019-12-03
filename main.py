@@ -1136,7 +1136,7 @@ def convert_str_int(s):
 
 
 if __name__ == '__main__':
-
+    concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # ------------------------------------
     # concat_file('C:/Users/rober/OneDrive/csc/lol-ml/matchid/', 'full_matchid.csv')
     # matchid_df = pd.read_csv('full_matchid.csv', index_col=0)
