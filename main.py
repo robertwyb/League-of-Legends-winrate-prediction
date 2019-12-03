@@ -728,7 +728,7 @@ def begin_prediction(t1_champ, t2_champ):
             change = 0
             # 1600x900 windowed mode
             time.sleep(0.5)
-            printscreen = np.array(ImageGrab.grab(bbox=(0, 25, 1610, 931)))
+            printscreen = np.array(ImageGrab.grab(bbox=(0, 31, 1610, 931)))
 
             scene = cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB)
             # cv2.imshow('window', scene)
@@ -1587,8 +1587,9 @@ def begin_prediction(t1_champ, t2_champ):
                 X = X.reshape((1, -1))
                 X = pd.DataFrame(X, columns=columns)
                 # print(X.shape)
-                print(X['team2_p1_total_cs_5min'])
+
                 winrate_model = pickle.load(open('finalized_model_2.sav', 'rb'))
+                print(f'winrate: {winrate_model.predict_proba(X)}')
                 print(f'Win/Loss: {winrate_model.predict(X)}')
 
             if cv2.waitKey(25) & 0xFF == ord('q'):
@@ -1955,12 +1956,167 @@ if __name__ == '__main__':
     # concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # train_digits('./New Folder/Layer 1.png')
     # pd.set_option('display.max_columns', 10)
-    champ_df = pd.read_csv('champ_keys.csv')
-    begin_prediction(['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Leona'], ['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Ezreal'])
+    # champ_df = pd.read_csv('champ_keys.csv')
+    # begin_prediction(['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Leona'], ['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Ezreal'])
     # get_cs(cv2.imread('testdigit .png'))
 
+    data_lst = [0] * 143
+    # for i in range(121):
+    #     data_lst.append(np.nan)
 
+    columns = [
+        'team1_baronKills',
+        'team1_riftKills',
+        'team1_inhibitorKills',
+        'team1_towerKills',
+        'team1_dragonKills',
+        'team2_baronKills',
+        'team2_riftKills',
+        'team2_inhibitorKills',
+        'team2_towerKills',
+        'team2_dragonKills',
+        'team1_firstDragon',
+        'team1_firstInhibitor',
+        'team1_firstRiftHerald',
+        'team1_firstBaron',
+        'team1_firstBlood',
+        'team1_firstTower',
+        'team2_firstDragon',
+        'team2_firstInhibitor',
+        'team2_firstRiftHerald',
+        'team2_firstBaron',
+        'team2_firstBlood',
+        'team2_firstTower',
+        'game_time',
+        'team1_p1_gold_10min',
+        'team1_p1_gold_15min',
+        'team1_p1_gold_20min',
+        'team1_p1_gold_25min',
+        'team1_p1_gold_30min',
+        'team1_p1_gold_5min',
+        'team1_p2_gold_10min',
+        'team1_p2_gold_15min',
+        'team1_p2_gold_20min',
+        'team1_p2_gold_25min',
+        'team1_p2_gold_30min',
+        'team1_p2_gold_5min',
+        'team1_p3_gold_10min',
+        'team1_p3_gold_15min',
+        'team1_p3_gold_20min',
+        'team1_p3_gold_25min',
+        'team1_p3_gold_30min',
+        'team1_p3_gold_5min',
+        'team1_p4_gold_10min',
+        'team1_p4_gold_15min',
+        'team1_p4_gold_20min',
+        'team1_p4_gold_25min',
+        'team1_p4_gold_30min',
+        'team1_p4_gold_5min',
+        'team1_p5_gold_10min',
+        'team1_p5_gold_15min',
+        'team1_p5_gold_20min',
+        'team1_p5_gold_25min',
+        'team1_p5_gold_30min',
+        'team1_p5_gold_5min',
+        'team2_p1_gold_10min',
+        'team2_p1_gold_15min',
+        'team2_p1_gold_20min',
+        'team2_p1_gold_25min',
+        'team2_p1_gold_30min',
+        'team2_p1_gold_5min',
+        'team2_p2_gold_10min',
+        'team2_p2_gold_15min',
+        'team2_p2_gold_20min',
+        'team2_p2_gold_25min',
+        'team2_p2_gold_30min',
+        'team2_p2_gold_5min',
+        'team2_p3_gold_10min',
+        'team2_p3_gold_15min',
+        'team2_p3_gold_20min',
+        'team2_p3_gold_25min',
+        'team2_p3_gold_30min',
+        'team2_p3_gold_5min',
+        'team2_p4_gold_10min',
+        'team2_p4_gold_15min',
+        'team2_p4_gold_20min',
+        'team2_p4_gold_25min',
+        'team2_p4_gold_30min',
+        'team2_p4_gold_5min',
+        'team2_p5_gold_10min',
+        'team2_p5_gold_15min',
+        'team2_p5_gold_20min',
+        'team2_p5_gold_25min',
+        'team2_p5_gold_30min',
+        'team2_p5_gold_5min',
+        'team1_p1_total_cs_5min',
+        'team1_p1_total_cs_10min',
+        'team1_p1_total_cs_15min',
+        'team1_p1_total_cs_20min',
+        'team1_p1_total_cs_25min',
+        'team1_p1_total_cs_30min',
+        'team1_p2_total_cs_5min',
+        'team1_p2_total_cs_10min',
+        'team1_p2_total_cs_15min',
+        'team1_p2_total_cs_20min',
+        'team1_p2_total_cs_25min',
+        'team1_p2_total_cs_30min',
+        'team1_p3_total_cs_5min',
+        'team1_p3_total_cs_10min',
+        'team1_p3_total_cs_15min',
+        'team1_p3_total_cs_20min',
+        'team1_p3_total_cs_25min',
+        'team1_p3_total_cs_30min',
+        'team1_p4_total_cs_5min',
+        'team1_p4_total_cs_10min',
+        'team1_p4_total_cs_15min',
+        'team1_p4_total_cs_20min',
+        'team1_p4_total_cs_25min',
+        'team1_p4_total_cs_30min',
+        'team1_p5_total_cs_5min',
+        'team1_p5_total_cs_10min',
+        'team1_p5_total_cs_15min',
+        'team1_p5_total_cs_20min',
+        'team1_p5_total_cs_25min',
+        'team1_p5_total_cs_30min',
+        'team2_p1_total_cs_5min',
+        'team2_p1_total_cs_10min',
+        'team2_p1_total_cs_15min',
+        'team2_p1_total_cs_20min',
+        'team2_p1_total_cs_25min',
+        'team2_p1_total_cs_30min',
+        'team2_p2_total_cs_5min',
+        'team2_p2_total_cs_10min',
+        'team2_p2_total_cs_15min',
+        'team2_p2_total_cs_20min',
+        'team2_p2_total_cs_25min',
+        'team2_p2_total_cs_30min',
+        'team2_p3_total_cs_5min',
+        'team2_p3_total_cs_10min',
+        'team2_p3_total_cs_15min',
+        'team2_p3_total_cs_20min',
+        'team2_p3_total_cs_25min',
+        'team2_p3_total_cs_30min',
+        'team2_p4_total_cs_5min',
+        'team2_p4_total_cs_10min',
+        'team2_p4_total_cs_15min',
+        'team2_p4_total_cs_20min',
+        'team2_p4_total_cs_25min',
+        'team2_p4_total_cs_30min',
+        'team2_p5_total_cs_5min',
+        'team2_p5_total_cs_10min',
+        'team2_p5_total_cs_15min',
+        'team2_p5_total_cs_20min',
+        'team2_p5_total_cs_25min',
+        'team2_p5_total_cs_30min'
+    ]
 
+    X = np.array(data_lst)
+    X = X.reshape((1, -1))
+    X = pd.DataFrame(X, columns=columns)
+    # print(X.shape)
 
+    winrate_model = pickle.load(open('finalized_model_2.sav', 'rb'))
+    print(f'winrate: {winrate_model.predict_proba(X)}')
+    print(f'Win/Loss: {winrate_model.predict(X)}')
 
 
