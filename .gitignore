@@ -16,3 +16,10 @@ full_matchtimeline.csv
 champ_select.csv
 .idea/lol-ml.iml
 .idea/misc.xml
+.idea/misc.xml
+.idea/lol-ml.iml
+full_matchtimeline.csv
+champ_select.csv
+.idea/lol-ml.iml
+.idea/misc.xml
+*.csv
