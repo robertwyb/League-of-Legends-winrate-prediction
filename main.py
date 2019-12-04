@@ -9,7 +9,7 @@ import sys
 import keyboard
 import matplotlib.pyplot as plt
 from PIL import ImageGrab
-
+from model_4 import *
 
 def get_sum_from_league(division, tier, pagenum, api_key):
     """
@@ -894,169 +894,170 @@ def begin_prediction(t1_champ, t2_champ):
 
 
 
-                # get player cs and kda
-            prev_team1_p1_cs, prev_team1_p1_kills, prev_team1_p1_deaths, prev_team1_p1_assists = team1_p1_cs, team1_p1_kills, team1_p1_deaths, team1_p1_assists
-            prev_team1_p2_cs, prev_team1_p2_kills, prev_team1_p2_deaths, prev_team1_p2_assists = team1_p2_cs, team1_p2_kills, team1_p2_deaths, team1_p2_assists
-            prev_team1_p3_cs, prev_team1_p3_kills, prev_team1_p3_deaths, prev_team1_p3_assists = team1_p3_cs, team1_p3_kills, team1_p3_deaths, team1_p3_assists
-            prev_team1_p4_cs, prev_team1_p4_kills, prev_team1_p4_deaths, prev_team1_p4_assists = team1_p4_cs, team1_p4_kills, team1_p4_deaths, team1_p4_assists
-            prev_team1_p5_cs, prev_team1_p5_kills, prev_team1_p5_deaths, prev_team1_p5_assists = team1_p5_cs, team1_p5_kills, team1_p5_deaths, team1_p5_assists
+            # get player cs and kda
+            if keyboard.is_pressed('tab'):
+                prev_team1_p1_cs, prev_team1_p1_kills, prev_team1_p1_deaths, prev_team1_p1_assists = team1_p1_cs, team1_p1_kills, team1_p1_deaths, team1_p1_assists
+                prev_team1_p2_cs, prev_team1_p2_kills, prev_team1_p2_deaths, prev_team1_p2_assists = team1_p2_cs, team1_p2_kills, team1_p2_deaths, team1_p2_assists
+                prev_team1_p3_cs, prev_team1_p3_kills, prev_team1_p3_deaths, prev_team1_p3_assists = team1_p3_cs, team1_p3_kills, team1_p3_deaths, team1_p3_assists
+                prev_team1_p4_cs, prev_team1_p4_kills, prev_team1_p4_deaths, prev_team1_p4_assists = team1_p4_cs, team1_p4_kills, team1_p4_deaths, team1_p4_assists
+                prev_team1_p5_cs, prev_team1_p5_kills, prev_team1_p5_deaths, prev_team1_p5_assists = team1_p5_cs, team1_p5_kills, team1_p5_deaths, team1_p5_assists
 
-            prev_team2_p1_cs, prev_team2_p1_kills, prev_team2_p1_deaths, prev_team2_p1_assists = team2_p1_cs, team2_p1_kills, team2_p1_deaths, team2_p1_assists
-            prev_team2_p2_cs, prev_team2_p2_kills, prev_team2_p2_deaths, prev_team2_p2_assists = team2_p2_cs, team2_p2_kills, team2_p2_deaths, team2_p2_assists
-            prev_team2_p3_cs, prev_team2_p3_kills, prev_team2_p3_deaths, prev_team2_p3_assists = team2_p3_cs, team2_p3_kills, team2_p3_deaths, team2_p3_assists
-            prev_team2_p4_cs, prev_team2_p4_kills, prev_team2_p4_deaths, prev_team2_p4_assists = team2_p4_cs, team2_p4_kills, team2_p4_deaths, team2_p4_assists
-            prev_team2_p5_cs, prev_team2_p5_kills, prev_team2_p5_deaths, prev_team2_p5_assists = team2_p5_cs, team2_p5_kills, team2_p5_deaths, team2_p5_assists
+                prev_team2_p1_cs, prev_team2_p1_kills, prev_team2_p1_deaths, prev_team2_p1_assists = team2_p1_cs, team2_p1_kills, team2_p1_deaths, team2_p1_assists
+                prev_team2_p2_cs, prev_team2_p2_kills, prev_team2_p2_deaths, prev_team2_p2_assists = team2_p2_cs, team2_p2_kills, team2_p2_deaths, team2_p2_assists
+                prev_team2_p3_cs, prev_team2_p3_kills, prev_team2_p3_deaths, prev_team2_p3_assists = team2_p3_cs, team2_p3_kills, team2_p3_deaths, team2_p3_assists
+                prev_team2_p4_cs, prev_team2_p4_kills, prev_team2_p4_deaths, prev_team2_p4_assists = team2_p4_cs, team2_p4_kills, team2_p4_deaths, team2_p4_assists
+                prev_team2_p5_cs, prev_team2_p5_kills, prev_team2_p5_deaths, prev_team2_p5_assists = team2_p5_cs, team2_p5_kills, team2_p5_deaths, team2_p5_assists
 
-            team1_p1_cs = get_cs(team1_p1_cs_area)
-            team1_p1_kills, team1_p1_deaths, team1_p1_assists = get_kda(team1_p1_kda_area)
-            team1_p2_cs = get_cs(team1_p2_cs_area)
-            team1_p2_kills, team1_p2_deaths, team1_p1_assists = get_kda(team1_p2_kda_area)
-            team1_p3_cs = get_cs(team1_p3_cs_area)
-            team1_p3_kills, team1_p3_deaths, team1_p1_assists = get_kda(team1_p3_kda_area)
-            team1_p4_cs = get_cs(team1_p4_cs_area)
-            team1_p4_kills, team1_p4_deaths, team1_p1_assists = get_kda(team1_p4_kda_area)
-            team1_p5_cs = get_cs(team1_p5_cs_area)
-            team1_p5_kills, team1_p5_deaths, team1_p1_assists = get_kda(team1_p5_kda_area)
+                team1_p1_cs = get_cs(team1_p1_cs_area)
+                team1_p1_kills, team1_p1_deaths, team1_p1_assists = get_kda(team1_p1_kda_area)
+                team1_p2_cs = get_cs(team1_p2_cs_area)
+                team1_p2_kills, team1_p2_deaths, team1_p1_assists = get_kda(team1_p2_kda_area)
+                team1_p3_cs = get_cs(team1_p3_cs_area)
+                team1_p3_kills, team1_p3_deaths, team1_p1_assists = get_kda(team1_p3_kda_area)
+                team1_p4_cs = get_cs(team1_p4_cs_area)
+                team1_p4_kills, team1_p4_deaths, team1_p1_assists = get_kda(team1_p4_kda_area)
+                team1_p5_cs = get_cs(team1_p5_cs_area)
+                team1_p5_kills, team1_p5_deaths, team1_p1_assists = get_kda(team1_p5_kda_area)
 
-            if prev_team1_p1_cs != team1_p1_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p1_cs{team1_p1_cs}')
-            if prev_team1_p2_cs != team1_p2_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p2_cs{team1_p2_cs}')
-            if prev_team1_p3_cs != team1_p3_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p3_cs{team1_p3_cs}')
-            if prev_team1_p4_cs != team1_p4_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p4_cs{team1_p4_cs}')
-            if prev_team1_p5_cs != team1_p5_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p5_cs{team1_p5_cs}')
-            if prev_team1_p1_kills != team1_p1_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p1_kills{team1_p1_kills}')
-            if prev_team1_p2_kills != team1_p2_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p2_kills{team1_p2_kills}')
-            if prev_team1_p3_kills != team1_p3_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p3_kills{team1_p3_kills}')
-            if prev_team1_p4_kills != team1_p4_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p4_kills{team1_p4_kills}')
-            if prev_team1_p5_kills != team1_p5_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p5_kills{team1_p5_kills}')
-            if prev_team1_p1_deaths != team1_p1_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p1_deaths{team1_p1_deaths}')
-            if prev_team1_p2_deaths != team1_p2_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p2_deaths{team1_p2_deaths}')
-            if prev_team1_p3_deaths != team1_p3_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p3_deaths{team1_p3_deaths}')
-            if prev_team1_p4_deaths != team1_p4_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p4_deaths{team1_p4_deaths}')
-            if prev_team1_p5_deaths != team1_p5_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p5_deaths{team1_p5_deaths}')
-            if prev_team1_p1_assists != team1_p1_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p1_assists{team1_p1_assists}')
-            if prev_team1_p2_assists != team1_p2_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p2_assists{team1_p2_assists}')
-            if prev_team1_p3_assists != team1_p3_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p3_assists{team1_p3_assists}')
-            if prev_team1_p4_assists != team1_p4_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p4_assists{team1_p4_assists}')
-            if prev_team1_p5_assists != team1_p5_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team1_p5_assists{team1_p5_assists}')
+                if prev_team1_p1_cs != team1_p1_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p1_cs{team1_p1_cs}')
+                if prev_team1_p2_cs != team1_p2_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p2_cs{team1_p2_cs}')
+                if prev_team1_p3_cs != team1_p3_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p3_cs{team1_p3_cs}')
+                if prev_team1_p4_cs != team1_p4_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p4_cs{team1_p4_cs}')
+                if prev_team1_p5_cs != team1_p5_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p5_cs{team1_p5_cs}')
+                if prev_team1_p1_kills != team1_p1_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p1_kills{team1_p1_kills}')
+                if prev_team1_p2_kills != team1_p2_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p2_kills{team1_p2_kills}')
+                if prev_team1_p3_kills != team1_p3_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p3_kills{team1_p3_kills}')
+                if prev_team1_p4_kills != team1_p4_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p4_kills{team1_p4_kills}')
+                if prev_team1_p5_kills != team1_p5_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p5_kills{team1_p5_kills}')
+                if prev_team1_p1_deaths != team1_p1_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p1_deaths{team1_p1_deaths}')
+                if prev_team1_p2_deaths != team1_p2_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p2_deaths{team1_p2_deaths}')
+                if prev_team1_p3_deaths != team1_p3_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p3_deaths{team1_p3_deaths}')
+                if prev_team1_p4_deaths != team1_p4_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p4_deaths{team1_p4_deaths}')
+                if prev_team1_p5_deaths != team1_p5_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p5_deaths{team1_p5_deaths}')
+                if prev_team1_p1_assists != team1_p1_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p1_assists{team1_p1_assists}')
+                if prev_team1_p2_assists != team1_p2_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p2_assists{team1_p2_assists}')
+                if prev_team1_p3_assists != team1_p3_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p3_assists{team1_p3_assists}')
+                if prev_team1_p4_assists != team1_p4_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p4_assists{team1_p4_assists}')
+                if prev_team1_p5_assists != team1_p5_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team1_p5_assists{team1_p5_assists}')
 
-            team2_p1_cs = get_cs(team2_p1_cs_area)
-            team2_p1_kills, team2_p1_deaths, team2_p1_assists = get_kda(team2_p1_kda_area)
-            team2_p2_cs = get_cs(team2_p2_cs_area)
-            team2_p2_kills, team2_p2_deaths, team2_p1_assists = get_kda(team2_p2_kda_area)
-            team2_p3_cs = get_cs(team2_p3_cs_area)
-            team2_p3_kills, team2_p3_deaths, team2_p1_assists = get_kda(team2_p3_kda_area)
-            team2_p4_cs = get_cs(team2_p4_cs_area)
-            team2_p4_kills, team2_p4_deaths, team2_p1_assists = get_kda(team2_p4_kda_area)
-            team2_p5_cs = get_cs(team2_p5_cs_area)
-            team2_p5_kills, team2_p5_deaths, team2_p1_assists = get_kda(team2_p5_kda_area)
+                team2_p1_cs = get_cs(team2_p1_cs_area)
+                team2_p1_kills, team2_p1_deaths, team2_p1_assists = get_kda(team2_p1_kda_area)
+                team2_p2_cs = get_cs(team2_p2_cs_area)
+                team2_p2_kills, team2_p2_deaths, team2_p1_assists = get_kda(team2_p2_kda_area)
+                team2_p3_cs = get_cs(team2_p3_cs_area)
+                team2_p3_kills, team2_p3_deaths, team2_p1_assists = get_kda(team2_p3_kda_area)
+                team2_p4_cs = get_cs(team2_p4_cs_area)
+                team2_p4_kills, team2_p4_deaths, team2_p1_assists = get_kda(team2_p4_kda_area)
+                team2_p5_cs = get_cs(team2_p5_cs_area)
+                team2_p5_kills, team2_p5_deaths, team2_p1_assists = get_kda(team2_p5_kda_area)
 
-            if prev_team2_p1_cs != team2_p1_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p1_cs{team2_p1_cs}')
-            if prev_team2_p2_cs != team2_p2_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p2_cs{team2_p2_cs}')
-            if prev_team2_p3_cs != team2_p3_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p3_cs{team2_p3_cs}')
-            if prev_team2_p4_cs != team2_p4_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p4_cs{team2_p4_cs}')
-            if prev_team2_p5_cs != team2_p5_cs:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p5_cs{team2_p5_cs}')
-            if prev_team2_p1_kills != team2_p1_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p1_kills{team2_p1_kills}')
-            if prev_team2_p2_kills != team2_p2_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p2_kills{team2_p2_kills}')
-            if prev_team2_p3_kills != team2_p3_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p3_kills{team2_p3_kills}')
-            if prev_team2_p4_kills != team2_p4_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p4_kills{team2_p4_kills}')
-            if prev_team2_p5_kills != team2_p5_kills:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p5_kills{team2_p5_kills}')
-            if prev_team2_p1_deaths != team2_p1_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p1_deaths{team2_p1_deaths}')
-            if prev_team2_p2_deaths != team2_p2_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p2_deaths{team2_p2_deaths}')
-            if prev_team2_p3_deaths != team2_p3_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p3_deaths{team2_p3_deaths}')
-            if prev_team2_p4_deaths != team2_p4_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p4_deaths{team2_p4_deaths}')
-            if prev_team2_p5_deaths != team2_p5_deaths:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p5_deaths{team2_p5_deaths}')
-            if prev_team2_p1_assists != team2_p1_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p1_assists{team2_p1_assists}')
-            if prev_team2_p2_assists != team2_p2_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p2_assists{team2_p2_assists}')
-            if prev_team2_p3_assists != team2_p3_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p3_assists{team2_p3_assists}')
-            if prev_team2_p4_assists != team2_p4_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p4_assists{team2_p4_assists}')
-            if prev_team2_p5_assists != team2_p5_assists:
-                change += 1
-                # print(f'{time.time() - start_time}  team2_p5_assists{team2_p5_assists}')
+                if prev_team2_p1_cs != team2_p1_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p1_cs{team2_p1_cs}')
+                if prev_team2_p2_cs != team2_p2_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p2_cs{team2_p2_cs}')
+                if prev_team2_p3_cs != team2_p3_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p3_cs{team2_p3_cs}')
+                if prev_team2_p4_cs != team2_p4_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p4_cs{team2_p4_cs}')
+                if prev_team2_p5_cs != team2_p5_cs:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p5_cs{team2_p5_cs}')
+                if prev_team2_p1_kills != team2_p1_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p1_kills{team2_p1_kills}')
+                if prev_team2_p2_kills != team2_p2_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p2_kills{team2_p2_kills}')
+                if prev_team2_p3_kills != team2_p3_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p3_kills{team2_p3_kills}')
+                if prev_team2_p4_kills != team2_p4_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p4_kills{team2_p4_kills}')
+                if prev_team2_p5_kills != team2_p5_kills:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p5_kills{team2_p5_kills}')
+                if prev_team2_p1_deaths != team2_p1_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p1_deaths{team2_p1_deaths}')
+                if prev_team2_p2_deaths != team2_p2_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p2_deaths{team2_p2_deaths}')
+                if prev_team2_p3_deaths != team2_p3_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p3_deaths{team2_p3_deaths}')
+                if prev_team2_p4_deaths != team2_p4_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p4_deaths{team2_p4_deaths}')
+                if prev_team2_p5_deaths != team2_p5_deaths:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p5_deaths{team2_p5_deaths}')
+                if prev_team2_p1_assists != team2_p1_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p1_assists{team2_p1_assists}')
+                if prev_team2_p2_assists != team2_p2_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p2_assists{team2_p2_assists}')
+                if prev_team2_p3_assists != team2_p3_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p3_assists{team2_p3_assists}')
+                if prev_team2_p4_assists != team2_p4_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p4_assists{team2_p4_assists}')
+                if prev_team2_p5_assists != team2_p5_assists:
+                    change += 1
+                    # print(f'{time.time() - start_time}  team2_p5_assists{team2_p5_assists}')
 
-            team1_kills = team1_p1_kills + team1_p2_kills + team1_p3_kills + team1_p4_kills + team1_p5_kills
-            team2_kills = team2_p1_kills + team2_p2_kills + team2_p3_kills + team2_p4_kills + team2_p5_kills
-            if team1_kills == 1 and team2_kills == 0:
-                team1_firstBlood = 1
-            if team1_kills == 0 and team2_kills == 1:
-                team2_firstBlood = 1
+                team1_kills = team1_p1_kills + team1_p2_kills + team1_p3_kills + team1_p4_kills + team1_p5_kills
+                team2_kills = team2_p1_kills + team2_p2_kills + team2_p3_kills + team2_p4_kills + team2_p5_kills
+                if team1_kills == 1 and team2_kills == 0:
+                    team1_firstBlood = 1
+                if team1_kills == 0 and team2_kills == 1:
+                    team2_firstBlood = 1
             playerdata = {'team1_cs': [team1_p1_cs, team1_p2_cs, team1_p3_cs, team1_p4_cs, team1_p5_cs],
                           'team1_k': [team1_p1_kills, team1_p2_kills, team1_p3_kills, team1_p4_kills,
                                       team1_p5_kills],
@@ -1137,7 +1138,7 @@ def begin_prediction(t1_champ, t2_champ):
                     team2_p5_cs_5min = team2_p5_cs
                     team2_p5_gold_5min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
                     team2_p5_level_5min = team2_p5_level
-                if game_time <= 600:
+                if 300 < game_time <= 600:
                     team1_p1_cs_10min = team1_p1_cs
                     team1_p1_gold_10min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
                     team1_p1_level_10min = team1_p1_level
@@ -1168,7 +1169,7 @@ def begin_prediction(t1_champ, t2_champ):
                     team2_p5_cs_10min = team2_p5_cs
                     team2_p5_gold_10min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
                     team2_p5_level_10min = team2_p5_level
-                if game_time <= 900:
+                if 600 < game_time <= 900:
                     team1_p1_cs_15min = team1_p1_cs
                     team1_p1_gold_15min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
                     team1_p1_level_15min = team1_p1_level
@@ -1199,7 +1200,7 @@ def begin_prediction(t1_champ, t2_champ):
                     team2_p5_cs_15min = team2_p5_cs
                     team2_p5_gold_15min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
                     team2_p5_level_15min = team2_p5_level
-                if game_time <= 1200:
+                if 900 < game_time <= 1200:
                     team1_p1_cs_20min = team1_p1_cs
                     team1_p1_gold_20min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
                     team1_p1_level_20min = team1_p1_level
@@ -1230,7 +1231,7 @@ def begin_prediction(t1_champ, t2_champ):
                     team2_p5_cs_20min = team2_p5_cs
                     team2_p5_gold_20min = team2_p5_kills * 300 + team2_p5_assists * 150 + team2_p5_cs * 30
                     team2_p5_level_20min = team2_p5_level
-                if game_time <= 1500:
+                if 1200 < game_time <= 1500:
                     team1_p1_cs_25min = team1_p1_cs
                     team1_p1_gold_25min = team1_p1_kills * 300 + team1_p1_assists * 150 + team1_p1_cs * 30
                     team1_p1_level_25min = team1_p1_level
@@ -1587,11 +1588,11 @@ def begin_prediction(t1_champ, t2_champ):
                 X = X.reshape((1, -1))
                 X = pd.DataFrame(X, columns=columns)
                 # print(X.shape)
-
-                winrate_model = pickle.load(open('finalized_model_2.sav', 'rb'))
-                print(f'winrate: {winrate_model.predict_proba(X)}')
-                print(f'Win/Loss: {winrate_model.predict(X)}')
-                print(f'winrate: {winrate_model.predict_proba(X)}')
+                if game_time <= 300:
+                    game_time /= 60
+                    X = drop_gold_cs_columns_before_k_min(6, X)
+                    winrate_model = pickle.load(open(f'lrmodel_{int(game_time) // 5 + 5}.sav', 'rb'))
+                    print(f'winrate: {winrate_model.predict_proba(X)[0][0]}')
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 cv2.destroyAllWindows()
                 break
@@ -1641,7 +1642,7 @@ def train_digits(img):
         if 5 < cv2.contourArea(cnt) < 100:
             [x, y, w, h] = cv2.boundingRect(cnt)
             print(w, h)
-            if 10 < h and 6 < w:
+            if 10 < h and 6 <= w:
                 temp = im.copy()
                 cv2.rectangle(temp, (x, y), (x + w, y + h), (0, 0, 255), 1)
                 roi = thresh[y:y + h, x:x + w]
@@ -1824,8 +1825,10 @@ def get_kda(scene):
                 retval, results, neigh_resp, dists = model.findNearest(roismall, k=1)
                 if x-1 not in appeared and x+1 not in appeared and x not in appeared:
                     appeared[x] = dists[0][0]
-                    # print(results[0][0], dists[0][0])
-                    if dists[0][0] < 900000 or ((results[0][0] == 1 or results [0][0] == 11) and dists[0][0] < 1500000):
+                    print('-----')
+                    print(results[0][0], dists[0][0])
+                    print(results, dists)
+                    if dists[0][0] < 900000 or ((results[0][0] == 1 or results[0][0] == 11) and dists[0][0] < 1500000):
                         digit = int((results[0][0]))
                         digits.append(digit)
                         position.append(x)
@@ -1956,167 +1959,10 @@ if __name__ == '__main__':
     # concat_file('./match_timeline/', 'full_matchtimeline.csv')
     # train_digits('./New Folder/Layer 1.png')
     # pd.set_option('display.max_columns', 10)
-    # champ_df = pd.read_csv('champ_keys.csv')
-    # begin_prediction(['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Leona'], ['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Ezreal'])
-    # get_cs(cv2.imread('testdigit .png'))
+    champ_df = pd.read_csv('champ_keys.csv')
+    begin_prediction(['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Leona'], ['Ashe', 'Vayne', 'Lucian', 'Kaisa', 'Ezreal'])
 
-    data_lst = [0] * 143
-    # for i in range(121):
-    #     data_lst.append(np.nan)
-
-    columns = [
-        'team1_baronKills',
-        'team1_riftKills',
-        'team1_inhibitorKills',
-        'team1_towerKills',
-        'team1_dragonKills',
-        'team2_baronKills',
-        'team2_riftKills',
-        'team2_inhibitorKills',
-        'team2_towerKills',
-        'team2_dragonKills',
-        'team1_firstDragon',
-        'team1_firstInhibitor',
-        'team1_firstRiftHerald',
-        'team1_firstBaron',
-        'team1_firstBlood',
-        'team1_firstTower',
-        'team2_firstDragon',
-        'team2_firstInhibitor',
-        'team2_firstRiftHerald',
-        'team2_firstBaron',
-        'team2_firstBlood',
-        'team2_firstTower',
-        'game_time',
-        'team1_p1_gold_10min',
-        'team1_p1_gold_15min',
-        'team1_p1_gold_20min',
-        'team1_p1_gold_25min',
-        'team1_p1_gold_30min',
-        'team1_p1_gold_5min',
-        'team1_p2_gold_10min',
-        'team1_p2_gold_15min',
-        'team1_p2_gold_20min',
-        'team1_p2_gold_25min',
-        'team1_p2_gold_30min',
-        'team1_p2_gold_5min',
-        'team1_p3_gold_10min',
-        'team1_p3_gold_15min',
-        'team1_p3_gold_20min',
-        'team1_p3_gold_25min',
-        'team1_p3_gold_30min',
-        'team1_p3_gold_5min',
-        'team1_p4_gold_10min',
-        'team1_p4_gold_15min',
-        'team1_p4_gold_20min',
-        'team1_p4_gold_25min',
-        'team1_p4_gold_30min',
-        'team1_p4_gold_5min',
-        'team1_p5_gold_10min',
-        'team1_p5_gold_15min',
-        'team1_p5_gold_20min',
-        'team1_p5_gold_25min',
-        'team1_p5_gold_30min',
-        'team1_p5_gold_5min',
-        'team2_p1_gold_10min',
-        'team2_p1_gold_15min',
-        'team2_p1_gold_20min',
-        'team2_p1_gold_25min',
-        'team2_p1_gold_30min',
-        'team2_p1_gold_5min',
-        'team2_p2_gold_10min',
-        'team2_p2_gold_15min',
-        'team2_p2_gold_20min',
-        'team2_p2_gold_25min',
-        'team2_p2_gold_30min',
-        'team2_p2_gold_5min',
-        'team2_p3_gold_10min',
-        'team2_p3_gold_15min',
-        'team2_p3_gold_20min',
-        'team2_p3_gold_25min',
-        'team2_p3_gold_30min',
-        'team2_p3_gold_5min',
-        'team2_p4_gold_10min',
-        'team2_p4_gold_15min',
-        'team2_p4_gold_20min',
-        'team2_p4_gold_25min',
-        'team2_p4_gold_30min',
-        'team2_p4_gold_5min',
-        'team2_p5_gold_10min',
-        'team2_p5_gold_15min',
-        'team2_p5_gold_20min',
-        'team2_p5_gold_25min',
-        'team2_p5_gold_30min',
-        'team2_p5_gold_5min',
-        'team1_p1_total_cs_5min',
-        'team1_p1_total_cs_10min',
-        'team1_p1_total_cs_15min',
-        'team1_p1_total_cs_20min',
-        'team1_p1_total_cs_25min',
-        'team1_p1_total_cs_30min',
-        'team1_p2_total_cs_5min',
-        'team1_p2_total_cs_10min',
-        'team1_p2_total_cs_15min',
-        'team1_p2_total_cs_20min',
-        'team1_p2_total_cs_25min',
-        'team1_p2_total_cs_30min',
-        'team1_p3_total_cs_5min',
-        'team1_p3_total_cs_10min',
-        'team1_p3_total_cs_15min',
-        'team1_p3_total_cs_20min',
-        'team1_p3_total_cs_25min',
-        'team1_p3_total_cs_30min',
-        'team1_p4_total_cs_5min',
-        'team1_p4_total_cs_10min',
-        'team1_p4_total_cs_15min',
-        'team1_p4_total_cs_20min',
-        'team1_p4_total_cs_25min',
-        'team1_p4_total_cs_30min',
-        'team1_p5_total_cs_5min',
-        'team1_p5_total_cs_10min',
-        'team1_p5_total_cs_15min',
-        'team1_p5_total_cs_20min',
-        'team1_p5_total_cs_25min',
-        'team1_p5_total_cs_30min',
-        'team2_p1_total_cs_5min',
-        'team2_p1_total_cs_10min',
-        'team2_p1_total_cs_15min',
-        'team2_p1_total_cs_20min',
-        'team2_p1_total_cs_25min',
-        'team2_p1_total_cs_30min',
-        'team2_p2_total_cs_5min',
-        'team2_p2_total_cs_10min',
-        'team2_p2_total_cs_15min',
-        'team2_p2_total_cs_20min',
-        'team2_p2_total_cs_25min',
-        'team2_p2_total_cs_30min',
-        'team2_p3_total_cs_5min',
-        'team2_p3_total_cs_10min',
-        'team2_p3_total_cs_15min',
-        'team2_p3_total_cs_20min',
-        'team2_p3_total_cs_25min',
-        'team2_p3_total_cs_30min',
-        'team2_p4_total_cs_5min',
-        'team2_p4_total_cs_10min',
-        'team2_p4_total_cs_15min',
-        'team2_p4_total_cs_20min',
-        'team2_p4_total_cs_25min',
-        'team2_p4_total_cs_30min',
-        'team2_p5_total_cs_5min',
-        'team2_p5_total_cs_10min',
-        'team2_p5_total_cs_15min',
-        'team2_p5_total_cs_20min',
-        'team2_p5_total_cs_25min',
-        'team2_p5_total_cs_30min'
-    ]
-
-    X = np.array(data_lst)
-    X = X.reshape((1, -1))
-    X = pd.DataFrame(X, columns=columns)
-    # print(X.shape)
-
-    winrate_model = pickle.load(open('finalized_model_2.sav', 'rb'))
-    print(f'winrate: {winrate_model.predict_proba(X)}')
-    print(f'Win/Loss: {winrate_model.predict(X)}')
+    # train_digits('testkda.png')
+    # get_kda(cv2.imread('testkda.png'))
 
 

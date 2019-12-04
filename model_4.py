@@ -127,7 +127,7 @@ y = df_win_timeline['team1_win']
 
 def drop_gold_cs_columns_before_k_min(k, train_set):
     """
-    :param k: in minutes
+    :param k: in minutes less than 30
     :param train_set: data frame of features
     :return: new data frame of features
     """
@@ -161,4 +161,4 @@ def lr_based_on_time(x_1, y_1, k, s=0.3, r=42):
     return pred_prob, classification_report(y_test, y_pred_rf)
 
 
-print(lr_based_on_time(X, y, 6))
+print(lr_based_on_time(X, y, 26))
