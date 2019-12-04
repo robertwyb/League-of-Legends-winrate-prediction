@@ -24,105 +24,105 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 
-
-df = pd.read_csv('full_matchtimeline.csv', index_col=0)
-df_cs = pd.read_csv('champ_select.csv', index_col=0)
-df_win = pd.read_csv('game_win.csv', index_col=0)
-df_objectives = pd.read_csv('game_objectives.csv', index_col=0)
-df_champ_select = df_cs.drop(columns=['game_time', 'team1_win', 'gameId']).multiply(df_cs['game_time'], axis='index')
-df_champ_select['gameId'] = df_cs['gameId']
-df_win_time = pd.merge(df_objectives, df, on='gameId')
-df_win_timeline = pd.merge(df_win_time, df_champ_select, on='gameId')
-for t_1 in [1, 2]:
-    for p_1 in [1, 2, 3, 4, 5]:
-        for m_1 in [5, 10, 15, 20, 25, 30]:
-            df_win_timeline[f'team{t_1}_p{p_1}_total_cs_{m_1}min'] = df_win_timeline[f'team{t_1}_p{p_1}_cs_{m_1}min'] +\
-                                                               df_win_timeline[f'team{t_1}_p{p_1}_jg_{m_1}min']
-
-
-X = df_win_timeline.drop(columns=['team1_win', 'gameId', 'team2_win',
-                                  'team1_p1_jg_5min', 'team1_p1_jg_10min', 'team1_p1_jg_15min', 'team1_p1_jg_20min',
-                                  'team1_p1_jg_25min', 'team1_p1_jg_30min',
-                                  'team1_p2_jg_5min', 'team1_p2_jg_10min', 'team1_p2_jg_15min', 'team1_p2_jg_20min',
-                                  'team1_p2_jg_25min', 'team1_p2_jg_30min',
-                                  'team1_p3_jg_5min', 'team1_p3_jg_10min', 'team1_p3_jg_15min', 'team1_p3_jg_20min',
-                                  'team1_p3_jg_25min', 'team1_p3_jg_30min',
-                                  'team1_p4_jg_5min', 'team1_p4_jg_10min', 'team1_p4_jg_15min', 'team1_p4_jg_20min',
-                                  'team1_p4_jg_25min', 'team1_p4_jg_30min',
-                                  'team1_p5_jg_5min', 'team1_p5_jg_10min', 'team1_p5_jg_15min', 'team1_p5_jg_20min',
-                                  'team1_p5_jg_25min', 'team1_p5_jg_30min',
-                                  'team2_p1_jg_5min', 'team2_p1_jg_10min', 'team2_p1_jg_15min', 'team2_p1_jg_20min',
-                                  'team2_p1_jg_25min', 'team2_p1_jg_30min',
-                                  'team2_p2_jg_5min', 'team2_p2_jg_10min', 'team2_p2_jg_15min', 'team2_p2_jg_20min',
-                                  'team2_p2_jg_25min', 'team2_p2_jg_30min',
-                                  'team2_p3_jg_5min', 'team2_p3_jg_10min', 'team2_p3_jg_15min', 'team2_p3_jg_20min',
-                                  'team2_p3_jg_25min', 'team2_p3_jg_30min',
-                                  'team2_p4_jg_5min', 'team2_p4_jg_10min', 'team2_p4_jg_15min', 'team2_p4_jg_20min',
-                                  'team2_p4_jg_25min', 'team2_p4_jg_30min',
-                                  'team2_p5_jg_5min', 'team2_p5_jg_10min', 'team2_p5_jg_15min', 'team2_p5_jg_20min',
-                                  'team2_p5_jg_25min', 'team2_p5_jg_30min',
-                                  'team1_p1_cs_5min', 'team1_p1_cs_10min', 'team1_p1_cs_15min', 'team1_p1_cs_20min',
-                                  'team1_p1_cs_25min', 'team1_p1_cs_30min',
-                                  'team1_p2_cs_5min', 'team1_p2_cs_10min', 'team1_p2_cs_15min', 'team1_p2_cs_20min',
-                                  'team1_p2_cs_25min', 'team1_p2_cs_30min',
-                                  'team1_p3_cs_5min', 'team1_p3_cs_10min', 'team1_p3_cs_15min', 'team1_p3_cs_20min',
-                                  'team1_p3_cs_25min', 'team1_p3_cs_30min',
-                                  'team1_p4_cs_5min', 'team1_p4_cs_10min', 'team1_p4_cs_15min', 'team1_p4_cs_20min',
-                                  'team1_p4_cs_25min', 'team1_p4_cs_30min',
-                                  'team1_p5_cs_5min', 'team1_p5_cs_10min', 'team1_p5_cs_15min', 'team1_p5_cs_20min',
-                                  'team1_p5_cs_25min', 'team1_p5_cs_30min',
-                                  'team2_p1_cs_5min', 'team2_p1_cs_10min', 'team2_p1_cs_15min', 'team2_p1_cs_20min',
-                                  'team2_p1_cs_25min', 'team2_p1_cs_30min',
-                                  'team2_p2_cs_5min', 'team2_p2_cs_10min', 'team2_p2_cs_15min', 'team2_p2_cs_20min',
-                                  'team2_p2_cs_25min', 'team2_p2_cs_30min',
-                                  'team2_p3_cs_5min', 'team2_p3_cs_10min', 'team2_p3_cs_15min', 'team2_p3_cs_20min',
-                                  'team2_p3_cs_25min', 'team2_p3_cs_30min',
-                                  'team2_p4_cs_5min', 'team2_p4_cs_10min', 'team2_p4_cs_15min', 'team2_p4_cs_20min',
-                                  'team2_p4_cs_25min', 'team2_p4_cs_30min',
-                                  'team2_p5_cs_5min', 'team2_p5_cs_10min', 'team2_p5_cs_15min', 'team2_p5_cs_20min',
-                                  'team2_p5_cs_25min', 'team2_p5_cs_30min',
-                                  'team1_p1_xp_5min', 'team1_p1_xp_10min', 'team1_p1_xp_15min', 'team1_p1_xp_20min',
-                                  'team1_p1_xp_25min', 'team1_p1_xp_30min',
-                                  'team1_p2_xp_5min', 'team1_p2_xp_10min', 'team1_p2_xp_15min', 'team1_p2_xp_20min',
-                                  'team1_p2_xp_25min', 'team1_p2_xp_30min',
-                                  'team1_p3_xp_5min', 'team1_p3_xp_10min', 'team1_p3_xp_15min', 'team1_p3_xp_20min',
-                                  'team1_p3_xp_25min', 'team1_p3_xp_30min',
-                                  'team1_p4_xp_5min', 'team1_p4_xp_10min', 'team1_p4_xp_15min', 'team1_p4_xp_20min',
-                                  'team1_p4_xp_25min', 'team1_p4_xp_30min',
-                                  'team1_p5_xp_5min', 'team1_p5_xp_10min', 'team1_p5_xp_15min', 'team1_p5_xp_20min',
-                                  'team1_p5_xp_25min', 'team1_p5_xp_30min',
-                                  'team2_p1_xp_5min', 'team2_p1_xp_10min', 'team2_p1_xp_15min', 'team2_p1_xp_20min',
-                                  'team2_p1_xp_25min', 'team2_p1_xp_30min',
-                                  'team2_p2_xp_5min', 'team2_p2_xp_10min', 'team2_p2_xp_15min', 'team2_p2_xp_20min',
-                                  'team2_p2_xp_25min', 'team2_p2_xp_30min',
-                                  'team2_p3_xp_5min', 'team2_p3_xp_10min', 'team2_p3_xp_15min', 'team2_p3_xp_20min',
-                                  'team2_p3_xp_25min', 'team2_p3_xp_30min',
-                                  'team2_p4_xp_5min', 'team2_p4_xp_10min', 'team2_p4_xp_15min', 'team2_p4_xp_20min',
-                                  'team2_p4_xp_25min', 'team2_p4_xp_30min',
-                                  'team2_p5_xp_5min', 'team2_p5_xp_10min', 'team2_p5_xp_15min', 'team2_p5_xp_20min',
-                                  'team2_p5_xp_25min', 'team2_p5_xp_30min',
-                                  'team1_p1_level_5min', 'team1_p1_level_10min', 'team1_p1_level_15min',
-                                  'team1_p1_level_20min', 'team1_p1_level_25min', 'team1_p1_level_30min',
-                                  'team1_p2_level_5min', 'team1_p2_level_10min', 'team1_p2_level_15min',
-                                  'team1_p2_level_20min', 'team1_p2_level_25min', 'team1_p2_level_30min',
-                                  'team1_p3_level_5min', 'team1_p3_level_10min', 'team1_p3_level_15min',
-                                  'team1_p3_level_20min', 'team1_p3_level_25min', 'team1_p3_level_30min',
-                                  'team1_p4_level_5min', 'team1_p4_level_10min', 'team1_p4_level_15min',
-                                  'team1_p4_level_20min', 'team1_p4_level_25min', 'team1_p4_level_30min',
-                                  'team1_p5_level_5min', 'team1_p5_level_10min', 'team1_p5_level_15min',
-                                  'team1_p5_level_20min', 'team1_p5_level_25min', 'team1_p5_level_30min',
-                                  'team2_p1_level_5min', 'team2_p1_level_10min', 'team2_p1_level_15min',
-                                  'team2_p1_level_20min', 'team2_p1_level_25min', 'team2_p1_level_30min',
-                                  'team2_p2_level_5min', 'team2_p2_level_10min', 'team2_p2_level_15min',
-                                  'team2_p2_level_20min', 'team2_p2_level_25min', 'team2_p2_level_30min',
-                                  'team2_p3_level_5min', 'team2_p3_level_10min', 'team2_p3_level_15min',
-                                  'team2_p3_level_20min', 'team2_p3_level_25min', 'team2_p3_level_30min',
-                                  'team2_p4_level_5min', 'team2_p4_level_10min', 'team2_p4_level_15min',
-                                  'team2_p4_level_20min', 'team2_p4_level_25min', 'team2_p4_level_30min',
-                                  'team2_p5_level_5min', 'team2_p5_level_10min', 'team2_p5_level_15min',
-                                  'team2_p5_level_20min', 'team2_p5_level_25min', 'team2_p5_level_30min'
-                                  ])
-y = df_win_timeline['team1_win']
+#
+# df = pd.read_csv('full_matchtimeline.csv', index_col=0)
+# df_cs = pd.read_csv('champ_select.csv', index_col=0)
+# df_win = pd.read_csv('game_win.csv', index_col=0)
+# df_objectives = pd.read_csv('game_objectives.csv', index_col=0)
+# df_champ_select = df_cs.drop(columns=['game_time', 'team1_win', 'gameId']).multiply(df_cs['game_time'], axis='index')
+# df_champ_select['gameId'] = df_cs['gameId']
+# df_win_time = pd.merge(df_objectives, df, on='gameId')
+# df_win_timeline = pd.merge(df_win_time, df_champ_select, on='gameId')
+# for t_1 in [1, 2]:
+#     for p_1 in [1, 2, 3, 4, 5]:
+#         for m_1 in [5, 10, 15, 20, 25, 30]:
+#             df_win_timeline[f'team{t_1}_p{p_1}_total_cs_{m_1}min'] = df_win_timeline[f'team{t_1}_p{p_1}_cs_{m_1}min'] +\
+#                                                                df_win_timeline[f'team{t_1}_p{p_1}_jg_{m_1}min']
+#
+#
+# X = df_win_timeline.drop(columns=['team1_win', 'gameId', 'team2_win',
+#                                   'team1_p1_jg_5min', 'team1_p1_jg_10min', 'team1_p1_jg_15min', 'team1_p1_jg_20min',
+#                                   'team1_p1_jg_25min', 'team1_p1_jg_30min',
+#                                   'team1_p2_jg_5min', 'team1_p2_jg_10min', 'team1_p2_jg_15min', 'team1_p2_jg_20min',
+#                                   'team1_p2_jg_25min', 'team1_p2_jg_30min',
+#                                   'team1_p3_jg_5min', 'team1_p3_jg_10min', 'team1_p3_jg_15min', 'team1_p3_jg_20min',
+#                                   'team1_p3_jg_25min', 'team1_p3_jg_30min',
+#                                   'team1_p4_jg_5min', 'team1_p4_jg_10min', 'team1_p4_jg_15min', 'team1_p4_jg_20min',
+#                                   'team1_p4_jg_25min', 'team1_p4_jg_30min',
+#                                   'team1_p5_jg_5min', 'team1_p5_jg_10min', 'team1_p5_jg_15min', 'team1_p5_jg_20min',
+#                                   'team1_p5_jg_25min', 'team1_p5_jg_30min',
+#                                   'team2_p1_jg_5min', 'team2_p1_jg_10min', 'team2_p1_jg_15min', 'team2_p1_jg_20min',
+#                                   'team2_p1_jg_25min', 'team2_p1_jg_30min',
+#                                   'team2_p2_jg_5min', 'team2_p2_jg_10min', 'team2_p2_jg_15min', 'team2_p2_jg_20min',
+#                                   'team2_p2_jg_25min', 'team2_p2_jg_30min',
+#                                   'team2_p3_jg_5min', 'team2_p3_jg_10min', 'team2_p3_jg_15min', 'team2_p3_jg_20min',
+#                                   'team2_p3_jg_25min', 'team2_p3_jg_30min',
+#                                   'team2_p4_jg_5min', 'team2_p4_jg_10min', 'team2_p4_jg_15min', 'team2_p4_jg_20min',
+#                                   'team2_p4_jg_25min', 'team2_p4_jg_30min',
+#                                   'team2_p5_jg_5min', 'team2_p5_jg_10min', 'team2_p5_jg_15min', 'team2_p5_jg_20min',
+#                                   'team2_p5_jg_25min', 'team2_p5_jg_30min',
+#                                   'team1_p1_cs_5min', 'team1_p1_cs_10min', 'team1_p1_cs_15min', 'team1_p1_cs_20min',
+#                                   'team1_p1_cs_25min', 'team1_p1_cs_30min',
+#                                   'team1_p2_cs_5min', 'team1_p2_cs_10min', 'team1_p2_cs_15min', 'team1_p2_cs_20min',
+#                                   'team1_p2_cs_25min', 'team1_p2_cs_30min',
+#                                   'team1_p3_cs_5min', 'team1_p3_cs_10min', 'team1_p3_cs_15min', 'team1_p3_cs_20min',
+#                                   'team1_p3_cs_25min', 'team1_p3_cs_30min',
+#                                   'team1_p4_cs_5min', 'team1_p4_cs_10min', 'team1_p4_cs_15min', 'team1_p4_cs_20min',
+#                                   'team1_p4_cs_25min', 'team1_p4_cs_30min',
+#                                   'team1_p5_cs_5min', 'team1_p5_cs_10min', 'team1_p5_cs_15min', 'team1_p5_cs_20min',
+#                                   'team1_p5_cs_25min', 'team1_p5_cs_30min',
+#                                   'team2_p1_cs_5min', 'team2_p1_cs_10min', 'team2_p1_cs_15min', 'team2_p1_cs_20min',
+#                                   'team2_p1_cs_25min', 'team2_p1_cs_30min',
+#                                   'team2_p2_cs_5min', 'team2_p2_cs_10min', 'team2_p2_cs_15min', 'team2_p2_cs_20min',
+#                                   'team2_p2_cs_25min', 'team2_p2_cs_30min',
+#                                   'team2_p3_cs_5min', 'team2_p3_cs_10min', 'team2_p3_cs_15min', 'team2_p3_cs_20min',
+#                                   'team2_p3_cs_25min', 'team2_p3_cs_30min',
+#                                   'team2_p4_cs_5min', 'team2_p4_cs_10min', 'team2_p4_cs_15min', 'team2_p4_cs_20min',
+#                                   'team2_p4_cs_25min', 'team2_p4_cs_30min',
+#                                   'team2_p5_cs_5min', 'team2_p5_cs_10min', 'team2_p5_cs_15min', 'team2_p5_cs_20min',
+#                                   'team2_p5_cs_25min', 'team2_p5_cs_30min',
+#                                   'team1_p1_xp_5min', 'team1_p1_xp_10min', 'team1_p1_xp_15min', 'team1_p1_xp_20min',
+#                                   'team1_p1_xp_25min', 'team1_p1_xp_30min',
+#                                   'team1_p2_xp_5min', 'team1_p2_xp_10min', 'team1_p2_xp_15min', 'team1_p2_xp_20min',
+#                                   'team1_p2_xp_25min', 'team1_p2_xp_30min',
+#                                   'team1_p3_xp_5min', 'team1_p3_xp_10min', 'team1_p3_xp_15min', 'team1_p3_xp_20min',
+#                                   'team1_p3_xp_25min', 'team1_p3_xp_30min',
+#                                   'team1_p4_xp_5min', 'team1_p4_xp_10min', 'team1_p4_xp_15min', 'team1_p4_xp_20min',
+#                                   'team1_p4_xp_25min', 'team1_p4_xp_30min',
+#                                   'team1_p5_xp_5min', 'team1_p5_xp_10min', 'team1_p5_xp_15min', 'team1_p5_xp_20min',
+#                                   'team1_p5_xp_25min', 'team1_p5_xp_30min',
+#                                   'team2_p1_xp_5min', 'team2_p1_xp_10min', 'team2_p1_xp_15min', 'team2_p1_xp_20min',
+#                                   'team2_p1_xp_25min', 'team2_p1_xp_30min',
+#                                   'team2_p2_xp_5min', 'team2_p2_xp_10min', 'team2_p2_xp_15min', 'team2_p2_xp_20min',
+#                                   'team2_p2_xp_25min', 'team2_p2_xp_30min',
+#                                   'team2_p3_xp_5min', 'team2_p3_xp_10min', 'team2_p3_xp_15min', 'team2_p3_xp_20min',
+#                                   'team2_p3_xp_25min', 'team2_p3_xp_30min',
+#                                   'team2_p4_xp_5min', 'team2_p4_xp_10min', 'team2_p4_xp_15min', 'team2_p4_xp_20min',
+#                                   'team2_p4_xp_25min', 'team2_p4_xp_30min',
+#                                   'team2_p5_xp_5min', 'team2_p5_xp_10min', 'team2_p5_xp_15min', 'team2_p5_xp_20min',
+#                                   'team2_p5_xp_25min', 'team2_p5_xp_30min',
+#                                   'team1_p1_level_5min', 'team1_p1_level_10min', 'team1_p1_level_15min',
+#                                   'team1_p1_level_20min', 'team1_p1_level_25min', 'team1_p1_level_30min',
+#                                   'team1_p2_level_5min', 'team1_p2_level_10min', 'team1_p2_level_15min',
+#                                   'team1_p2_level_20min', 'team1_p2_level_25min', 'team1_p2_level_30min',
+#                                   'team1_p3_level_5min', 'team1_p3_level_10min', 'team1_p3_level_15min',
+#                                   'team1_p3_level_20min', 'team1_p3_level_25min', 'team1_p3_level_30min',
+#                                   'team1_p4_level_5min', 'team1_p4_level_10min', 'team1_p4_level_15min',
+#                                   'team1_p4_level_20min', 'team1_p4_level_25min', 'team1_p4_level_30min',
+#                                   'team1_p5_level_5min', 'team1_p5_level_10min', 'team1_p5_level_15min',
+#                                   'team1_p5_level_20min', 'team1_p5_level_25min', 'team1_p5_level_30min',
+#                                   'team2_p1_level_5min', 'team2_p1_level_10min', 'team2_p1_level_15min',
+#                                   'team2_p1_level_20min', 'team2_p1_level_25min', 'team2_p1_level_30min',
+#                                   'team2_p2_level_5min', 'team2_p2_level_10min', 'team2_p2_level_15min',
+#                                   'team2_p2_level_20min', 'team2_p2_level_25min', 'team2_p2_level_30min',
+#                                   'team2_p3_level_5min', 'team2_p3_level_10min', 'team2_p3_level_15min',
+#                                   'team2_p3_level_20min', 'team2_p3_level_25min', 'team2_p3_level_30min',
+#                                   'team2_p4_level_5min', 'team2_p4_level_10min', 'team2_p4_level_15min',
+#                                   'team2_p4_level_20min', 'team2_p4_level_25min', 'team2_p4_level_30min',
+#                                   'team2_p5_level_5min', 'team2_p5_level_10min', 'team2_p5_level_15min',
+#                                   'team2_p5_level_20min', 'team2_p5_level_25min', 'team2_p5_level_30min'
+#                                   ])
+# y = df_win_timeline['team1_win']
 
 
 def drop_gold_cs_columns_before_k_min(k, train_set):
@@ -183,9 +183,9 @@ def lr_based_on_time(x_1, y_1, k, s=0.3, r=42):
     return lr
 
 
-lr_based_on_time(X, y, 6)
-lr_based_on_time(X, y, 11)
-lr_based_on_time(X, y, 16)
-lr_based_on_time(X, y, 21)
-lr_based_on_time(X, y, 26)
-lr_based_on_time(X, y, 31)
+# lr_based_on_time(X, y, 6)
+# lr_based_on_time(X, y, 11)
+# lr_based_on_time(X, y, 16)
+# lr_based_on_time(X, y, 21)
+# lr_based_on_time(X, y, 26)
+# lr_based_on_time(X, y, 31)
