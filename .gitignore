@@ -25,3 +25,6 @@ champ_select.csv
 *.csv
 .idea/lol-ml.iml
 .idea/misc.xml
+model_4.py
+.idea/lol-ml.iml
+.idea/misc.xml
