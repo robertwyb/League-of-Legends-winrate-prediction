@@ -26,10 +26,13 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 df = pd.read_csv('full_matchtimeline.csv', index_col=0)
+df_cs = pd.read_csv('champ_select.csv', index_col=0)
 df_win = pd.read_csv('game_win.csv', index_col=0)
 df_objectives = pd.read_csv('game_objectives.csv', index_col=0)
-df_win_timeline = pd.merge(df_objectives, df, on='gameId')
-
+df_champ_select = df_cs.drop(columns=['game_time', 'team1_win', 'gameId']).multiply(df_cs['game_time'], axis='index')
+df_champ_select['gameId'] = df_cs['gameId']
+df_win_time = pd.merge(df_objectives, df, on='gameId')
+df_win_timeline = pd.merge(df_win_time, df_champ_select, on='gameId')
 for t_1 in [1, 2]:
     for p_1 in [1, 2, 3, 4, 5]:
         for m_1 in [5, 10, 15, 20, 25, 30]:
@@ -123,11 +126,11 @@ y = df_win_timeline['team1_win']
 
 
 def drop_gold_cs_columns_before_k_min(k, train_set):
-    '''
+    """
     :param k: in minutes
     :param train_set: data frame of features
     :return: new data frame of features
-    '''
+    """
     x_new = train_set
     for t in [1, 2]:
         for p in range(1, 6):
@@ -137,21 +140,20 @@ def drop_gold_cs_columns_before_k_min(k, train_set):
 
 
 def lr_based_on_time(x_1, y_1, k, s=0.3, r=42):
-    '''
+    """
     :param x_1: feature set
     :param y_1: label set
     :param k: time
     :param r: random state
     :param s: test size
     :return: probability and report
-    '''
+    """
     x_2 = drop_gold_cs_columns_before_k_min(k, x_1)
     df_concat = pd.concat([x_2, y_1], axis=1)
     df_concat = df_concat.dropna()
     x_new = df_concat.drop(columns=['team1_win'])
     y_new = df_concat['team1_win']
-    x_train, x_test, y_train, y_test = train_test_split\
-        (x_new, y_new, test_size=s, random_state=r)
+    x_train, x_test, y_train, y_test = train_test_split(x_new, y_new, test_size=s, random_state=r)
     lr = LogisticRegression()
     lr.fit(x_train, y_train)
     y_pred_rf = lr.predict(x_test)
@@ -159,4 +161,4 @@ def lr_based_on_time(x_1, y_1, k, s=0.3, r=42):
     return pred_prob, classification_report(y_test, y_pred_rf)
 
 
-print(lr_based_on_time(X, y, 26))
+print(lr_based_on_time(X, y, 6))
