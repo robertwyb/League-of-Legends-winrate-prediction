@@ -136,7 +136,7 @@ def drop_gold_cs_columns_before_k_min(k, train_set):
     return x_new
 
 
-def lr_based_on_time(x_1, y_1, k, s=0.3, r=42):
+def lr_based_on_time(x_1, y_1, k):
     '''
     :param x_1: feature set
     :param y_1: label set
@@ -150,13 +150,15 @@ def lr_based_on_time(x_1, y_1, k, s=0.3, r=42):
     df_concat = df_concat.dropna()
     x_new = df_concat.drop(columns=['team1_win'])
     y_new = df_concat['team1_win']
-    x_train, x_test, y_train, y_test = train_test_split\
-        (x_new, y_new, test_size=s, random_state=r)
     lr = LogisticRegression()
-    lr.fit(x_train, y_train)
-    y_pred_rf = lr.predict(x_test)
-    pred_prob = lr.predict_proba(x_test)
-    return pred_prob, classification_report(y_test, y_pred_rf)
+    lr.fit(x_new, y_new)
+    filename = f'lrmodel_{k-1}.sav'
+    pickle.dump(lr, open(filename, 'wb'))
 
 
-print(lr_based_on_time(X, y, 26))
+# lr_based_on_time(X, y, 6)
+# lr_based_on_time(X, y, 11)
+# lr_based_on_time(X, y, 16)
+# lr_based_on_time(X, y, 21)
+# lr_based_on_time(X, y, 26)
+# lr_based_on_time(X, y, 31)
